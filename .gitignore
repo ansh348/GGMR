@@ -40,5 +40,9 @@ Thumbs.db
 ggmr/problems/coverage_run.log
 ggmr/problems/partial_500_log.txt
 
+# Training data (regenerable test outputs)
+tmp/
+ggmr/training/*.jsonl
+
 # Jupyter checkpoints
 .ipynb_checkpoints/

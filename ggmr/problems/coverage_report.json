@@ -1,0 +1,109 @@
+{
+  "summary": {
+    "total_problems": 30,
+    "successful_generations": 30,
+    "solved_total": 30,
+    "overall_solve_rate": 1.0,
+    "wall_clock_seconds": 355.0
+  },
+  "criterion_3_5": {
+    "depth_le_10_total": 30,
+    "depth_le_10_solved": 30,
+    "depth_le_10_rate": 1.0,
+    "threshold": 0.9,
+    "passed": true
+  },
+  "per_depth": {
+    "5": {
+      "total_problems": 30,
+      "generated": 30,
+      "solved": 30,
+      "solve_rate_among_generated": 1.0,
+      "solve_rate_overall": 1.0,
+      "nodes_expanded_median": 4.0,
+      "nodes_expanded_p95": 39.1,
+      "productive_middle_count": 0
+    }
+  },
+  "per_template": {
+    "linear": {
+      "total_problems": 6,
+      "generated": 6,
+      "solved": 6,
+      "solve_rate_among_generated": 1.0
+    },
+    "quadratic": {
+      "total_problems": 6,
+      "generated": 6,
+      "solved": 6,
+      "solve_rate_among_generated": 1.0
+    },
+    "rational": {
+      "total_problems": 6,
+      "generated": 6,
+      "solved": 6,
+      "solve_rate_among_generated": 1.0
+    },
+    "polynomial": {
+      "total_problems": 6,
+      "generated": 6,
+      "solved": 6,
+      "solve_rate_among_generated": 1.0
+    },
+    "mixed": {
+      "total_problems": 6,
+      "generated": 6,
+      "solved": 6,
+      "solve_rate_among_generated": 1.0
+    }
+  },
+  "rule_application_counts": {
+    "ADD_TO_BOTH_SIDES": 470,
+    "NEGATE_BOTH_SIDES": 146,
+    "FLIP_SIDES": 131,
+    "MOVE_ALL_TO_LHS": 128,
+    "MOVE_ALL_TO_RHS": 136,
+    "RECIPROCATE_BOTH_SIDES": 117,
+    "DISTRIBUTE_OVER_SUBTREE": 616,
+    "COMBINE_LIKE_TERMS_AT": 55,
+    "FACTOR_OUT_GCF_AT": 114,
+    "COLLECT_LIKE_VARIABLE_TERMS_AT": 426,
+    "POLY_TO_MONIC": 30,
+    "ISOLATE_VARIABLE": 5,
+    "MULTIPLY_BOTH_SIDES_BY": 203,
+    "DIVIDE_BOTH_SIDES_BY": 68,
+    "SIMPLIFY_AT": 308,
+    "CLEAR_FRACTIONS_BY_LCD": 106,
+    "CROSS_MULTIPLY": 42,
+    "PARTIAL_FRACTIONS": 42,
+    "COMBINE_FRACTIONS_AT": 163,
+    "EXPAND_PRODUCT": 101,
+    "VIETAS_FORMULAS": 5,
+    "CANCEL_COMMON_FACTOR": 14,
+    "COMPLETE_THE_SQUARE": 10,
+    "FACTOR_POLYNOMIAL": 22,
+    "POLYNOMIAL_LONG_DIVISION": 98,
+    "FACTOR_BY_GROUPING": 3,
+    "SYNTHETIC_DIVISION": 7,
+    "QUADRATIC_FORMULA": 2,
+    "COMMON_DENOMINATOR_AT": 44
+  },
+  "dead_rules": [
+    "DISTRIBUTE_NEGATIVE_AT",
+    "DOUBLE_NEGATION_AT",
+    "EXPAND_POWER",
+    "FACTOR_DIFFERENCE_OF_SQUARES_AT",
+    "IDENTITY_ADD_ZERO_AT",
+    "IDENTITY_MUL_ONE_AT",
+    "PERFECT_SQUARE_TRINOMIAL_AT",
+    "POW_OF_POW_AT",
+    "POW_PRODUCT_AT",
+    "POW_QUOTIENT_AT",
+    "RATIONAL_ROOT_THEOREM",
+    "SIMPLIFY_NUMERIC_AT",
+    "SPLIT_FRACTION_AT",
+    "SQRT_BOTH_SIDES",
+    "SQUARE_BOTH_SIDES",
+    "ZERO_PROPERTY_AT"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "wall_clock_seconds": 733.3,
+  "total_accepted": 47,
+  "target": 52,
+  "per_recipe": {
+    "nested_rational": {
+      "accepted": 45,
+      "kept": 13,
+      "rejected": 1,
+      "errors": 34
+    },
+    "complete_square": {
+      "accepted": 21,
+      "kept": 13,
+      "rejected": 44,
+      "errors": 14
+    },
+    "cross_side_rational": {
+      "accepted": 30,
+      "kept": 13,
+      "rejected": 2,
+      "errors": 46
+    },
+    "polynomial_disguised": {
+      "accepted": 8,
+      "kept": 8,
+      "rejected": 64,
+      "errors": 6
+    }
+  },
+  "astar_distribution": {
+    "count": 47,
+    "min": 5,
+    "max": 62,
+    "median": 10,
+    "ge_50": 1,
+    "ge_200": 0,
+    "ge_500": 0,
+    "ge_1000": 0
+  }
+}

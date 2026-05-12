@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ggmr"
+version = "0.1.0a1"
+description = "Learned Heuristics for Sound Algebraic Rewrite Search (GGMR) — Phase 1a foundation"
+requires-python = ">=3.13"
+authors = [{ name = "Ansuman Mullick", email = "ansuman.mullick@bilkent.edu.tr" }]
+dependencies = [
+    "sympy>=1.14",
+    "numpy>=2.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ggmr*"]
+exclude = ["phase0*", "tests*", ".venv*"]
+
+[tool.pytest.ini_options]
+testpaths = ["ggmr/tests", "phase0/tests"]
+python_files = ["test_*.py"]
+addopts = "-ra -m 'not slow'"
+markers = [
+    "slow: long-running BFS/A* tests (default-skipped; run with `pytest -m slow`)",
+]

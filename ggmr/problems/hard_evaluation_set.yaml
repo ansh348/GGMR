@@ -1,0 +1,1444 @@
+- id: hard_nested_rational_000
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 7701
+  depth: 5
+  astar_nodes_expanded: 40
+  bfs_nodes_expanded: 10
+  applied_inverses:
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_NEST_IN_RATIONAL
+  initial_srepr_lhs: Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(2),
+    Symbol('x')), Mul(Mul(Mul(Mul(Mul(Mul(Mul(Mul(Mul(Symbol('x'), Add(Symbol('x'),
+    Integer(-2))), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))), Add(Symbol('x'),
+    Integer(-2))), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))), Add(Symbol('x'),
+    Integer(2))), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))), Add(Symbol('x'),
+    Integer(-3))), Pow(Add(Symbol('x'), Integer(-3)), Integer(-1))), Add(Symbol('x'),
+    Integer(1)))))
+  initial_srepr_rhs: Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(2),
+    Symbol('x')), Mul(Integer(3), Add(Symbol('x'), Integer(1)))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-2)
+  - Integer(2)
+  - Integer(3)
+  initial:
+    lhs: (2*x + ((((((((x*(x - 2))/(x - 2))*(x - 2))/(x - 2))*(x + 2))/(x + 2))*(x
+      - 3))/(x - 3))*(x + 1))/(x + 1)
+    rhs: (2*x + 3*(x + 1))/(x + 1)
+  canonical_target:
+    lhs: x
+    rhs: '3'
+- id: hard_nested_rational_001
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 7601
+  depth: 5
+  astar_nodes_expanded: 24
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_COMBINE_LIKE_TERMS
+  - INV_CLEAR_FRACTIONS
+  - INV_NEST_IN_RATIONAL
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(2),
+    Symbol('x')), Mul(Mul(Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)), Add(Mul(Integer(-1),
+    Symbol('x')), Mul(Integer(1), Symbol('x')), Add(Mul(Integer(-1), Symbol('x')),
+    Symbol('x'), Mul(Integer(1), Symbol('x'))))), Add(Symbol('x'), Integer(1))))),
+    Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))
+  initial_srepr_rhs: Mul(Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(2),
+    Symbol('x')), Mul(Mul(Integer(-1), Integer(9), Pow(Add(Symbol('x'), Integer(-2)),
+    Integer(-1))), Add(Symbol('x'), Integer(1))))), Pow(Add(Symbol('x'), Integer(1)),
+    Integer(-1)))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(2)
+  initial:
+    lhs: ((2*x + ((-x + 1*x + (-x + x + 1*x))/(x - 2))*(x + 1))/(x + 1))/(x + 1)
+    rhs: ((2*x + (-9/(x - 2))*(x + 1))/(x + 1))/(x + 1)
+  canonical_target:
+    lhs: x
+    rhs: '-9'
+- id: hard_nested_rational_002
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 7401
+  depth: 5
+  astar_nodes_expanded: 21
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_CLEAR_FRACTIONS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Mul(Mul(Mul(Add(Symbol('x'), Integer(1)), Add(Mul(Symbol('x'),
+    Pow(Add(Symbol('x'), Integer(2)), Integer(-1))), Integer(1))), Pow(Add(Symbol('x'),
+    Integer(1)), Integer(-1))), Add(Symbol('x'), Integer(1))), Pow(Add(Symbol('x'),
+    Integer(1)), Integer(-1))), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))
+  initial_srepr_rhs: Mul(Add(Integer(1), Mul(Integer(-1), Integer(5), Pow(Add(Symbol('x'),
+    Integer(2)), Integer(-1)))), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-2)
+  - Integer(2)
+  initial:
+    lhs: (((((x + 1)*(x/(x + 2) + 1))/(x + 1))*(x + 1))/(x + 1))/(x - 2)
+    rhs: (1 - 5/(x + 2))/(x - 2)
+  canonical_target:
+    lhs: x
+    rhs: '-5'
+- id: hard_nested_rational_003
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 301
+  depth: 5
+  astar_nodes_expanded: 16
+  bfs_nodes_expanded: 10
+  applied_inverses:
+  - INV_CLEAR_FRACTIONS
+  - INV_NEST_IN_RATIONAL
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_EMBED_IN_FRACTION
+  initial_srepr_lhs: Mul(Mul(Add(Symbol('x'), Integer(-2)), Add(Mul(Integer(-1), Integer(3),
+    Symbol('x')), Mul(Integer(3), Symbol('x')), Mul(Integer(5), Mul(Pow(Add(Symbol('x'),
+    Integer(3)), Integer(-1)), Add(Mul(Integer(2), Symbol('x')), Mul(Mul(Symbol('x'),
+    Pow(Add(Symbol('x'), Integer(3)), Integer(-1))), Add(Symbol('x'), Integer(3)))))))),
+    Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))
+  initial_srepr_rhs: Mul(Integer(5), Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)),
+    Add(Mul(Integer(2), Symbol('x')), Mul(Mul(Integer(9), Pow(Add(Symbol('x'), Integer(3)),
+    Integer(-1))), Add(Symbol('x'), Integer(3))))))
+  excluded_srepr:
+  - Integer(-3)
+  - Integer(2)
+  initial:
+    lhs: ((x - 2)*(-3*x + 3*x + 5*((2*x + (x/(x + 3))*(x + 3))/(x + 3))))/(x - 2)
+    rhs: 5*((2*x + (9/(x + 3))*(x + 3))/(x + 3))
+  canonical_target:
+    lhs: x
+    rhs: '9'
+- id: hard_nested_rational_004
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2301
+  depth: 5
+  astar_nodes_expanded: 14
+  bfs_nodes_expanded: 10
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Mul(Mul(Mul(Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)),
+    Add(Symbol('x'), Integer(2))), Add(Symbol('x'), Integer(-3))), Pow(Add(Symbol('x'),
+    Integer(-3)), Integer(-1))), Add(Symbol('x'), Integer(3))), Pow(Add(Symbol('x'),
+    Integer(3)), Integer(-1))), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))
+  initial_srepr_rhs: Mul(Mul(Add(Integer(2), Integer(5)), Pow(Add(Symbol('x'), Integer(1)),
+    Integer(-1))), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-3)
+  - Integer(2)
+  - Integer(3)
+  initial:
+    lhs: ((((((x + 2)/(x + 1))*(x - 3))/(x - 3))*(x + 3))/(x + 3))/(x - 2)
+    rhs: ((2 + 5)/(x + 1))/(x - 2)
+  canonical_target:
+    lhs: x
+    rhs: '5'
+- id: hard_nested_rational_005
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 3201
+  depth: 5
+  astar_nodes_expanded: 14
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(3), Add(Add(Mul(Integer(-1), Integer(2), Symbol('x')),
+    Mul(Integer(2), Symbol('x'))), Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)),
+    Add(Add(Mul(Integer(-1), Symbol('x')), Symbol('x'), Mul(Integer(1), Symbol('x'))),
+    Integer(3)))))
+  initial_srepr_rhs: Mul(Integer(3), Add(Add(Mul(Integer(-1), Add(Add(Mul(Integer(-1),
+    Symbol('x')), Symbol('x'), Mul(Integer(1), Symbol('x'))), Integer(3))), Add(Integer(3),
+    Integer(8))), Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Add(Mul(Integer(-1),
+    Symbol('x')), Symbol('x'), Mul(Integer(1), Symbol('x'))), Integer(3)))))
+  excluded_srepr:
+  - Integer(-1)
+  initial:
+    lhs: 3*((-2*x + 2*x) + ((-x + x + 1*x) + 3)/(x + 1))
+    rhs: 3*((-((-x + x + 1*x) + 3) + (3 + 8)) + ((-x + x + 1*x) + 3)/(x + 1))
+  canonical_target:
+    lhs: x
+    rhs: '8'
+- id: hard_nested_rational_006
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 5101
+  depth: 5
+  astar_nodes_expanded: 14
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  - INV_NEST_IN_RATIONAL
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Integer(-3), Mul(Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)),
+    Add(Mul(Integer(1), Symbol('x')), Mul(Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)),
+    Add(Mul(Integer(3), Symbol('x')), Integer(2))), Add(Symbol('x'), Integer(-1))))))
+  initial_srepr_rhs: Add(Integer(-3), Mul(Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)),
+    Add(Mul(Integer(1), Symbol('x')), Mul(Mul(Add(Integer(2), Mul(Integer(3), Integer(7))),
+    Pow(Add(Symbol('x'), Integer(3)), Integer(-1))), Add(Symbol('x'), Integer(-1))))))
+  excluded_srepr:
+  - Integer(-3)
+  - Integer(1)
+  initial:
+    lhs: -3 + (1*x + ((3*x + 2)/(x + 3))*(x - 1))/(x - 1)
+    rhs: -3 + (1*x + ((2 + 3*7)/(x + 3))*(x - 1))/(x - 1)
+  canonical_target:
+    lhs: x
+    rhs: '7'
+- id: hard_nested_rational_007
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 402
+  depth: 5
+  astar_nodes_expanded: 13
+  bfs_nodes_expanded: 10
+  applied_inverses:
+  - INV_EMBED_IN_FRACTION
+  - INV_CLEAR_FRACTIONS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Mul(Mul(Symbol('x'),
+    Add(Symbol('x'), Integer(1))), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))),
+    Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))), Integer(5))), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1)))
+  initial_srepr_rhs: Mul(Mul(Add(Integer(5), Mul(Integer(5), Pow(Add(Symbol('x'),
+    Integer(-2)), Integer(-1)))), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-2)
+  - Integer(1)
+  - Integer(2)
+  initial:
+    lhs: ((((x*(x + 1))/(x + 1))/(x - 2) + 5)/(x + 2))/(x - 1)
+    rhs: ((5 + 5/(x - 2))/(x + 2))/(x - 1)
+  canonical_target:
+    lhs: x
+    rhs: '5'
+- id: hard_nested_rational_008
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 1801
+  depth: 5
+  astar_nodes_expanded: 13
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_EMBED_IN_FRACTION
+  - INV_CLEAR_FRACTIONS
+  - INV_CLEAR_FRACTIONS
+  - INV_EMBED_IN_FRACTION
+  initial_srepr_lhs: Mul(Mul(Mul(Mul(Mul(Mul(Add(Symbol('x'), Integer(-1)), Add(Mul(Integer(-1),
+    Symbol('x')), Symbol('x'), Mul(Integer(1), Symbol('x')))), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1))), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1))), Add(Symbol('x'), Integer(3))),
+    Pow(Add(Symbol('x'), Integer(3)), Integer(-1)))
+  initial_srepr_rhs: Mul(Mul(Integer(1), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-3)
+  - Integer(1)
+  - Integer(2)
+  initial:
+    lhs: ((((((x - 1)*(-x + x + 1*x))/(x - 1))/(x - 2))/(x - 1))*(x + 3))/(x + 3)
+    rhs: (1/(x - 2))/(x - 1)
+  canonical_target:
+    lhs: x
+    rhs: '1'
+- id: hard_nested_rational_009
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 5501
+  depth: 5
+  astar_nodes_expanded: 13
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_NEST_IN_RATIONAL
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Add(Integer(-1),
+    Mul(Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)), Add(Mul(Integer(2), Symbol('x')),
+    Mul(Add(Symbol('x'), Integer(-1)), Add(Mul(Integer(-1), Symbol('x')), Symbol('x'),
+    Mul(Integer(1), Symbol('x'))))))), Integer(4)))
+  initial_srepr_rhs: Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Add(Integer(-1),
+    Mul(Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)), Add(Mul(Integer(2), Symbol('x')),
+    Mul(Integer(-1), Integer(4), Add(Symbol('x'), Integer(-1)))))), Integer(4)))
+  excluded_srepr:
+  - Integer(-2)
+  - Integer(1)
+  initial:
+    lhs: ((-1 + (2*x + (x - 1)*(-x + x + 1*x))/(x - 1)) + 4)/(x + 2)
+    rhs: ((-1 + (2*x - 4*(x - 1))/(x - 1)) + 4)/(x + 2)
+  canonical_target:
+    lhs: x
+    rhs: '-4'
+- id: hard_nested_rational_010
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 4001
+  depth: 5
+  astar_nodes_expanded: 11
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)), Add(Add(Add(Symbol('x'),
+    Mul(Integer(5), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))), Integer(3)),
+    Integer(-2)))
+  initial_srepr_rhs: Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)), Add(Add(Add(Add(Mul(Integer(-1),
+    Integer(5)), Add(Integer(3), Integer(5))), Mul(Integer(5), Pow(Add(Symbol('x'),
+    Integer(-2)), Integer(-1)))), Integer(3)), Integer(-2)))
+  excluded_srepr:
+  - Integer(-3)
+  - Integer(2)
+  initial:
+    lhs: (((x + 5/(x - 2)) + 3) - 2)/(x + 3)
+    rhs: ((((-1*5 + (3 + 5)) + 5/(x - 2)) + 3) - 2)/(x + 3)
+  canonical_target:
+    lhs: x
+    rhs: '3'
+- id: hard_nested_rational_011
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 4501
+  depth: 5
+  astar_nodes_expanded: 11
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Integer(5), Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)),
+    Add(Add(Symbol('x'), Mul(Integer(3), Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))),
+    Integer(3))))
+  initial_srepr_rhs: Add(Integer(5), Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)),
+    Add(Add(Add(Mul(Integer(-1), Integer(3)), Add(Integer(3), Integer(6))), Mul(Integer(3),
+    Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))), Integer(3))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-3)
+  initial:
+    lhs: 5 + ((x + 3/(x + 1)) + 3)/(x + 3)
+    rhs: 5 + (((-1*3 + (3 + 6)) + 3/(x + 1)) + 3)/(x + 3)
+  canonical_target:
+    lhs: x
+    rhs: '6'
+- id: hard_nested_rational_012
+  category: linear
+  recipe: nested_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 4601
+  depth: 5
+  astar_nodes_expanded: 11
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_NEST_IN_RATIONAL
+  - INV_COMBINE_LIKE_TERMS
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Integer(-1),
+    Symbol('x')), Mul(Integer(1), Symbol('x')), Mul(Pow(Add(Symbol('x'), Integer(2)),
+    Integer(-1)), Add(Mul(Integer(1), Symbol('x')), Mul(Add(Symbol('x'), Integer(2)),
+    Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(-1), Symbol('x')),
+    Mul(Integer(1), Symbol('x'))))))))
+  initial_srepr_rhs: Mul(Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Integer(1),
+    Symbol('x')), Mul(Mul(Integer(-1), Integer(-1), Integer(3)), Add(Symbol('x'),
+    Integer(2))))), Pow(Add(Symbol('x'), Integer(2)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-2)
+  initial:
+    lhs: (-x + 1*x + (1*x + (x + 2)*(-3*x - x + 1*x))/(x + 2))/(x + 2)
+    rhs: ((1*x + (-3*(-1))*(x + 2))/(x + 2))/(x + 2)
+  canonical_target:
+    lhs: x
+    rhs: '-1'
+- id: hard_complete_square_013
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 3
+  depth: 5
+  astar_nodes_expanded: 6
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Mul(Integer(-1), Integer(2), Add(Add(Mul(Integer(-1),
+    Integer(2), Symbol('x')), Mul(Integer(2), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(9), Symbol('x')), Integer(20))), Integer(2))), Integer(-3)), Integer(4))
+  initial_srepr_rhs: Add(Add(Mul(Integer(-1), Integer(2), Add(Integer(0), Integer(2))),
+    Integer(-3)), Integer(4))
+  excluded_srepr: []
+  initial:
+    lhs: (-2*((-2*x + 2*x + (x**2 + 9*x + 20)) + 2) - 3) + 4
+    rhs: (-2*(0 + 2) - 3) + 4
+  canonical_target:
+    lhs: (x + 4)*(x + 5)
+    rhs: '0'
+- id: hard_complete_square_014
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 1203
+  depth: 5
+  astar_nodes_expanded: 6
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  initial_srepr_lhs: Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Mul(Integer(4), Pow(Symbol('x'), Integer(2))), Mul(Integer(-1),
+    Integer(4), Symbol('x')), Integer(-20)))
+  initial_srepr_rhs: Mul(Integer(4), Add(Integer(-3), Integer(0)))
+  excluded_srepr: []
+  initial:
+    lhs: -3*x + 3*x + (4*x**2 - 4*x - 20)
+    rhs: 4*(-3 + 0)
+  canonical_target:
+    lhs: (x - 2)*(x + 1)
+    rhs: '0'
+- id: hard_complete_square_015
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 1703
+  depth: 5
+  astar_nodes_expanded: 6
+  bfs_nodes_expanded: 4
+  applied_inverses:
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  initial_srepr_lhs: Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2),
+    Symbol('x')), Add(Mul(Integer(12), Pow(Symbol('x'), Integer(2))), Mul(Integer(12),
+    Symbol('x')), Integer(-36)))
+  initial_srepr_rhs: Mul(Integer(4), Add(Integer(-3), Mul(Integer(0), Integer(3))))
+  excluded_srepr: []
+  initial:
+    lhs: -2*x + 2*x + (12*x**2 + 12*x - 36)
+    rhs: 4*(-3 + 3*0)
+  canonical_target:
+    lhs: (x - 1)*(x + 2)
+    rhs: '0'
+- id: hard_complete_square_016
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 6301
+  depth: 5
+  astar_nodes_expanded: 6
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_DISTRIBUTE_OVER_SUM
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  initial_srepr_lhs: Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2),
+    Symbol('x')), Add(Mul(Integer(5), Pow(Symbol('x'), Integer(2))), Mul(Integer(-1),
+    Integer(5), Symbol('x')), Integer(-25)))
+  initial_srepr_rhs: Mul(Integer(5), Add(Integer(0), Integer(1)))
+  excluded_srepr: []
+  initial:
+    lhs: -2*x + 2*x + (5*x**2 - 5*x - 25)
+    rhs: 5*(0 + 1)
+  canonical_target:
+    lhs: (x - 3)*(x + 2)
+    rhs: '0'
+- id: hard_complete_square_017
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 7801
+  depth: 5
+  astar_nodes_expanded: 6
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Mul(Integer(4), Pow(Symbol('x'), Integer(2))), Mul(Integer(-1),
+    Integer(4), Symbol('x')), Integer(-48))), Integer(1)), Integer(-2))
+  initial_srepr_rhs: Add(Integer(-2), Add(Mul(Integer(0), Integer(4)), Integer(1)))
+  excluded_srepr: []
+  initial:
+    lhs: ((-3*x + 3*x + (4*x**2 - 4*x - 48)) + 1) - 2
+    rhs: -2 + (4*0 + 1)
+  canonical_target:
+    lhs: (x - 4)*(x + 3)
+    rhs: '0'
+- id: hard_complete_square_018
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 702
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 2
+  applied_inverses:
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_DISTRIBUTE_OVER_SUM
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  initial_srepr_lhs: Add(Mul(Integer(-1), Symbol('x')), Mul(Integer(1), Symbol('x')),
+    Add(Mul(Integer(3), Pow(Symbol('x'), Integer(2))), Mul(Integer(-1), Integer(3),
+    Symbol('x')), Integer(-3)))
+  initial_srepr_rhs: Mul(Integer(3), Add(Integer(0), Integer(1)))
+  excluded_srepr: []
+  initial:
+    lhs: -x + 1*x + (3*x**2 - 3*x - 3)
+    rhs: 3*(0 + 1)
+  canonical_target:
+    lhs: (x - 2)*(x + 1)
+    rhs: '0'
+- id: hard_complete_square_019
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 1602
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 2
+  applied_inverses:
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(-1), Integer(2), Mul(Integer(2), Mul(Integer(5),
+    Add(Mul(Integer(-1), Integer(3), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(-1)))), Integer(-1)))))
+  initial_srepr_rhs: Mul(Integer(-1), Integer(2), Mul(Integer(2), Mul(Integer(5),
+    Add(Integer(-1), Mul(Integer(-1), Integer(0), Integer(3))))))
+  excluded_srepr: []
+  initial:
+    lhs: -4*5*(-3*(x - 2)*(x - 1) - 1)
+    rhs: -4*5*(-1 - 3*0)
+  canonical_target:
+    lhs: (x - 2)*(x - 1)
+    rhs: '0'
+- id: hard_complete_square_020
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2101
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 2
+  applied_inverses:
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_COMBINE_LIKE_TERMS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(2), Add(Mul(Integer(-1), Integer(2), Symbol('x')),
+    Mul(Integer(2), Symbol('x')), Add(Add(Mul(Integer(-1), Integer(2), Symbol('x')),
+    Mul(Integer(2), Symbol('x')), Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2),
+    Symbol('x')), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Symbol('x')),
+    Integer(-2)))), Integer(-2))))
+  initial_srepr_rhs: Mul(Integer(2), Add(Integer(-2), Integer(0)))
+  excluded_srepr: []
+  initial:
+    lhs: 2*(-2*x + 2*x + ((-2*x + 2*x + (-2*x + 2*x + (x**2 - x - 2))) - 2))
+    rhs: 2*(-2 + 0)
+  canonical_target:
+    lhs: (x - 2)*(x + 1)
+    rhs: '0'
+- id: hard_complete_square_021
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2302
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 2
+  applied_inverses:
+  - INV_DISTRIBUTE_OVER_SUM
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_COMBINE_LIKE_TERMS
+  initial_srepr_lhs: Add(Mul(Integer(-1), Symbol('x')), Mul(Integer(1), Symbol('x')),
+    Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2), Symbol('x')), Add(Mul(Integer(3),
+    Pow(Symbol('x'), Integer(2))), Mul(Integer(9), Symbol('x')), Integer(18))))
+  initial_srepr_rhs: Mul(Integer(3), Add(Integer(0), Integer(4)))
+  excluded_srepr: []
+  initial:
+    lhs: -x + 1*x + (-2*x + 2*x + (3*x**2 + 9*x + 18))
+    rhs: 3*(0 + 4)
+  canonical_target:
+    lhs: (x + 1)*(x + 2)
+    rhs: '0'
+- id: hard_complete_square_022
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2503
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(4), Add(Add(Mul(Integer(-1), Integer(2), Symbol('x')),
+    Mul(Integer(2), Symbol('x')), Add(Mul(Integer(4), Pow(Symbol('x'), Integer(2))),
+    Mul(Integer(-1), Integer(8), Symbol('x')), Integer(-60))), Integer(2)))
+  initial_srepr_rhs: Mul(Integer(4), Add(Mul(Integer(0), Integer(4)), Integer(2)))
+  excluded_srepr: []
+  initial:
+    lhs: 4*((-2*x + 2*x + (4*x**2 - 8*x - 60)) + 2)
+    rhs: 4*(4*0 + 2)
+  canonical_target:
+    lhs: (x - 5)*(x + 3)
+    rhs: '0'
+- id: hard_complete_square_023
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2603
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 4
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  initial_srepr_lhs: Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2),
+    Symbol('x')), Add(Mul(Integer(4), Pow(Symbol('x'), Integer(2))), Mul(Integer(20),
+    Symbol('x')), Integer(16))), Integer(-1)))
+  initial_srepr_rhs: Add(Integer(-1), Mul(Integer(0), Integer(4)))
+  excluded_srepr: []
+  initial:
+    lhs: -3*x + 3*x + ((-2*x + 2*x + (4*x**2 + 20*x + 16)) - 1)
+    rhs: -1 + 4*0
+  canonical_target:
+    lhs: (x + 1)*(x + 4)
+    rhs: '0'
+- id: hard_complete_square_024
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 3002
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_COMBINE_LIKE_TERMS
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(5), Add(Mul(Integer(-1), Integer(2), Symbol('x')),
+    Mul(Integer(2), Symbol('x')), Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Add(Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(1))),
+    Integer(3)), Integer(2)))))
+  initial_srepr_rhs: Mul(Integer(5), Add(Integer(2), Add(Integer(0), Integer(3))))
+  excluded_srepr: []
+  initial:
+    lhs: 5*(-2*x + 2*x + (-3*x + 3*x + (((x - 2)*(x + 1) + 3) + 2)))
+    rhs: 5*(2 + (0 + 3))
+  canonical_target:
+    lhs: (x - 2)*(x + 1)
+    rhs: '0'
+- id: hard_complete_square_025
+  category: quadratic
+  recipe: complete_square
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 3601
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Add(Mul(Integer(-1), Symbol('x')), Mul(Integer(1), Symbol('x')),
+    Add(Mul(Integer(-1), Integer(3), Pow(Symbol('x'), Integer(2))), Mul(Integer(3),
+    Symbol('x')), Integer(15))), Integer(-1)), Integer(5))
+  initial_srepr_rhs: Add(Add(Mul(Integer(-1), Integer(3), Add(Integer(0), Integer(1))),
+    Integer(-1)), Integer(5))
+  excluded_srepr: []
+  initial:
+    lhs: ((-x + 1*x + (-3*x**2 + 3*x + 15)) - 1) + 5
+    rhs: (-3*(0 + 1) - 1) + 5
+  canonical_target:
+    lhs: (x - 3)*(x + 2)
+    rhs: '0'
+- id: hard_cross_side_rational_026
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 6401
+  depth: 5
+  astar_nodes_expanded: 62
+  bfs_nodes_expanded: 11
+  applied_inverses:
+  - INV_CLEAR_FRACTIONS
+  - INV_CLEAR_FRACTIONS
+  - INV_EMBED_IN_FRACTION
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Integer(-1), Integer(2), Mul(Mul(Mul(Mul(Symbol('x'),
+    Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))), Pow(Add(Symbol('x'), Integer(3)),
+    Integer(-1))), Add(Symbol('x'), Integer(-1))), Pow(Add(Symbol('x'), Integer(-1)),
+    Integer(-1)))), Pow(Add(Symbol('x'), Integer(2)), Integer(-1)))
+  initial_srepr_rhs: Mul(Mul(Integer(-1), Integer(2), Mul(Mul(Integer(-1), Pow(Add(Symbol('x'),
+    Integer(-2)), Integer(-1))), Pow(Add(Symbol('x'), Integer(3)), Integer(-1)))),
+    Pow(Add(Symbol('x'), Integer(2)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-2)
+  - Integer(-3)
+  - Integer(1)
+  - Integer(2)
+  initial:
+    lhs: (-2*((x/(x - 2))/(x + 3))*(x - 1)/(x - 1))/(x + 2)
+    rhs: (-2*(-1/(x - 2))/(x + 3))/(x + 2)
+  canonical_target:
+    lhs: x
+    rhs: '-1'
+- id: hard_cross_side_rational_027
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 1601
+  depth: 5
+  astar_nodes_expanded: 42
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Integer(1), Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)),
+    Add(Mul(Integer(3), Symbol('x')), Integer(4)))), Integer(2))
+  initial_srepr_rhs: Add(Add(Add(Mul(Integer(-1), Add(Mul(Integer(3), Symbol('x')),
+    Integer(4))), Add(Add(Mul(Rational(-5, 3), Integer(3)), Integer(4)), Integer(1))),
+    Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(3), Symbol('x')),
+    Integer(4)))), Integer(2))
+  excluded_srepr:
+  - Integer(-1)
+  initial:
+    lhs: (1 + (3*x + 4)/(x + 1)) + 2
+    rhs: ((-(3*x + 4) + ((3*(-5/3) + 4) + 1)) + (3*x + 4)/(x + 1)) + 2
+  canonical_target:
+    lhs: x
+    rhs: -5/3
+- id: hard_cross_side_rational_028
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 501
+  depth: 5
+  astar_nodes_expanded: 29
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)), Add(Mul(Add(Symbol('x'),
+    Integer(2)), Pow(Add(Symbol('x'), Integer(3)), Integer(-1))), Mul(Integer(1),
+    Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))))
+  initial_srepr_rhs: Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)), Add(Add(Add(Mul(Add(Symbol('x'),
+    Integer(2)), Pow(Add(Symbol('x'), Integer(3)), Integer(-1))), Add(Mul(Integer(-1),
+    Add(Symbol('x'), Integer(2))), Add(Integer(1), Add(Rational(2, 5), Integer(2))))),
+    Mul(Integer(-1), Integer(1))), Mul(Integer(1), Pow(Add(Symbol('x'), Integer(1)),
+    Integer(-1)))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-3)
+  initial:
+    lhs: ((x + 2)/(x + 3) + 1/(x + 1))/(x + 3)
+    rhs: ((((x + 2)/(x + 3) + (-(x + 2) + (1 + (2/5 + 2)))) - 1*1) + 1/(x + 1))/(x
+      + 3)
+  canonical_target:
+    lhs: x
+    rhs: 2/5
+- id: hard_cross_side_rational_029
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 601
+  depth: 5
+  astar_nodes_expanded: 27
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  initial_srepr_lhs: Add(Integer(-3), Mul(Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)),
+    Add(Add(Symbol('x'), Mul(Integer(-1), Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))),
+    Integer(5))))
+  initial_srepr_rhs: Add(Add(Mul(Integer(-1), Add(Add(Symbol('x'), Mul(Integer(-1),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))), Integer(5))), Add(Add(Add(Add(Add(Integer(-1),
+    Rational(-1, 3)), Mul(Integer(-1), Integer(-1))), Mul(Integer(-1), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1)))), Integer(5)), Integer(-3))), Mul(Pow(Add(Symbol('x'),
+    Integer(-2)), Integer(-1)), Add(Add(Symbol('x'), Mul(Integer(-1), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1)))), Integer(5))))
+  excluded_srepr:
+  - Integer(1)
+  - Integer(2)
+  initial:
+    lhs: -3 + ((x - 1/(x - 1)) + 5)/(x - 2)
+    rhs: (-((x - 1/(x - 1)) + 5) + (((((-1 - 1/3) - 1*(-1)) - 1/(x - 1)) + 5) - 3))
+      + ((x - 1/(x - 1)) + 5)/(x - 2)
+  canonical_target:
+    lhs: x
+    rhs: -1/3
+- id: hard_cross_side_rational_030
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 1801
+  depth: 5
+  astar_nodes_expanded: 21
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_NEST_IN_RATIONAL
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Add(Integer(1), Mul(Mul(Mul(Mul(Mul(Pow(Add(Symbol('x'),
+    Integer(3)), Integer(-1)), Add(Mul(Symbol('x'), Add(Symbol('x'), Integer(3))),
+    Mul(Integer(1), Symbol('x')))), Add(Symbol('x'), Integer(2))), Pow(Add(Symbol('x'),
+    Integer(2)), Integer(-1))), Add(Symbol('x'), Integer(3))), Pow(Add(Symbol('x'),
+    Integer(3)), Integer(-1)))), Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))
+  initial_srepr_rhs: Mul(Add(Integer(1), Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)),
+    Add(Mul(Integer(1), Symbol('x')), Mul(Integer(0), Add(Symbol('x'), Integer(3)))))),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-2)
+  - Integer(-3)
+  - Integer(1)
+  initial:
+    lhs: (1 + (((((x*(x + 3) + 1*x)/(x + 3))*(x + 2))/(x + 2))*(x + 3))/(x + 3))/(x
+      - 1)
+    rhs: (1 + (1*x + 0*(x + 3))/(x + 3))/(x - 1)
+  canonical_target:
+    lhs: x
+    rhs: '0'
+- id: hard_cross_side_rational_031
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 3301
+  depth: 5
+  astar_nodes_expanded: 17
+  bfs_nodes_expanded: 11
+  applied_inverses:
+  - INV_CLEAR_FRACTIONS
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Mul(Mul(Mul(Mul(Mul(Mul(Symbol('x'), Pow(Add(Symbol('x'),
+    Integer(2)), Integer(-1))), Add(Symbol('x'), Integer(3))), Pow(Add(Symbol('x'),
+    Integer(3)), Integer(-1))), Add(Symbol('x'), Integer(-2))), Pow(Add(Symbol('x'),
+    Integer(-2)), Integer(-1))), Add(Symbol('x'), Integer(-1))), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1))), Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))
+  initial_srepr_rhs: Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Mul(Rational(2,
+    5), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-2)
+  - Integer(-3)
+  - Integer(1)
+  - Integer(2)
+  initial:
+    lhs: (((((((x/(x + 2))*(x + 3))/(x + 3))*(x - 2))/(x - 2))*(x - 1))/(x - 1))/(x
+      + 1)
+    rhs: (2/(5*(x + 2)))/(x + 1)
+  canonical_target:
+    lhs: x
+    rhs: 2/5
+- id: hard_cross_side_rational_032
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2201
+  depth: 5
+  astar_nodes_expanded: 12
+  bfs_nodes_expanded: 10
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_CLEAR_FRACTIONS
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Mul(Mul(Mul(Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)),
+    Add(Symbol('x'), Integer(5))), Add(Symbol('x'), Integer(1))), Pow(Add(Symbol('x'),
+    Integer(1)), Integer(-1))), Add(Symbol('x'), Integer(3))), Pow(Add(Symbol('x'),
+    Integer(3)), Integer(-1))), Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))
+  initial_srepr_rhs: Mul(Mul(Add(Integer(0), Integer(5)), Pow(Add(Symbol('x'), Integer(2)),
+    Integer(-1))), Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-2)
+  - Integer(-3)
+  - Integer(1)
+  initial:
+    lhs: ((((((x + 5)/(x + 2))*(x + 1))/(x + 1))*(x + 3))/(x + 3))/(x - 1)
+    rhs: ((0 + 5)/(x + 2))/(x - 1)
+  canonical_target:
+    lhs: x
+    rhs: '0'
+- id: hard_cross_side_rational_033
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2701
+  depth: 5
+  astar_nodes_expanded: 12
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_NEST_IN_RATIONAL
+  - INV_CLEAR_FRACTIONS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Mul(Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)),
+    Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'),
+    Integer(1))))), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))), Integer(1)),
+    Integer(3))
+  initial_srepr_rhs: Add(Add(Mul(Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)),
+    Add(Mul(Integer(2), Symbol('x')), Mul(Add(Integer(-1), Rational(-2, 5)), Add(Symbol('x'),
+    Integer(1))))), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))), Integer(1)),
+    Integer(3))
+  excluded_srepr:
+  - Integer(-1)
+  initial:
+    lhs: (((2*x + (x - 1)*(x + 1))/(x + 1))/(x + 1) + 1) + 3
+    rhs: (((2*x + (-1 - 2/5)*(x + 1))/(x + 1))/(x + 1) + 1) + 3
+  canonical_target:
+    lhs: x
+    rhs: -2/5
+- id: hard_cross_side_rational_034
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 3101
+  depth: 5
+  astar_nodes_expanded: 12
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_CLEAR_FRACTIONS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_EMBED_IN_FRACTION
+  - INV_NEST_IN_RATIONAL
+  - INV_CLEAR_FRACTIONS
+  initial_srepr_lhs: Mul(Mul(Add(Mul(Integer(-1), Symbol('x')), Mul(Mul(Mul(Add(Symbol('x'),
+    Integer(2)), Add(Mul(Symbol('x'), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))),
+    Integer(-1))), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))), Add(Symbol('x'),
+    Integer(-1)))), Pow(Add(Symbol('x'), Integer(-1)), Integer(-1))), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1)))
+  initial_srepr_rhs: Mul(Mul(Add(Mul(Integer(-1), Symbol('x')), Mul(Add(Integer(-1),
+    Mul(Rational(2, 5), Pow(Add(Symbol('x'), Integer(2)), Integer(-1)))), Add(Symbol('x'),
+    Integer(-1)))), Pow(Add(Symbol('x'), Integer(-1)), Integer(-1))), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-2)
+  - Integer(1)
+  initial:
+    lhs: ((-x + (((x + 2)*(x/(x + 2) - 1))/(x + 2))*(x - 1))/(x - 1))/(x - 1)
+    rhs: ((-x + (-1 + 2/(5*(x + 2)))*(x - 1))/(x - 1))/(x - 1)
+  canonical_target:
+    lhs: x
+    rhs: 2/5
+- id: hard_cross_side_rational_035
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 5101
+  depth: 5
+  astar_nodes_expanded: 11
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_CLEAR_FRACTIONS
+  - INV_EMBED_IN_FRACTION
+  - INV_EMBED_IN_FRACTION
+  - INV_NEST_IN_RATIONAL
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Integer(-3), Mul(Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)),
+    Add(Mul(Integer(1), Symbol('x')), Mul(Mul(Mul(Mul(Mul(Mul(Symbol('x'), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1))), Add(Symbol('x'), Integer(-1))), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1))), Add(Symbol('x'), Integer(3))), Pow(Add(Symbol('x'),
+    Integer(3)), Integer(-1))), Add(Symbol('x'), Integer(-1))))))
+  initial_srepr_rhs: Add(Integer(-3), Mul(Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)),
+    Add(Mul(Integer(1), Symbol('x')), Mul(Mul(Rational(3, 5), Pow(Add(Symbol('x'),
+    Integer(-1)), Integer(-1))), Add(Symbol('x'), Integer(-1))))))
+  excluded_srepr:
+  - Integer(-3)
+  - Integer(1)
+  initial:
+    lhs: -3 + (1*x + (((((x/(x - 1))*(x - 1))/(x - 1))*(x + 3))/(x + 3))*(x - 1))/(x
+      - 1)
+    rhs: -3 + (1*x + (3/(5*(x - 1)))*(x - 1))/(x - 1)
+  canonical_target:
+    lhs: x
+    rhs: 3/5
+- id: hard_cross_side_rational_036
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 5001
+  depth: 5
+  astar_nodes_expanded: 10
+  bfs_nodes_expanded: 8
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Mul(Integer(4), Add(Add(Symbol('x'), Mul(Integer(5), Pow(Add(Symbol('x'),
+    Integer(-2)), Integer(-1)))), Integer(-3))), Integer(2))
+  initial_srepr_rhs: Add(Mul(Integer(4), Add(Add(Add(Mul(Integer(-1), Integer(5)),
+    Add(Rational(-2, 3), Integer(5))), Mul(Integer(5), Pow(Add(Symbol('x'), Integer(-2)),
+    Integer(-1)))), Integer(-3))), Integer(2))
+  excluded_srepr:
+  - Integer(2)
+  initial:
+    lhs: 4*((x + 5/(x - 2)) - 3) + 2
+    rhs: 4*(((-1*5 + (-2/3 + 5)) + 5/(x - 2)) - 3) + 2
+  canonical_target:
+    lhs: x
+    rhs: -2/3
+- id: hard_cross_side_rational_037
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2802
+  depth: 5
+  astar_nodes_expanded: 9
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_EMBED_IN_FRACTION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_EMBED_IN_FRACTION
+  - INV_CLEAR_FRACTIONS
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Mul(Mul(Mul(Add(Symbol('x'), Integer(-3)), Add(Mul(Mul(Symbol('x'),
+    Add(Symbol('x'), Integer(1))), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))),
+    Integer(5))), Pow(Add(Symbol('x'), Integer(-3)), Integer(-1))), Pow(Add(Symbol('x'),
+    Integer(1)), Integer(-1))), Integer(3))
+  initial_srepr_rhs: Add(Integer(3), Mul(Add(Integer(1), Integer(5)), Pow(Add(Symbol('x'),
+    Integer(1)), Integer(-1))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(3)
+  initial:
+    lhs: (((x - 3)*((x*(x + 1))/(x + 1) + 5))/(x - 3))/(x + 1) + 3
+    rhs: 3 + (1 + 5)/(x + 1)
+  canonical_target:
+    lhs: x
+    rhs: '1'
+- id: hard_cross_side_rational_038
+  category: rational
+  recipe: cross_side_rational
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 5301
+  depth: 5
+  astar_nodes_expanded: 9
+  bfs_nodes_expanded: 11
+  applied_inverses:
+  - INV_EMBED_IN_FRACTION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_SPLIT_ACROSS_SIDES
+  - INV_EMBED_IN_FRACTION
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(-1), Integer(3), Mul(Mul(Add(Symbol('x'), Integer(1)),
+    Add(Mul(Mul(Symbol('x'), Add(Symbol('x'), Integer(2))), Pow(Add(Symbol('x'), Integer(2)),
+    Integer(-1))), Mul(Integer(2), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))))),
+    Pow(Add(Symbol('x'), Integer(1)), Integer(-1))))
+  initial_srepr_rhs: Mul(Integer(-1), Integer(3), Add(Add(Mul(Integer(-1), Integer(2)),
+    Add(Rational(-4, 5), Integer(2))), Mul(Integer(2), Pow(Add(Symbol('x'), Integer(-2)),
+    Integer(-1)))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(-2)
+  - Integer(2)
+  initial:
+    lhs: -3*(x + 1)*((x*(x + 2))/(x + 2) + 2/(x - 2))/(x + 1)
+    rhs: -3*((-1*2 + (-4/5 + 2)) + 2/(x - 2))
+  canonical_target:
+    lhs: x
+    rhs: -4/5
+- id: hard_polynomial_disguised_039
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 603
+  depth: 5
+  astar_nodes_expanded: 6
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_DISTRIBUTE_OVER_SUM
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Mul(Integer(5), Pow(Symbol('x'), Integer(3))), Mul(Integer(15),
+    Pow(Symbol('x'), Integer(2))), Mul(Integer(10), Symbol('x')), Integer(25))), Integer(5))
+  initial_srepr_rhs: Add(Integer(5), Mul(Integer(5), Add(Integer(0), Integer(5))))
+  excluded_srepr: []
+  initial:
+    lhs: (-3*x + 3*x + (5*x**3 + 15*x**2 + 10*x + 25)) + 5
+    rhs: 5 + 5*(0 + 5)
+  canonical_target:
+    lhs: (x + 0)*(x + 1)*(x + 2)
+    rhs: '0'
+- id: hard_polynomial_disguised_040
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 202
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_EXPAND_PRODUCT
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(-1), Integer(2), Add(Integer(5), Mul(Integer(-1),
+    Integer(2), Add(Add(Pow(Symbol('x'), Integer(3)), Mul(Integer(2), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(-1), Integer(5), Symbol('x')), Integer(-6)), Integer(3)))))
+  initial_srepr_rhs: Mul(Integer(-1), Integer(2), Add(Integer(5), Mul(Integer(-1),
+    Integer(2), Add(Integer(0), Integer(3)))))
+  excluded_srepr: []
+  initial:
+    lhs: -2*(5 - 2*((x**3 + 2*x**2 - 5*x - 6) + 3))
+    rhs: -2*(5 - 2*(0 + 3))
+  canonical_target:
+    lhs: (x - 2)*(x + 1)*(x + 3)
+    rhs: '0'
+- id: hard_polynomial_disguised_041
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 1502
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2),
+    Symbol('x')), Add(Add(Add(Mul(Integer(-1), Symbol('x')), Mul(Integer(1), Symbol('x')),
+    Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(0)), Add(Symbol('x'),
+    Integer(2)))), Integer(3)), Integer(-3))), Integer(5))
+  initial_srepr_rhs: Add(Add(Integer(-3), Add(Integer(0), Integer(3))), Integer(5))
+  excluded_srepr: []
+  initial:
+    lhs: (-2*x + 2*x + (((-x + 1*x + (x - 2)*(x + 0)*(x + 2)) + 3) - 3)) + 5
+    rhs: (-3 + (0 + 3)) + 5
+  canonical_target:
+    lhs: (x - 2)*(x + 0)*(x + 2)
+    rhs: '0'
+- id: hard_polynomial_disguised_042
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2603
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 11
+  applied_inverses:
+  - INV_EXPAND_PRODUCT
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  initial_srepr_lhs: Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2),
+    Symbol('x')), Add(Add(Mul(Integer(2), Add(Pow(Symbol('x'), Integer(3)), Mul(Integer(2),
+    Pow(Symbol('x'), Integer(2))), Mul(Integer(-1), Integer(5), Symbol('x')), Integer(-6))),
+    Integer(2)), Integer(1)))
+  initial_srepr_rhs: Add(Integer(1), Add(Mul(Integer(0), Integer(2)), Integer(2)))
+  excluded_srepr: []
+  initial:
+    lhs: -2*x + 2*x + ((2*(x**3 + 2*x**2 - 5*x - 6) + 2) + 1)
+    rhs: 1 + (2*0 + 2)
+  canonical_target:
+    lhs: (x - 2)*(x + 1)*(x + 3)
+    rhs: '0'
+- id: hard_polynomial_disguised_043
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 2801
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_DISTRIBUTE_OVER_SUM
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  initial_srepr_lhs: Mul(Integer(4), Add(Add(Add(Mul(Integer(-2), Add(Mul(Add(Symbol('x'),
+    Integer(-3)), Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(-1))), Integer(4))),
+    Mul(Integer(3), Add(Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(-1))), Integer(4)))), Integer(1)), Integer(1)))
+  initial_srepr_rhs: Mul(Integer(4), Add(Integer(1), Add(Integer(1), Add(Integer(0),
+    Integer(4)))))
+  excluded_srepr: []
+  initial:
+    lhs: 4*(((((x - 3)*(x - 2)*(x - 1) + 4)*(-2) + ((x - 3)*(x - 2)*(x - 1) + 4)*3)
+      + 1) + 1)
+    rhs: 4*(1 + (1 + (0 + 4)))
+  canonical_target:
+    lhs: (x - 3)*(x - 2)*(x - 1)
+    rhs: '0'
+- id: hard_polynomial_disguised_044
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 3503
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 11
+  applied_inverses:
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_COMBINE_LIKE_TERMS
+  initial_srepr_lhs: Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Add(Mul(Integer(-1), Integer(3), Symbol('x')), Mul(Integer(3),
+    Symbol('x')), Add(Pow(Symbol('x'), Integer(3)), Mul(Integer(3), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(3), Symbol('x')), Integer(1))), Integer(3))), Integer(1)))
+  initial_srepr_rhs: Add(Integer(1), Add(Integer(0), Integer(3)))
+  excluded_srepr: []
+  initial:
+    lhs: -3*x + 3*x + ((-3*x + 3*x + ((-3*x + 3*x + (x**3 + 3*x**2 + 3*x + 1)) + 3))
+      + 1)
+    rhs: 1 + (0 + 3)
+  canonical_target:
+    lhs: (x + 1)*(x + 1)*(x + 1)
+    rhs: '0'
+- id: hard_polynomial_disguised_045
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 4903
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 9
+  applied_inverses:
+  - INV_COMBINE_LIKE_TERMS
+  - INV_COMBINE_LIKE_TERMS
+  - INV_DISTRIBUTE_OVER_SUM
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_ADD_TO_BOTH_SIDES
+  initial_srepr_lhs: Add(Add(Add(Mul(Integer(-2), Add(Mul(Integer(-1), Integer(2),
+    Symbol('x')), Mul(Integer(2), Symbol('x')), Add(Mul(Integer(-1), Symbol('x')),
+    Mul(Integer(1), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'),
+    Integer(0)), Add(Symbol('x'), Integer(3)))))), Mul(Integer(3), Add(Mul(Integer(-1),
+    Integer(2), Symbol('x')), Mul(Integer(2), Symbol('x')), Add(Mul(Integer(-1), Symbol('x')),
+    Mul(Integer(1), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'),
+    Integer(0)), Add(Symbol('x'), Integer(3))))))), Integer(5)), Integer(3))
+  initial_srepr_rhs: Add(Integer(3), Add(Integer(0), Integer(5)))
+  excluded_srepr: []
+  initial:
+    lhs: (((-2*x + 2*x + (-x + 1*x + (x - 3)*(x + 0)*(x + 3)))*(-2) + (-2*x + 2*x
+      + (-x + 1*x + (x - 3)*(x + 0)*(x + 3)))*3) + 5) + 3
+    rhs: 3 + (0 + 5)
+  canonical_target:
+    lhs: (x - 3)*(x + 0)*(x + 3)
+    rhs: '0'
+- id: hard_polynomial_disguised_046
+  category: polynomial
+  recipe: polynomial_disguised
+  difficulty: hard
+  variable: x
+  source: ggmr-hard-generator-v1
+  seed: 6902
+  depth: 5
+  astar_nodes_expanded: 5
+  bfs_nodes_expanded: 3
+  applied_inverses:
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_ADD_TO_BOTH_SIDES
+  - INV_MULTIPLY_BOTH_SIDES
+  - INV_DISGUISE_BY_EXPANSION
+  - INV_COMBINE_LIKE_TERMS
+  initial_srepr_lhs: Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2),
+    Symbol('x')), Add(Mul(Integer(-1), Integer(2), Symbol('x')), Mul(Integer(2), Symbol('x')),
+    Add(Mul(Integer(5), Pow(Symbol('x'), Integer(3))), Mul(Integer(10), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(-1), Integer(5), Symbol('x')), Integer(5))))
+  initial_srepr_rhs: Mul(Integer(5), Add(Integer(0), Integer(3)))
+  excluded_srepr: []
+  initial:
+    lhs: -2*x + 2*x + (-2*x + 2*x + (5*x**3 + 10*x**2 - 5*x + 5))
+    rhs: 5*(0 + 3)
+  canonical_target:
+    lhs: (x - 1)*(x + 1)*(x + 2)
+    rhs: '0'

@@ -1,0 +1,441 @@
+# Phase 0 — Test Set (20 problems)
+# Hand-curated near-textbook solution traces.
+# Each `result` (initial, canonical_target, trace[*]) is parsed via sympy.parse_expr.
+# Equations are stored as separate {lhs, rhs} strings to avoid `=` parser issues.
+# Rule names are metadata only; Phase 0 does NOT execute them as rewrite rules.
+
+# ============================================================
+# LINEAR (5)
+# ============================================================
+
+- id: lin01
+  category: linear
+  variable: x
+  source: "Stewart Precalculus 6e, Ch.1 Ex.3 — basic two-step linear"
+  initial:
+    lhs: "2*x + 3"
+    rhs: "7"
+  canonical_target:
+    lhs: "x"
+    rhs: "2"
+  trace:
+    - rule: SUBTRACT_3_BOTH_SIDES
+      lhs: "2*x"
+      rhs: "4"
+    - rule: DIVIDE_BY_2_BOTH_SIDES
+      lhs: "x"
+      rhs: "2"
+
+- id: lin02
+  category: linear
+  variable: x
+  source: "OpenStax College Algebra Ch.2 — vars on both sides"
+  initial:
+    lhs: "5*x - 4"
+    rhs: "3*x + 8"
+  canonical_target:
+    lhs: "x"
+    rhs: "6"
+  trace:
+    - rule: SUBTRACT_3X_BOTH_SIDES
+      lhs: "2*x - 4"
+      rhs: "8"
+    - rule: ADD_4_BOTH_SIDES
+      lhs: "2*x"
+      rhs: "12"
+    - rule: DIVIDE_BY_2_BOTH_SIDES
+      lhs: "x"
+      rhs: "6"
+
+- id: lin03
+  category: linear
+  variable: x
+  source: "Lial Intermediate Algebra 11e — fractional linear"
+  initial:
+    lhs: "(x + 1)/2"
+    rhs: "3"
+  canonical_target:
+    lhs: "x"
+    rhs: "5"
+  trace:
+    - rule: MULTIPLY_BY_2_BOTH_SIDES
+      lhs: "x + 1"
+      rhs: "6"
+    - rule: SUBTRACT_1_BOTH_SIDES
+      lhs: "x"
+      rhs: "5"
+
+- id: lin04
+  category: linear
+  variable: x
+  source: "Stewart Precalculus 6e, Ch.1 — distribute then combine"
+  initial:
+    lhs: "3*(x - 2) + 4"
+    rhs: "2*x + 1"
+  canonical_target:
+    lhs: "x"
+    rhs: "3"
+  trace:
+    - rule: DISTRIBUTE_LHS
+      lhs: "3*x - 6 + 4"
+      rhs: "2*x + 1"
+    - rule: COMBINE_LIKE_TERMS_LHS
+      lhs: "3*x - 2"
+      rhs: "2*x + 1"
+    - rule: SUBTRACT_2X_BOTH_SIDES
+      lhs: "x - 2"
+      rhs: "1"
+    - rule: ADD_2_BOTH_SIDES
+      lhs: "x"
+      rhs: "3"
+
+- id: lin05
+  category: linear
+  variable: x
+  source: "Stewart Precalculus 6e, Ch.1 — distribute negative coefficient"
+  initial:
+    lhs: "7*x - 2*(x + 3)"
+    rhs: "4"
+  canonical_target:
+    lhs: "x"
+    rhs: "2"
+  trace:
+    - rule: DISTRIBUTE_LHS
+      lhs: "7*x - 2*x - 6"
+      rhs: "4"
+    - rule: COMBINE_LIKE_TERMS_LHS
+      lhs: "5*x - 6"
+      rhs: "4"
+    - rule: ADD_6_BOTH_SIDES
+      lhs: "5*x"
+      rhs: "10"
+    - rule: DIVIDE_BY_5_BOTH_SIDES
+      lhs: "x"
+      rhs: "2"
+
+# ============================================================
+# QUADRATIC (5)
+# ============================================================
+
+- id: qua01
+  category: quadratic
+  variable: x
+  source: "Stewart Precalculus 6e Ch.1 — factor trinomial"
+  initial:
+    lhs: "x**2 - 5*x + 6"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x - 2)*(x - 3)"
+    rhs: "0"
+  trace:
+    - rule: FACTOR_TRINOMIAL
+      lhs: "(x - 2)*(x - 3)"
+      rhs: "0"
+
+- id: qua02
+  category: quadratic
+  variable: x
+  source: "OpenStax College Algebra Ch.9 — factor with negative root"
+  initial:
+    lhs: "x**2 + 2*x - 3"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x - 1)*(x + 3)"
+    rhs: "0"
+  trace:
+    - rule: FACTOR_TRINOMIAL
+      lhs: "(x - 1)*(x + 3)"
+      rhs: "0"
+
+- id: qua03
+  category: quadratic
+  variable: x
+  source: "GGMR §2.1-style example — expand-then-factor"
+  notes: "Demonstrates the §2.1 expand-then-collapse pattern: structure rises before falling."
+  initial:
+    lhs: "(x + 1)**2"
+    rhs: "4"
+  canonical_target:
+    lhs: "(x - 1)*(x + 3)"
+    rhs: "0"
+  trace:
+    - rule: EXPAND_LHS
+      lhs: "x**2 + 2*x + 1"
+      rhs: "4"
+    - rule: SUBTRACT_4_BOTH_SIDES
+      lhs: "x**2 + 2*x - 3"
+      rhs: "0"
+    - rule: FACTOR_TRINOMIAL
+      lhs: "(x - 1)*(x + 3)"
+      rhs: "0"
+
+- id: qua04
+  category: quadratic
+  variable: x
+  source: "Lial Intermediate Algebra 11e — completing the square"
+  notes: "Step 2 deliberately ADDS structure (b/2)^2 to LHS — classic non-monotone case."
+  initial:
+    lhs: "x**2 - 4*x + 1"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x - 2)**2"
+    rhs: "3"
+  trace:
+    - rule: SUBTRACT_1_BOTH_SIDES
+      lhs: "x**2 - 4*x"
+      rhs: "-1"
+    - rule: ADD_4_BOTH_SIDES_COMPLETE_SQUARE
+      lhs: "x**2 - 4*x + 4"
+      rhs: "3"
+    - rule: FACTOR_PERFECT_SQUARE
+      lhs: "(x - 2)**2"
+      rhs: "3"
+
+- id: qua05
+  category: quadratic
+  variable: x
+  source: "Textbook expand-and-refactor; classic structure-up-then-down"
+  notes: "Naive textbook path expands then refactors; direct factor-out path would be shorter (2 steps) but less standard."
+  initial:
+    lhs: "(x - 1)*(x - 2)"
+    rhs: "x - 1"
+  canonical_target:
+    lhs: "(x - 1)*(x - 3)"
+    rhs: "0"
+  trace:
+    - rule: EXPAND_LHS
+      lhs: "x**2 - 3*x + 2"
+      rhs: "x - 1"
+    - rule: SUBTRACT_X_BOTH_SIDES
+      lhs: "x**2 - 4*x + 2"
+      rhs: "-1"
+    - rule: ADD_1_BOTH_SIDES
+      lhs: "x**2 - 4*x + 3"
+      rhs: "0"
+    - rule: FACTOR_TRINOMIAL
+      lhs: "(x - 1)*(x - 3)"
+      rhs: "0"
+
+# ============================================================
+# RATIONAL (5) — high-risk for non-monotonicity
+# ============================================================
+
+- id: rat01
+  category: rational
+  variable: x
+  source: "GGMR §2.1 motivating example"
+  notes: "The canonical case: factor numerator (structure rises) then cancel (collapses)."
+  initial:
+    lhs: "(x**2 - 1)/(x - 1)"
+    rhs: "3"
+  canonical_target:
+    lhs: "x"
+    rhs: "2"
+  trace:
+    - rule: FACTOR_NUMERATOR
+      lhs: "((x - 1)*(x + 1))/(x - 1)"
+      rhs: "3"
+    - rule: CANCEL_COMMON_FACTOR
+      guard: "x != 1"
+      lhs: "x + 1"
+      rhs: "3"
+    - rule: SUBTRACT_1_BOTH_SIDES
+      lhs: "x"
+      rhs: "2"
+
+- id: rat02
+  category: rational
+  variable: x
+  source: "Lial Intermediate Algebra 11e — clear-fractions"
+  initial:
+    lhs: "2/x + 3"
+    rhs: "5"
+  canonical_target:
+    lhs: "x"
+    rhs: "1"
+  trace:
+    - rule: SUBTRACT_3_BOTH_SIDES
+      lhs: "2/x"
+      rhs: "2"
+    - rule: MULTIPLY_BY_X_BOTH_SIDES
+      guard: "x != 0"
+      lhs: "2"
+      rhs: "2*x"
+    - rule: DIVIDE_BY_2_BOTH_SIDES
+      lhs: "1"
+      rhs: "x"
+    - rule: FLIP_SIDES
+      lhs: "x"
+      rhs: "1"
+
+- id: rat03
+  category: rational
+  variable: x
+  source: "OpenStax College Algebra Ch.2 — clear single-denominator rational"
+  initial:
+    lhs: "x/(x - 2)"
+    rhs: "3"
+  canonical_target:
+    lhs: "x"
+    rhs: "3"
+  trace:
+    - rule: MULTIPLY_BY_DENOMINATOR
+      guard: "x != 2"
+      lhs: "x"
+      rhs: "3*(x - 2)"
+    - rule: DISTRIBUTE_RHS
+      lhs: "x"
+      rhs: "3*x - 6"
+    - rule: SUBTRACT_3X_BOTH_SIDES
+      lhs: "-2*x"
+      rhs: "-6"
+    - rule: DIVIDE_BY_NEG2_BOTH_SIDES
+      lhs: "x"
+      rhs: "3"
+
+- id: rat04
+  category: rational
+  variable: x
+  source: "Stewart Precalculus 6e — factor + cancel rational"
+  initial:
+    lhs: "(x**2 - 9)/(x + 3)"
+    rhs: "5"
+  canonical_target:
+    lhs: "x"
+    rhs: "8"
+  trace:
+    - rule: FACTOR_NUMERATOR_DIFF_SQUARES
+      lhs: "((x - 3)*(x + 3))/(x + 3)"
+      rhs: "5"
+    - rule: CANCEL_COMMON_FACTOR
+      guard: "x != -3"
+      lhs: "x - 3"
+      rhs: "5"
+    - rule: ADD_3_BOTH_SIDES
+      lhs: "x"
+      rhs: "8"
+
+- id: rat05
+  category: rational
+  variable: x
+  source: "Cross-multiply rational"
+  initial:
+    lhs: "(2*x - 1)/(x + 1)"
+    rhs: "1/2"
+  canonical_target:
+    lhs: "x"
+    rhs: "1"
+  trace:
+    - rule: CROSS_MULTIPLY
+      guard: "x != -1"
+      lhs: "2*(2*x - 1)"
+      rhs: "1*(x + 1)"
+    - rule: DISTRIBUTE_BOTH
+      lhs: "4*x - 2"
+      rhs: "x + 1"
+    - rule: SUBTRACT_X_BOTH_SIDES
+      lhs: "3*x - 2"
+      rhs: "1"
+    - rule: ADD_2_BOTH_SIDES
+      lhs: "3*x"
+      rhs: "3"
+    - rule: DIVIDE_BY_3_BOTH_SIDES
+      lhs: "x"
+      rhs: "1"
+
+# ============================================================
+# POLYNOMIAL (5)
+# ============================================================
+
+- id: poly01
+  category: polynomial
+  variable: x
+  source: "Stewart Precalculus 6e Ch.3 — RRT then factor cubic"
+  initial:
+    lhs: "x**3 - 6*x**2 + 11*x - 6"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x - 1)*(x - 2)*(x - 3)"
+    rhs: "0"
+  trace:
+    - rule: POLYNOMIAL_DIVISION_BY_(X-1)
+      lhs: "(x - 1)*(x**2 - 5*x + 6)"
+      rhs: "0"
+    - rule: FACTOR_QUADRATIC_FACTOR
+      lhs: "(x - 1)*(x - 2)*(x - 3)"
+      rhs: "0"
+
+- id: poly02
+  category: polynomial
+  variable: x
+  source: "Lial Intermediate Algebra 11e — biquadratic"
+  initial:
+    lhs: "x**4 - 5*x**2 + 4"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+    rhs: "0"
+  trace:
+    - rule: FACTOR_AS_QUADRATIC_IN_X_SQUARED
+      lhs: "(x**2 - 1)*(x**2 - 4)"
+      rhs: "0"
+    - rule: FACTOR_DIFF_SQUARES_BOTH
+      lhs: "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+      rhs: "0"
+
+- id: poly03
+  category: polynomial
+  variable: x
+  source: "OpenStax College Algebra — factor by grouping"
+  initial:
+    lhs: "x**3 + x**2 - 4*x - 4"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x + 1)*(x - 2)*(x + 2)"
+    rhs: "0"
+  trace:
+    - rule: GROUP_TERMS
+      lhs: "x**2*(x + 1) - 4*(x + 1)"
+      rhs: "0"
+    - rule: FACTOR_OUT_COMMON
+      lhs: "(x + 1)*(x**2 - 4)"
+      rhs: "0"
+    - rule: FACTOR_DIFF_SQUARES
+      lhs: "(x + 1)*(x - 2)*(x + 2)"
+      rhs: "0"
+
+- id: poly04
+  category: polynomial
+  variable: x
+  source: "Stewart Precalculus 6e — RRT cubic with rational coefficient"
+  initial:
+    lhs: "2*x**3 - 5*x**2 - 4*x + 3"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x + 1)*(2*x - 1)*(x - 3)"
+    rhs: "0"
+  trace:
+    - rule: POLYNOMIAL_DIVISION_BY_(X+1)
+      lhs: "(x + 1)*(2*x**2 - 7*x + 3)"
+      rhs: "0"
+    - rule: FACTOR_QUADRATIC_FACTOR
+      lhs: "(x + 1)*(2*x - 1)*(x - 3)"
+      rhs: "0"
+
+- id: poly05
+  category: polynomial
+  variable: x
+  source: "Standard difference of squares twice"
+  initial:
+    lhs: "x**4 - 1"
+    rhs: "0"
+  canonical_target:
+    lhs: "(x - 1)*(x + 1)*(x**2 + 1)"
+    rhs: "0"
+  trace:
+    - rule: FACTOR_DIFF_SQUARES
+      lhs: "(x**2 - 1)*(x**2 + 1)"
+      rhs: "0"
+    - rule: FACTOR_DIFF_SQUARES_INNER
+      lhs: "(x - 1)*(x + 1)*(x**2 + 1)"
+      rhs: "0"

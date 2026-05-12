@@ -1,0 +1,1215 @@
+- id: hard_motif_v1_ex1_000
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-4)),
+    Add(Symbol('x'), Integer(1))), Integer(3), Mul(Pow(Add(Symbol('x'), Integer(-1)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-1))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(1))),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(3), Symbol('x')), Integer(-4)), Integer(7))
+  excluded_srepr:
+  - Integer(1)
+  initial:
+    lhs: 2*x + (x - 4)*(x + 1) + 3 + (x**2 - 1)/(x - 1)
+    rhs: ((x - 1)*(x + 1))/(x - 1) + (x**2 - 3*x - 4) + 7
+  canonical_target:
+    lhs: x
+    rhs: '2'
+- id: hard_motif_L1_000
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(5))), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(6))), Integer(-1))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(2), Symbol('x')),
+    Integer(-15)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(4), Symbol('x')),
+    Integer(-12)), Integer(-13))
+  excluded_srepr: []
+  initial:
+    lhs: 4*x + (x - 3)*(x + 5) + (x - 2)*(x + 6) - 1
+    rhs: (x**2 + 2*x - 15) + (x**2 + 4*x - 12) - 13
+  canonical_target:
+    lhs: x
+    rhs: '-3'
+- id: hard_motif_L3_000
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(4))),
+    Mul(Integer(2), Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-5)),
+    Add(Symbol('x'), Integer(2))), Integer(1))))
+  initial_srepr_rhs: Add(Mul(Integer(2), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Integer(3), Symbol('x')), Integer(-10))), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3),
+    Symbol('x')), Integer(-4)), Integer(26))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 1)*(x + 4) + 2*(3*x + (x - 5)*(x + 2) + 1)
+    rhs: 2*(x**2 - 3*x - 10) + (x**2 + 3*x - 4) + 26
+  canonical_target:
+    lhs: x
+    rhs: '4'
+- id: hard_motif_P3_000
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(1))),
+    Mul(Add(Symbol('x'), Integer(2)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Integer(2), Symbol('x')), Integer(7))))
+  initial_srepr_rhs: Add(Mul(Integer(16), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(4), Symbol('x')), Integer(-5)), Integer(2))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 5)*(x + 1) + (x + 2)*(x**2 - 2*x + 7)
+    rhs: 16*x + (x**2 - 4*x - 5) + 2
+  canonical_target:
+    lhs: (x - 3)*(x - 1)*(x + 4)
+    rhs: '0'
+- id: hard_motif_P4_000
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(7))),
+    Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(8), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(15), Symbol('x')), Integer(-29))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(6), Symbol('x')),
+    Integer(-7)), Mul(Pow(Add(Symbol('x'), Integer(-4)), Integer(-1)), Add(Mul(Integer(3),
+    Pow(Symbol('x'), Integer(2))), Integer(-34))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(4)
+  initial:
+    lhs: (x - 1)*(x + 7) + (8*x**2 + 15*x - 29)/(x + 1)
+    rhs: (x**2 + 6*x - 7) + (3*x**2 - 34)/(x - 4)
+  canonical_target:
+    lhs: (x - 5)*(x - 2)*(x + 3)
+    rhs: '0'
+- id: hard_motif_R1_000
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(8), Symbol('x')), Mul(Add(Symbol('x'), Integer(-5)),
+    Add(Symbol('x'), Integer(1))), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(6))), Integer(1))
+  initial_srepr_rhs: Add(Mul(Integer(5), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(4), Symbol('x')), Integer(-5)), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(4), Symbol('x')), Integer(-12)), Integer(6))
+  excluded_srepr: []
+  initial:
+    lhs: 8*x + (x - 5)*(x + 1) + (x - 2)*(x + 6) + 1
+    rhs: 5*x + (x**2 - 4*x - 5) + (x**2 + 4*x - 12) + 6
+  canonical_target:
+    lhs: x
+    rhs: 5/3
+- id: hard_motif_R2_000
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-6)), Add(Symbol('x'), Integer(2))),
+    Mul(Integer(2), Add(Mul(Integer(5), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(4))), Integer(-3))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(4),
+    Symbol('x')), Integer(-12)), Mul(Integer(2), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(3), Symbol('x')), Integer(-4))), Integer(-10))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 6)*(x + 2) + 2*(5*x + (x - 1)*(x + 4) - 3)
+    rhs: (x**2 - 4*x - 12) + 2*(x**2 + 3*x - 4) - 10
+  canonical_target:
+    lhs: x
+    rhs: -2/5
+- id: hard_motif_v1_ex1_001
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(2))), Integer(1), Mul(Pow(Add(Symbol('x'), Integer(-4)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-16))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(4))),
+    Pow(Add(Symbol('x'), Integer(-4)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-6)), Integer(7))
+  excluded_srepr:
+  - Integer(4)
+  initial:
+    lhs: 3*x + (x - 3)*(x + 2) + 1 + (x**2 - 16)/(x - 4)
+    rhs: ((x - 4)*(x + 4))/(x - 4) + (x**2 - x - 6) + 7
+  canonical_target:
+    lhs: x
+    rhs: '2'
+- id: hard_motif_L1_001
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(4))), Mul(Add(Symbol('x'), Integer(2)), Add(Symbol('x'),
+    Integer(5))), Integer(0))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')),
+    Integer(-4)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(7), Symbol('x')),
+    Integer(10)), Integer(-12))
+  excluded_srepr: []
+  initial:
+    lhs: 3*x + (x - 1)*(x + 4) + (x + 2)*(x + 5) + 0
+    rhs: (x**2 + 3*x - 4) + (x**2 + 7*x + 10) - 12
+  canonical_target:
+    lhs: x
+    rhs: '-4'
+- id: hard_motif_L3_001
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(5))),
+    Mul(Integer(3), Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(1)),
+    Add(Symbol('x'), Integer(3))), Integer(0))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')),
+    Integer(-10)), Mul(Integer(3), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(4),
+    Symbol('x')), Integer(3))), Integer(18))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 2)*(x + 5) + 3*(2*x + (x + 1)*(x + 3) + 0)
+    rhs: (x**2 + 3*x - 10) + 3*(x**2 + 4*x + 3) + 18
+  canonical_target:
+    lhs: x
+    rhs: '3'
+- id: hard_motif_P3_001
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-7)), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(1), Symbol('x')), Integer(3))), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(4))))
+  initial_srepr_rhs: Add(Mul(Integer(-1), Integer(7), Symbol('x')), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(1), Symbol('x')), Integer(-12)), Integer(-31))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 7)*(x**2 + 1*x + 3) + (x - 3)*(x + 4)
+    rhs: -7*x + (x**2 + 1*x - 12) - 31
+  canonical_target:
+    lhs: (x - 5)*(x - 2)*(x + 1)
+    rhs: '0'
+- id: hard_motif_P4_001
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(5))),
+    Mul(Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)), Add(Mul(Integer(6), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(-1), Integer(35), Symbol('x')), Integer(38))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(4), Symbol('x')),
+    Integer(-5)), Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)), Add(Mul(Integer(1),
+    Pow(Symbol('x'), Integer(2))), Integer(-37))))
+  excluded_srepr:
+  - Integer(-3)
+  - Integer(2)
+  initial:
+    lhs: (x - 1)*(x + 5) + (6*x**2 - 35*x + 38)/(x - 2)
+    rhs: (x**2 + 4*x - 5) + (1*x**2 - 37)/(x + 3)
+  canonical_target:
+    lhs: (x - 4)*(x - 1)*(x + 2)
+    rhs: '0'
+- id: hard_motif_R1_001
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(7), Symbol('x')), Mul(Add(Symbol('x'), Integer(-4)),
+    Add(Symbol('x'), Integer(2))), Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'),
+    Integer(3))), Integer(0))
+  initial_srepr_rhs: Add(Mul(Integer(4), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(2), Symbol('x')), Integer(-8)), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(2), Symbol('x')), Integer(-3)), Integer(2))
+  excluded_srepr: []
+  initial:
+    lhs: 7*x + (x - 4)*(x + 2) + (x - 1)*(x + 3) + 0
+    rhs: 4*x + (x**2 - 2*x - 8) + (x**2 + 2*x - 3) + 2
+  canonical_target:
+    lhs: x
+    rhs: 2/3
+- id: hard_motif_R2_001
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(2)), Add(Symbol('x'), Integer(5))),
+    Mul(Integer(3), Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(1))), Integer(1))))
+  initial_srepr_rhs: Add(Mul(Integer(3), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Integer(2), Symbol('x')), Integer(-3))), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(7),
+    Symbol('x')), Integer(10)), Integer(5))
+  excluded_srepr: []
+  initial:
+    lhs: (x + 2)*(x + 5) + 3*(2*x + (x - 3)*(x + 1) + 1)
+    rhs: 3*(x**2 - 2*x - 3) + (x**2 + 7*x + 10) + 5
+  canonical_target:
+    lhs: x
+    rhs: 1/3
+- id: hard_motif_v1_ex1_002
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(1)),
+    Add(Symbol('x'), Integer(5))), Integer(-2), Mul(Pow(Add(Symbol('x'), Integer(-3)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-9))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'), Integer(3))),
+    Pow(Add(Symbol('x'), Integer(-3)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(6), Symbol('x')), Integer(5)), Integer(6))
+  excluded_srepr:
+  - Integer(3)
+  initial:
+    lhs: 4*x + (x + 1)*(x + 5) - 2 + (x**2 - 9)/(x - 3)
+    rhs: ((x - 3)*(x + 3))/(x - 3) + (x**2 + 6*x + 5) + 6
+  canonical_target:
+    lhs: x
+    rhs: '2'
+- id: hard_motif_L1_002
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-4)),
+    Add(Symbol('x'), Integer(2))), Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'),
+    Integer(3))), Integer(1))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(2),
+    Symbol('x')), Integer(-8)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(2),
+    Symbol('x')), Integer(-3)), Integer(7))
+  excluded_srepr: []
+  initial:
+    lhs: 2*x + (x - 4)*(x + 2) + (x - 1)*(x + 3) + 1
+    rhs: (x**2 - 2*x - 8) + (x**2 + 2*x - 3) + 7
+  canonical_target:
+    lhs: x
+    rhs: '3'
+- id: hard_motif_L3_002
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(4))),
+    Mul(Integer(2), Add(Mul(Integer(5), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(2))), Integer(1))))
+  initial_srepr_rhs: Add(Mul(Integer(2), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Symbol('x')), Integer(-6))), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3),
+    Symbol('x')), Integer(-4)), Integer(12))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 1)*(x + 4) + 2*(5*x + (x - 3)*(x + 2) + 1)
+    rhs: 2*(x**2 - x - 6) + (x**2 + 3*x - 4) + 12
+  canonical_target:
+    lhs: x
+    rhs: '1'
+- id: hard_motif_P3_002
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(1))),
+    Mul(Add(Symbol('x'), Integer(-2)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Symbol('x')), Integer(5))))
+  initial_srepr_rhs: Add(Mul(Integer(17), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-2)), Integer(-34))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 2)*(x + 1) + (x - 2)*(x**2 - x + 5)
+    rhs: 17*x + (x**2 - x - 2) - 34
+  canonical_target:
+    lhs: (x - 4)*(x - 2)*(x + 3)
+    rhs: '0'
+- id: hard_motif_P4_002
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'), Integer(2))),
+    Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Integer(9), Pow(Symbol('x'),
+    Integer(2))), Integer(-1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Symbol('x')),
+    Integer(-6)), Mul(Pow(Add(Symbol('x'), Integer(-6)), Integer(-1)), Add(Mul(Integer(1),
+    Pow(Symbol('x'), Integer(2))), Integer(-57))))
+  excluded_srepr:
+  - Integer(-2)
+  - Integer(6)
+  initial:
+    lhs: (x - 3)*(x + 2) + (9*x**2 - 1)/(x + 2)
+    rhs: (x**2 - x - 6) + (1*x**2 - 57)/(x - 6)
+  canonical_target:
+    lhs: (x - 5)*(x - 3)*(x + 1)
+    rhs: '0'
+- id: hard_motif_R1_002
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(9), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(2))), Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'),
+    Integer(4))), Integer(2))
+  initial_srepr_rhs: Add(Mul(Integer(5), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-6)), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(3), Symbol('x')), Integer(-4)), Integer(8))
+  excluded_srepr: []
+  initial:
+    lhs: 9*x + (x - 3)*(x + 2) + (x - 1)*(x + 4) + 2
+    rhs: 5*x + (x**2 - x - 6) + (x**2 + 3*x - 4) + 8
+  canonical_target:
+    lhs: x
+    rhs: 3/2
+- id: hard_motif_R2_002
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(3))),
+    Mul(Integer(5), Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(2))), Integer(0))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Symbol('x')),
+    Integer(-12)), Mul(Integer(5), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(1),
+    Symbol('x')), Integer(-2))), Integer(8))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 3) + 5*(3*x + (x - 1)*(x + 2) + 0)
+    rhs: (x**2 - x - 12) + 5*(x**2 + 1*x - 2) + 8
+  canonical_target:
+    lhs: x
+    rhs: 8/15
+- id: hard_motif_v1_ex1_003
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(5), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(4))), Integer(0), Mul(Pow(Add(Symbol('x'), Integer(-1)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-1))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(1))),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(2), Symbol('x')), Integer(-8)), Integer(10))
+  excluded_srepr:
+  - Integer(1)
+  initial:
+    lhs: 5*x + (x - 2)*(x + 4) + 0 + (x**2 - 1)/(x - 1)
+    rhs: ((x - 1)*(x + 1))/(x - 1) + (x**2 + 2*x - 8) + 10
+  canonical_target:
+    lhs: x
+    rhs: '2'
+- id: hard_motif_L1_003
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(5), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(1))), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(4))), Integer(2))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(2),
+    Symbol('x')), Integer(-3)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(2),
+    Symbol('x')), Integer(-8)), Integer(27))
+  excluded_srepr: []
+  initial:
+    lhs: 5*x + (x - 3)*(x + 1) + (x - 2)*(x + 4) + 2
+    rhs: (x**2 - 2*x - 3) + (x**2 + 2*x - 8) + 27
+  canonical_target:
+    lhs: x
+    rhs: '5'
+- id: hard_motif_L3_003
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(3))),
+    Mul(Integer(3), Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(1))), Integer(1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Symbol('x')),
+    Integer(-12)), Mul(Integer(3), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Symbol('x')), Integer(-2))), Integer(39))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 3) + 3*(4*x + (x - 2)*(x + 1) + 1)
+    rhs: (x**2 - x - 12) + 3*(x**2 - x - 2) + 39
+  canonical_target:
+    lhs: x
+    rhs: '3'
+- id: hard_motif_P3_003
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-6)), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(2), Symbol('x')), Integer(3))), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(4))))
+  initial_srepr_rhs: Add(Mul(Integer(-1), Integer(2), Symbol('x')), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(3), Symbol('x')), Integer(-4)), Integer(-28))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 6)*(x**2 + 2*x + 3) + (x - 1)*(x + 4)
+    rhs: -2*x + (x**2 + 3*x - 4) - 28
+  canonical_target:
+    lhs: (x - 5)*(x - 1)*(x + 2)
+    rhs: '0'
+- id: hard_motif_P4_003
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(3))),
+    Mul(Pow(Add(Symbol('x'), Integer(-1)), Integer(-1)), Add(Mul(Integer(7), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(-1), Integer(50), Symbol('x')), Integer(53))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(1), Symbol('x')),
+    Integer(-6)), Mul(Pow(Add(Symbol('x'), Integer(5)), Integer(-1)), Add(Mul(Integer(5),
+    Pow(Symbol('x'), Integer(2))), Integer(-153))))
+  excluded_srepr:
+  - Integer(-5)
+  - Integer(1)
+  initial:
+    lhs: (x - 2)*(x + 3) + (7*x**2 - 50*x + 53)/(x - 1)
+    rhs: (x**2 + 1*x - 6) + (5*x**2 - 153)/(x + 5)
+  canonical_target:
+    lhs: (x - 7)*(x - 2)*(x + 4)
+    rhs: '0'
+- id: hard_motif_R1_003
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(8), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(4))), Mul(Add(Symbol('x'), Integer(1)), Add(Symbol('x'),
+    Integer(3))), Integer(1))
+  initial_srepr_rhs: Add(Mul(Integer(3), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(2), Symbol('x')), Integer(-8)), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(4), Symbol('x')), Integer(3)), Integer(4))
+  excluded_srepr: []
+  initial:
+    lhs: 8*x + (x - 2)*(x + 4) + (x + 1)*(x + 3) + 1
+    rhs: 3*x + (x**2 + 2*x - 8) + (x**2 + 4*x + 3) + 4
+  canonical_target:
+    lhs: x
+    rhs: 3/5
+- id: hard_motif_R2_003
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(3))),
+    Mul(Integer(4), Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(1))), Integer(1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(2),
+    Symbol('x')), Integer(-15)), Mul(Integer(4), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-2))), Integer(7))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 5)*(x + 3) + 4*(3*x + (x - 2)*(x + 1) + 1)
+    rhs: (x**2 - 2*x - 15) + 4*(x**2 - x - 2) + 7
+  canonical_target:
+    lhs: x
+    rhs: 1/4
+- id: hard_motif_v1_ex1_004
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-5)),
+    Add(Symbol('x'), Integer(3))), Integer(1), Mul(Pow(Add(Symbol('x'), Integer(-2)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-4))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(2))),
+    Pow(Add(Symbol('x'), Integer(-2)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(2), Symbol('x')), Integer(-15)), Integer(9))
+  excluded_srepr:
+  - Integer(2)
+  initial:
+    lhs: 2*x + (x - 5)*(x + 3) + 1 + (x**2 - 4)/(x - 2)
+    rhs: ((x - 2)*(x + 2))/(x - 2) + (x**2 - 2*x - 15) + 9
+  canonical_target:
+    lhs: x
+    rhs: '4'
+- id: hard_motif_L1_004
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(-5)),
+    Add(Symbol('x'), Integer(1))), Mul(Add(Symbol('x'), Integer(2)), Add(Symbol('x'),
+    Integer(3))), Integer(-3))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(4),
+    Symbol('x')), Integer(-5)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(5),
+    Symbol('x')), Integer(6)), Integer(13))
+  excluded_srepr: []
+  initial:
+    lhs: 4*x + (x - 5)*(x + 1) + (x + 2)*(x + 3) - 3
+    rhs: (x**2 - 4*x - 5) + (x**2 + 5*x + 6) + 13
+  canonical_target:
+    lhs: x
+    rhs: '4'
+- id: hard_motif_L3_004
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(2))),
+    Mul(Integer(5), Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(3))), Integer(1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(2),
+    Symbol('x')), Integer(-8)), Mul(Integer(5), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(2), Symbol('x')), Integer(-3))), Integer(25))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 2) + 5*(2*x + (x - 1)*(x + 3) + 1)
+    rhs: (x**2 - 2*x - 8) + 5*(x**2 + 2*x - 3) + 25
+  canonical_target:
+    lhs: x
+    rhs: '2'
+- id: hard_motif_P3_004
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(5))),
+    Mul(Add(Symbol('x'), Integer(-4)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Integer(3), Symbol('x')), Integer(4))))
+  initial_srepr_rhs: Add(Mul(Integer(12), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(1), Symbol('x')), Integer(-20)), Integer(-28))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 5) + (x - 4)*(x**2 - 3*x + 4)
+    rhs: 12*x + (x**2 + 1*x - 20) - 28
+  canonical_target:
+    lhs: (x - 6)*(x - 2)*(x + 1)
+    rhs: '0'
+- id: hard_motif_P4_004
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(2))),
+    Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(6), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(5), Symbol('x')), Integer(-29))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(3),
+    Symbol('x')), Integer(-10)), Mul(Pow(Add(Symbol('x'), Integer(-4)), Integer(-1)),
+    Add(Mul(Integer(1), Pow(Symbol('x'), Integer(2))), Integer(26))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(4)
+  initial:
+    lhs: (x - 5)*(x + 2) + (6*x**2 + 5*x - 29)/(x + 1)
+    rhs: (x**2 - 3*x - 10) + (1*x**2 + 26)/(x - 4)
+  canonical_target:
+    lhs: (x - 6)*(x - 1)*(x + 3)
+    rhs: '0'
+- id: hard_motif_R1_004
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(7), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(2))), Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'),
+    Integer(5))), Integer(0))
+  initial_srepr_rhs: Add(Mul(Integer(2), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-6)), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(4), Symbol('x')), Integer(-5)), Integer(4))
+  excluded_srepr: []
+  initial:
+    lhs: 7*x + (x - 3)*(x + 2) + (x - 1)*(x + 5) + 0
+    rhs: 2*x + (x**2 - x - 6) + (x**2 + 4*x - 5) + 4
+  canonical_target:
+    lhs: x
+    rhs: 4/5
+- id: hard_motif_R2_004
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(1))),
+    Mul(Integer(2), Add(Mul(Integer(7), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(3))), Integer(1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(3),
+    Symbol('x')), Integer(-4)), Mul(Integer(2), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(1), Symbol('x')), Integer(-6))), Integer(5))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 1) + 2*(7*x + (x - 2)*(x + 3) + 1)
+    rhs: (x**2 - 3*x - 4) + 2*(x**2 + 1*x - 6) + 5
+  canonical_target:
+    lhs: x
+    rhs: 3/14
+- id: hard_motif_v1_ex1_005
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(6))), Integer(2), Mul(Pow(Add(Symbol('x'), Integer(-1)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-1))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(1))),
+    Pow(Add(Symbol('x'), Integer(-1)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(5), Symbol('x')), Integer(-6)), Integer(11))
+  excluded_srepr:
+  - Integer(1)
+  initial:
+    lhs: 3*x + (x - 1)*(x + 6) + 2 + (x**2 - 1)/(x - 1)
+    rhs: ((x - 1)*(x + 1))/(x - 1) + (x**2 + 5*x - 6) + 11
+  canonical_target:
+    lhs: x
+    rhs: '3'
+- id: hard_motif_L1_005
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(4))), Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'),
+    Integer(3))), Integer(1))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(2), Symbol('x')),
+    Integer(-8)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(2), Symbol('x')),
+    Integer(-3)), Integer(19))
+  excluded_srepr: []
+  initial:
+    lhs: 3*x + (x - 2)*(x + 4) + (x - 1)*(x + 3) + 1
+    rhs: (x**2 + 2*x - 8) + (x**2 + 2*x - 3) + 19
+  canonical_target:
+    lhs: x
+    rhs: '6'
+- id: hard_motif_L3_005
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(2))),
+    Mul(Integer(2), Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(1))), Integer(3))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(3),
+    Symbol('x')), Integer(-10)), Mul(Integer(2), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(2), Symbol('x')), Integer(-3))), Integer(22))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 5)*(x + 2) + 2*(4*x + (x - 3)*(x + 1) + 3)
+    rhs: (x**2 - 3*x - 10) + 2*(x**2 - 2*x - 3) + 22
+  canonical_target:
+    lhs: x
+    rhs: '2'
+- id: hard_motif_P3_005
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-6)), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(1), Symbol('x')), Integer(2))), Mul(Add(Symbol('x'), Integer(-5)),
+    Add(Symbol('x'), Integer(-1))))
+  initial_srepr_rhs: Add(Mul(Integer(-1), Integer(2), Symbol('x')), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(-1), Integer(6), Symbol('x')), Integer(5)), Integer(-36))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 6)*(x**2 + 1*x + 2) + (x - 5)*(x - 1)
+    rhs: -2*x + (x**2 - 6*x + 5) - 36
+  canonical_target:
+    lhs: (x - 4)*(x - 3)*(x + 2)
+    rhs: '0'
+- id: hard_motif_P4_005
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(1))),
+    Mul(Pow(Add(Symbol('x'), Integer(-5)), Integer(-1)), Add(Mul(Integer(4), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(-1), Integer(24), Symbol('x')), Integer(27))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(3),
+    Symbol('x')), Integer(-4)), Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)),
+    Add(Mul(Integer(1), Pow(Symbol('x'), Integer(2))), Integer(9))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(5)
+  initial:
+    lhs: (x - 4)*(x + 1) + (4*x**2 - 24*x + 27)/(x - 5)
+    rhs: (x**2 - 3*x - 4) + (1*x**2 + 9)/(x + 1)
+  canonical_target:
+    lhs: (x - 4)*(x - 3)*(x + 2)
+    rhs: '0'
+- id: hard_motif_R1_005
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(9), Symbol('x')), Mul(Add(Symbol('x'), Integer(-4)),
+    Add(Symbol('x'), Integer(1))), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(3))), Integer(1))
+  initial_srepr_rhs: Add(Mul(Integer(4), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(3), Symbol('x')), Integer(-4)), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(1), Symbol('x')), Integer(-6)), Integer(8))
+  excluded_srepr: []
+  initial:
+    lhs: 9*x + (x - 4)*(x + 1) + (x - 2)*(x + 3) + 1
+    rhs: 4*x + (x**2 - 3*x - 4) + (x**2 + 1*x - 6) + 8
+  canonical_target:
+    lhs: x
+    rhs: 7/5
+- id: hard_motif_R2_005
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(1))),
+    Mul(Integer(3), Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(2))), Integer(-1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(4),
+    Symbol('x')), Integer(-5)), Mul(Integer(3), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-6))), Integer(6))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 5)*(x + 1) + 3*(4*x + (x - 3)*(x + 2) - 1)
+    rhs: (x**2 - 4*x - 5) + 3*(x**2 - x - 6) + 6
+  canonical_target:
+    lhs: x
+    rhs: 3/4
+- id: hard_motif_v1_ex1_006
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(1))), Integer(0), Mul(Pow(Add(Symbol('x'), Integer(-5)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-25))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(5))),
+    Pow(Add(Symbol('x'), Integer(-5)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-2)), Integer(12))
+  excluded_srepr:
+  - Integer(5)
+  initial:
+    lhs: 4*x + (x - 2)*(x + 1) + 0 + (x**2 - 25)/(x - 5)
+    rhs: ((x - 5)*(x + 5))/(x - 5) + (x**2 - x - 2) + 12
+  canonical_target:
+    lhs: x
+    rhs: '3'
+- id: hard_motif_L1_006
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(6), Symbol('x')), Mul(Add(Symbol('x'), Integer(-2)),
+    Add(Symbol('x'), Integer(-1))), Mul(Add(Symbol('x'), Integer(2)), Add(Symbol('x'),
+    Integer(3))), Integer(0))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(3),
+    Symbol('x')), Integer(2)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(5), Symbol('x')),
+    Integer(6)), Integer(-6))
+  excluded_srepr: []
+  initial:
+    lhs: 6*x + (x - 2)*(x - 1) + (x + 2)*(x + 3) + 0
+    rhs: (x**2 - 3*x + 2) + (x**2 + 5*x + 6) - 6
+  canonical_target:
+    lhs: x
+    rhs: '-1'
+- id: hard_motif_L3_006
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(4))),
+    Mul(Integer(4), Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(2))), Integer(1))))
+  initial_srepr_rhs: Add(Mul(Integer(4), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Symbol('x')), Integer(-6))), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3),
+    Symbol('x')), Integer(-4)), Integer(20))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 1)*(x + 4) + 4*(2*x + (x - 3)*(x + 2) + 1)
+    rhs: 4*(x**2 - x - 6) + (x**2 + 3*x - 4) + 20
+  canonical_target:
+    lhs: x
+    rhs: '2'
+- id: hard_motif_P3_006
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(4))),
+    Mul(Add(Symbol('x'), Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3),
+    Symbol('x')), Integer(5))))
+  initial_srepr_rhs: Add(Mul(Integer(15), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(2), Symbol('x')), Integer(-8)), Integer(-15))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 2)*(x + 4) + (x - 1)*(x**2 + 3*x + 5)
+    rhs: 15*x + (x**2 + 2*x - 8) - 15
+  canonical_target:
+    lhs: (x - 2)*(x - 1)*(x + 5)
+    rhs: '0'
+- id: hard_motif_P4_006
+  category: polynomial
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'), Integer(4))),
+    Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)), Add(Mul(Integer(6), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(-1), Integer(20), Symbol('x')), Integer(-18))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(1), Symbol('x')),
+    Integer(-12)), Mul(Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)), Add(Mul(Integer(1),
+    Pow(Symbol('x'), Integer(2))), Integer(-13))))
+  excluded_srepr:
+  - Integer(-3)
+  - Integer(2)
+  initial:
+    lhs: (x - 3)*(x + 4) + (6*x**2 - 20*x - 18)/(x + 3)
+    rhs: (x**2 + 1*x - 12) + (1*x**2 - 13)/(x - 2)
+  canonical_target:
+    lhs: (x - 5)*(x - 3)*(x + 1)
+    rhs: '0'
+- id: hard_motif_R1_006
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(6), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(4))), Mul(Add(Symbol('x'), Integer(2)), Add(Symbol('x'),
+    Integer(3))), Integer(3))
+  initial_srepr_rhs: Add(Mul(Integer(1), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(3), Symbol('x')), Integer(-4)), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(5), Symbol('x')), Integer(6)), Integer(11))
+  excluded_srepr: []
+  initial:
+    lhs: 6*x + (x - 1)*(x + 4) + (x + 2)*(x + 3) + 3
+    rhs: 1*x + (x**2 + 3*x - 4) + (x**2 + 5*x + 6) + 11
+  canonical_target:
+    lhs: x
+    rhs: 8/5
+- id: hard_motif_R2_006
+  category: rational
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(2))),
+    Mul(Integer(5), Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(3))), Integer(-1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(2),
+    Symbol('x')), Integer(-8)), Mul(Integer(5), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(2), Symbol('x')), Integer(-3))), Integer(4))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 2) + 5*(2*x + (x - 1)*(x + 3) - 1)
+    rhs: (x**2 - 2*x - 8) + 5*(x**2 + 2*x - 3) + 4
+  canonical_target:
+    lhs: x
+    rhs: 9/10
+- id: hard_motif_v1_ex1_007
+  category: linear
+  recipe: motif_template_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-template-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(2), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(2))), Integer(-5), Mul(Pow(Add(Symbol('x'), Integer(-4)),
+    Integer(-1)), Add(Pow(Symbol('x'), Integer(2)), Integer(-16))))
+  initial_srepr_rhs: Add(Mul(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(4))),
+    Pow(Add(Symbol('x'), Integer(-4)), Integer(-1))), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Symbol('x')), Integer(-6)), Integer(5))
+  excluded_srepr:
+  - Integer(4)
+  initial:
+    lhs: 2*x + (x - 3)*(x + 2) - 5 + (x**2 - 16)/(x - 4)
+    rhs: ((x - 4)*(x + 4))/(x - 4) + (x**2 - x - 6) + 5
+  canonical_target:
+    lhs: x
+    rhs: '5'

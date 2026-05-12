@@ -1,0 +1,98 @@
+{
+  "summary": {
+    "wall_clock_seconds": 148.0,
+    "total_problems": 5,
+    "bfs_solved": 5,
+    "astar_solved": 5,
+    "unsound_count": 0,
+    "unsound_ids": [],
+    "astar_node_distribution": {
+      "ge_50": 1,
+      "ge_200": 1,
+      "ge_500": 0,
+      "ge_1000": 0,
+      "min": 5,
+      "max": 216,
+      "median": 24
+    },
+    "criteria": {
+      "c1_ge_50_at_least_30": false,
+      "c2_ge_200_at_least_10": false,
+      "c3_all_bfs_solved": true,
+      "c4_zero_unsound": true
+    },
+    "all_criteria_pass": false
+  },
+  "per_problem": [
+    {
+      "id": "motif_003_two_denom_lcm_trap",
+      "recipe": "hand_crafted_motif",
+      "category": "rational",
+      "claimed_astar_nodes": 0,
+      "claimed_bfs_nodes": 0,
+      "bfs_found": true,
+      "bfs_nodes_expanded": 42,
+      "bfs_path_length": 3,
+      "astar_found": true,
+      "astar_nodes_expanded": 5,
+      "astar_path_length": 4,
+      "unsound": false
+    },
+    {
+      "id": "motif_001_quadratic_denom_gate",
+      "recipe": "hand_crafted_motif",
+      "category": "quadratic",
+      "claimed_astar_nodes": 0,
+      "claimed_bfs_nodes": 0,
+      "bfs_found": true,
+      "bfs_nodes_expanded": 46,
+      "bfs_path_length": 3,
+      "astar_found": true,
+      "astar_nodes_expanded": 42,
+      "astar_path_length": 6,
+      "unsound": false
+    },
+    {
+      "id": "motif_002_mobius_decoy",
+      "recipe": "hand_crafted_motif",
+      "category": "rational",
+      "claimed_astar_nodes": 0,
+      "claimed_bfs_nodes": 0,
+      "bfs_found": true,
+      "bfs_nodes_expanded": 50,
+      "bfs_path_length": 3,
+      "astar_found": true,
+      "astar_nodes_expanded": 24,
+      "astar_path_length": 7,
+      "unsound": false
+    },
+    {
+      "id": "motif_000_linear_two_twins",
+      "recipe": "hand_crafted_motif",
+      "category": "linear",
+      "claimed_astar_nodes": 0,
+      "claimed_bfs_nodes": 0,
+      "bfs_found": true,
+      "bfs_nodes_expanded": 187,
+      "bfs_path_length": 3,
+      "astar_found": true,
+      "astar_nodes_expanded": 216,
+      "astar_path_length": 5,
+      "unsound": false
+    },
+    {
+      "id": "motif_004_complete_square_rational",
+      "recipe": "hand_crafted_motif",
+      "category": "quadratic",
+      "claimed_astar_nodes": 0,
+      "claimed_bfs_nodes": 0,
+      "bfs_found": true,
+      "bfs_nodes_expanded": 240,
+      "bfs_path_length": 3,
+      "astar_found": true,
+      "astar_nodes_expanded": 11,
+      "astar_path_length": 6,
+      "unsound": false
+    }
+  ]
+}

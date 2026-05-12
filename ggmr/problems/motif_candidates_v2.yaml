@@ -1,0 +1,340 @@
+- id: motif_v2_000_L1_triple_twin_shield
+  category: linear
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(4), Symbol('x')), Mul(Add(Symbol('x'), Integer(-3)),
+    Add(Symbol('x'), Integer(5))), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(6))), Integer(-1))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(2), Symbol('x')),
+    Integer(-15)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(4), Symbol('x')),
+    Integer(-12)), Integer(-13))
+  excluded_srepr: []
+  initial:
+    lhs: 4*x + (x - 3)*(x + 5) + (x - 2)*(x + 6) - 1
+    rhs: (x**2 + 2*x - 15) + (x**2 + 4*x - 12) - 13
+  canonical_target:
+    lhs: x
+    rhs: '-3'
+- id: motif_v2_001_L2_cross_reciprocal
+  category: linear
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'), Integer(5))),
+    Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(6))), Mul(Integer(2),
+    Pow(Add(Symbol('x'), Integer(1)), Integer(-1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(2), Symbol('x')),
+    Integer(-15)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(4), Symbol('x')),
+    Integer(-12)), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(2)
+  initial:
+    lhs: (x - 3)*(x + 5) + (x - 2)*(x + 6) + 2/(x + 1)
+    rhs: (x**2 + 2*x - 15) + (x**2 + 4*x - 12) + 1/(x - 2)
+  canonical_target:
+    lhs: x
+    rhs: '5'
+- id: motif_v2_002_L3_distributed_scalar_gate
+  category: linear
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(4))),
+    Mul(Integer(2), Add(Mul(Integer(3), Symbol('x')), Mul(Add(Symbol('x'), Integer(-5)),
+    Add(Symbol('x'), Integer(2))), Integer(1))))
+  initial_srepr_rhs: Add(Mul(Integer(2), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Integer(3), Symbol('x')), Integer(-10))), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3),
+    Symbol('x')), Integer(-4)), Integer(26))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 1)*(x + 4) + 2*(3*x + (x - 5)*(x + 2) + 1)
+    rhs: 2*(x**2 - 3*x - 10) + (x**2 + 3*x - 4) + 26
+  canonical_target:
+    lhs: x
+    rhs: '4'
+- id: motif_v2_003_Q1_unrelated_product_minus_linear
+  category: quadratic
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(1))),
+    Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(5))), Mul(Add(Symbol('x'),
+    Integer(-1)), Add(Symbol('x'), Integer(7))))
+  initial_srepr_rhs: Add(Mul(Integer(5), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(3), Symbol('x')), Integer(-4)), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(6), Symbol('x')), Integer(-7)), Integer(1))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 1) + (x - 1)*(x + 5) + (x - 1)*(x + 7)
+    rhs: 5*x + (x**2 - 3*x - 4) + (x**2 + 6*x - 7) + 1
+  canonical_target:
+    lhs: (x-3)*(x+2)
+    rhs: '0'
+- id: motif_v2_004_Q2_cross_ratio_no_shared_denom
+  category: quadratic
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Mul(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Integer(7),
+    Symbol('x')), Integer(20)))
+  initial_srepr_rhs: Mul(Mul(Integer(2), Symbol('x')), Pow(Add(Symbol('x'), Integer(-3)),
+    Integer(-1)))
+  excluded_srepr:
+  - Integer(-2)
+  - Integer(3)
+  initial:
+    lhs: (7*x + 20)/(x + 2)
+    rhs: (2*x)/(x - 3)
+  canonical_target:
+    lhs: (x-4)*(x+3)
+    rhs: '0'
+- id: motif_v2_005_Q3_off_center_square_gate
+  category: quadratic
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-6)), Add(Symbol('x'), Integer(2))),
+    Pow(Add(Symbol('x'), Integer(-5)), Integer(2)))
+  initial_srepr_rhs: Add(Mul(Integer(-1), Integer(2), Symbol('x')), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(-1), Integer(4), Symbol('x')), Integer(-12)), Integer(18))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 6)*(x + 2) + (x - 5)**2
+    rhs: -2*x + (x**2 - 4*x - 12) + 18
+  canonical_target:
+    lhs: (x-1)*(x-7)
+    rhs: '0'
+- id: motif_v2_006_Q4_two_independent_twins
+  category: quadratic
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-4)), Add(Symbol('x'), Integer(1))),
+    Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(7))), Mul(Add(Symbol('x'),
+    Integer(-1)), Add(Symbol('x'), Integer(6))))
+  initial_srepr_rhs: Add(Mul(Integer(3), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(3), Symbol('x')), Integer(-4)), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(5), Symbol('x')), Integer(-6)), Integer(1))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 4)*(x + 1) + (x - 2)*(x + 7) + (x - 1)*(x + 6)
+    rhs: 3*x + (x**2 - 3*x - 4) + (x**2 + 5*x - 6) + 1
+  canonical_target:
+    lhs: (x+5)*(x-3)
+    rhs: '0'
+- id: motif_v2_007_P1_cubic_unrelated_residual
+  category: polynomial
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-3)), Add(Symbol('x'), Integer(1)),
+    Add(Symbol('x'), Integer(5))), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(7))))
+  initial_srepr_rhs: Add(Mul(Integer(-1), Integer(14), Symbol('x')), Mul(Add(Mul(Integer(2),
+    Symbol('x')), Integer(5)), Add(Mul(Integer(3), Symbol('x')), Integer(-4))), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(5), Symbol('x')), Integer(-14)), Integer(-3))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 3)*(x + 1)*(x + 5) + (x - 2)*(x + 7)
+    rhs: -14*x + (2*x + 5)*(3*x - 4) + (x**2 + 5*x - 14) - 3
+  canonical_target:
+    lhs: (x-4)*(x-1)*(x+2)
+    rhs: '0'
+- id: motif_v2_008_P2_one_sided_denom_cubic
+  category: polynomial
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(4))),
+    Mul(Pow(Add(Symbol('x'), Integer(3)), Integer(-1)), Add(Mul(Integer(4), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(-1), Integer(16), Symbol('x')), Integer(-4))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(5),
+    Symbol('x')), Integer(2)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')),
+    Integer(-4)))
+  excluded_srepr:
+  - Integer(-3)
+  initial:
+    lhs: (x - 1)*(x + 4) + (4*x**2 - 16*x - 4)/(x + 3)
+    rhs: (x**2 - 5*x + 2) + (x**2 + 3*x - 4)
+  canonical_target:
+    lhs: (x-5)*(x-2)*(x+1)
+    rhs: '0'
+- id: motif_v2_009_P3_irreducible_quadratic_disguise
+  category: polynomial
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(1))),
+    Mul(Add(Symbol('x'), Integer(2)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1),
+    Integer(2), Symbol('x')), Integer(7))))
+  initial_srepr_rhs: Add(Mul(Integer(16), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(4), Symbol('x')), Integer(-5)), Integer(2))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 5)*(x + 1) + (x + 2)*(x**2 - 2*x + 7)
+    rhs: 16*x + (x**2 - 4*x - 5) + 2
+  canonical_target:
+    lhs: (x-3)*(x-1)*(x+4)
+    rhs: '0'
+- id: motif_v2_010_P4_cubic_two_denom_cross_ratio
+  category: polynomial
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-1)), Add(Symbol('x'), Integer(7))),
+    Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Add(Mul(Integer(8), Pow(Symbol('x'),
+    Integer(2))), Mul(Integer(15), Symbol('x')), Integer(-29))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(6), Symbol('x')),
+    Integer(-7)), Mul(Pow(Add(Symbol('x'), Integer(-4)), Integer(-1)), Add(Mul(Integer(3),
+    Pow(Symbol('x'), Integer(2))), Integer(-34))))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(4)
+  initial:
+    lhs: (x - 1)*(x + 7) + (8*x**2 + 15*x - 29)/(x + 1)
+    rhs: (x**2 + 6*x - 7) + (3*x**2 - 34)/(x - 4)
+  canonical_target:
+    lhs: (x-5)*(x-2)*(x+3)
+    rhs: '0'
+- id: motif_v2_011_R1_fractional_difference_hiding
+  category: linear
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Integer(8), Symbol('x')), Mul(Add(Symbol('x'), Integer(-5)),
+    Add(Symbol('x'), Integer(1))), Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'),
+    Integer(6))), Integer(1))
+  initial_srepr_rhs: Add(Mul(Integer(5), Symbol('x')), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(-1), Integer(4), Symbol('x')), Integer(-5)), Add(Pow(Symbol('x'),
+    Integer(2)), Mul(Integer(4), Symbol('x')), Integer(-12)), Integer(6))
+  excluded_srepr: []
+  initial:
+    lhs: 8*x + (x - 5)*(x + 1) + (x - 2)*(x + 6) + 1
+    rhs: 5*x + (x**2 - 4*x - 5) + (x**2 + 4*x - 12) + 6
+  canonical_target:
+    lhs: x
+    rhs: 5/3
+- id: motif_v2_012_R2_distributed_fractional
+  category: linear
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-6)), Add(Symbol('x'), Integer(2))),
+    Mul(Integer(2), Add(Mul(Integer(5), Symbol('x')), Mul(Add(Symbol('x'), Integer(-1)),
+    Add(Symbol('x'), Integer(4))), Integer(-3))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(4),
+    Symbol('x')), Integer(-12)), Mul(Integer(2), Add(Pow(Symbol('x'), Integer(2)),
+    Mul(Integer(3), Symbol('x')), Integer(-4))), Integer(-10))
+  excluded_srepr: []
+  initial:
+    lhs: (x - 6)*(x + 2) + 2*(5*x + (x - 1)*(x + 4) - 3)
+    rhs: (x**2 - 4*x - 12) + 2*(x**2 + 3*x - 4) - 10
+  canonical_target:
+    lhs: x
+    rhs: -2/5
+- id: motif_v2_013_R3_cross_reciprocal_fractional
+  category: linear
+  recipe: hand_crafted_motif_v2
+  difficulty: hard
+  variable: x
+  source: ggmr-motif-validation-v2
+  seed: 0
+  depth: 0
+  astar_nodes_expanded: 0
+  bfs_nodes_expanded: 0
+  applied_inverses: []
+  initial_srepr_lhs: Add(Mul(Add(Symbol('x'), Integer(-5)), Add(Symbol('x'), Integer(1))),
+    Mul(Add(Symbol('x'), Integer(-2)), Add(Symbol('x'), Integer(6))), Mul(Integer(-1),
+    Integer(11), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))))
+  initial_srepr_rhs: Add(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(-1), Integer(4),
+    Symbol('x')), Integer(-5)), Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(4),
+    Symbol('x')), Integer(-12)), Pow(Add(Symbol('x'), Integer(-2)), Integer(-1)))
+  excluded_srepr:
+  - Integer(-1)
+  - Integer(2)
+  initial:
+    lhs: (x - 5)*(x + 1) + (x - 2)*(x + 6) - 11/(x + 1)
+    rhs: (x**2 - 4*x - 5) + (x**2 + 4*x - 12) + 1/(x - 2)
+  canonical_target:
+    lhs: x
+    rhs: 7/4

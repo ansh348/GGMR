@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "ggmr"
 version = "0.1.0a1"
 description = "Learned Heuristics for Sound Algebraic Rewrite Search (GGMR) — Phase 1a foundation"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 authors = [{ name = "Ansuman Mullick", email = "ansuman.mullick@bilkent.edu.tr" }]
 dependencies = [
     "sympy>=1.14",

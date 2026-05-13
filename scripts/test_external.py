@@ -20,6 +20,7 @@ manually transcribe ~20 items from PDF and re-run.
 
 from __future__ import annotations
 
+import argparse
 import logging
 import sys
 import time
@@ -42,7 +43,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger("test_external")
 
-CKPT = "checkpoints/full/best.pt"
 MAX_NODES = 10_000
 MAX_DEPTH = 20
 
@@ -93,12 +93,18 @@ def _short(state: EqState, lim: int = 80) -> str:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ckpt", default="checkpoints/full/best.pt")
+    parser.add_argument("--device", default="cuda")
+    args = parser.parse_args()
+
     logger.info("Budget: max_nodes=%d, max_depth=%d", MAX_NODES, MAX_DEPTH)
-    logger.info("Checkpoint: %s", CKPT)
+    logger.info("Checkpoint: %s", args.ckpt)
+    logger.info("Device: %s", args.device)
     logger.info("=" * 80)
 
     hand = WeightedSumCompositeHeuristic()
-    learned = LearnedHeuristic(CKPT, device="cuda")
+    learned = LearnedHeuristic(args.ckpt, device=args.device)
     logger.info("heuristics loaded; total problems: %d", len(PROBLEMS))
 
     rows: list[dict] = []

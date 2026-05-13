@@ -7,6 +7,7 @@ Question: does the learned heuristic crack them?
 
 from __future__ import annotations
 
+import argparse
 import sys
 import time
 from pathlib import Path
@@ -29,7 +30,6 @@ TARGET_IDS = [
     "motif_v2_001_L2_cross_reciprocal",
     "motif_v2_013_R3_cross_reciprocal_fractional",
 ]
-CKPT = "checkpoints/full/best.pt"
 MAX_NODES = 50_000
 MAX_DEPTH = 30
 
@@ -40,12 +40,17 @@ def _short(state: EqState, lim: int = 90) -> str:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ckpt", default="checkpoints/full/best.pt")
+    parser.add_argument("--device", default="cuda")
+    args = parser.parse_args()
+
     with open(YAML_PATH, "r", encoding="utf-8") as f:
         entries = yaml.safe_load(f) or []
     by_id = {e["id"]: e for e in entries}
 
-    print(f"\nLoading LearnedHeuristic from {CKPT}...")
-    learned = LearnedHeuristic(CKPT, device="cuda")
+    print(f"\nLoading LearnedHeuristic from {args.ckpt} (device={args.device})...")
+    learned = LearnedHeuristic(args.ckpt, device=args.device)
     hand = WeightedSumCompositeHeuristic()
 
     print("\nValidation baseline (motif_candidates_v2_timeouts_validation_report.json):")

@@ -13,6 +13,7 @@ import sympy as sp
 from sympy import Add, Expr, Integer, Mul, Pow
 
 from ...expr.tree import canonical_repr
+from ...soundness import safe_solve
 from ...state import EqState
 from ..base import Action, GuardResult
 from ..registry import default_registry
@@ -107,7 +108,7 @@ class PolynomialLongDivision:
         # Roots of divisor become excluded if cancellation happens
         new_excluded: list[Expr] = []
         if state.var in divisor.free_symbols:
-            new_excluded.extend(sp.solve(divisor, state.var))
+            new_excluded.extend(safe_solve(divisor, state.var))
         return GuardResult.passing(new_excluded=new_excluded)
 
     def apply(self, state: EqState, action: Action) -> EqState:
@@ -204,7 +205,7 @@ class RationalRootTheorem:
                 continue
             # Check if polynomial has at least one rational root
             try:
-                roots = sp.solve(expr, state.var, rational=True)
+                roots = safe_solve(expr, state.var, rational=True)
             except Exception:
                 continue
             rational_roots = [r for r in roots if r.is_rational]
@@ -219,7 +220,7 @@ class RationalRootTheorem:
         side = action.target_side
         expr = state.lhs if side == "lhs" else state.rhs
         try:
-            roots = sp.solve(expr, state.var, rational=True)
+            roots = safe_solve(expr, state.var, rational=True)
         except Exception:
             return state
         rational_roots = [r for r in roots if r.is_rational]

@@ -89,11 +89,73 @@ def _generate_hard(job: dict) -> dict[str, Any]:
     }
 
 
+def _generate_round2(job: dict) -> dict[str, Any]:
+    """Round 2: dispatch by `category` to the round2_categories registry."""
+    from ggmr.problems.round2_categories import CATEGORIES
+
+    category = job["category"]
+    seed = int(job["seed"])
+    problem_id = job["problem_id"]
+    bfs_budget = int(job.get("bfs_budget", 5_000))
+    depth = int(job.get("depth", 0))
+
+    if category not in CATEGORIES:
+        return {
+            "problem_id": problem_id,
+            "records": [],
+            "skipped": True,
+            "reason": f"unknown_category: {category}",
+        }
+
+    rng = random.Random(seed)
+    try:
+        instance = CATEGORIES[category](rng, depth)
+    except Exception as e:
+        return {
+            "problem_id": problem_id,
+            "records": [],
+            "skipped": True,
+            "reason": f"gen_fail: {type(e).__name__}: {e}",
+        }
+
+    records = extract_training_pairs(
+        instance.eq_state,
+        instance.target_eq_state,
+        max_nodes=bfs_budget,
+        max_depth=30,
+    )
+    if records is None:
+        return {
+            "problem_id": problem_id,
+            "records": [],
+            "skipped": True,
+            "reason": "bfs_budget_exhausted",
+        }
+    _annotate(
+        records,
+        source="round2",
+        template=instance.category,
+        family=instance.motif_family,
+        depth=depth,
+        problem_id=problem_id,
+    )
+    for r in records:
+        r["category"] = category
+    return {
+        "problem_id": problem_id,
+        "records": records,
+        "skipped": False,
+        "reason": "",
+    }
+
+
 def generate_one(job: dict) -> dict[str, Any]:
     if job["source"] == "easy":
         return _generate_easy(job)
     if job["source"] == "hard":
         return _generate_hard(job)
+    if job["source"] == "round2":
+        return _generate_round2(job)
     return {
         "problem_id": job.get("problem_id", "<unknown>"),
         "records": [],

@@ -51,3 +51,42 @@ def plan_hard_jobs(count: int, seed: int) -> list[dict]:
             "problem_id": f"hard_{family}_{idx:05d}",
         })
     return jobs
+
+
+# Depth cycle used by round2 medium/hard categories: maps idx → advisory depth
+# value carried in the JSONL `depth` field. Trivial/easy ignore this.
+_ROUND2_DEPTH_CYCLE = (3, 5, 8, 10, 12, 15)
+
+
+def plan_round2_jobs(*, jobs_per_category: int = 1000, seed: int = 42) -> list[dict]:
+    """Plan ~35 * jobs_per_category jobs, one per (category, idx).
+
+    Deterministic seeding: each (category, idx) pair maps to a stable job_seed.
+    Categories that need a `bfs_budget` and per-tier timeout look up
+    `bfs_budget_for(category)` / `timeout_for(category)` from round2_categories.
+    """
+    from ..problems.round2_categories import (
+        CATEGORIES,
+        bfs_budget_for,
+        timeout_for,
+    )
+
+    if jobs_per_category <= 0:
+        return []
+    jobs: list[dict] = []
+    for cat_name in CATEGORIES.keys():
+        for idx in range(jobs_per_category):
+            job_seed = (
+                seed * 1_000_003 + hash(("round2", cat_name, idx)) % 1_000_003
+            )
+            depth = _ROUND2_DEPTH_CYCLE[idx % len(_ROUND2_DEPTH_CYCLE)]
+            jobs.append({
+                "source": "round2",
+                "category": cat_name,
+                "depth": depth,
+                "seed": job_seed,
+                "problem_id": f"round2_{cat_name}_{idx:05d}",
+                "bfs_budget": bfs_budget_for(cat_name),
+                "timeout_s": timeout_for(cat_name),
+            })
+    return jobs

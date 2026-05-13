@@ -13,6 +13,7 @@ import sympy as sp
 from sympy import Add, Expr, Integer, Mul, Pow, Symbol
 
 from ...expr.tree import canonical_repr, iter_subtrees
+from ...soundness import safe_solve
 from ...state import EqState
 from ..base import Action, GuardResult
 from ..registry import default_registry
@@ -97,7 +98,7 @@ class CancelCommonFactor:
         # `factor == 0` would otherwise be excluded from the domain — we add them
         # to `excluded` so the next-state's solution set is `parent ∩ {factor != 0}`.
         if state.var in factor.free_symbols:
-            roots = sp.solve(factor, state.var)
+            roots = safe_solve(factor, state.var)
             return GuardResult.passing(new_excluded=roots)
         if factor == sp.Integer(0):
             return GuardResult.failing("cannot cancel a constantly-zero factor")
@@ -176,7 +177,7 @@ class ClearFractionsByLCD:
         except Exception:
             pass
         if state.var in lcd.free_symbols:
-            roots = sp.solve(lcd, state.var)
+            roots = safe_solve(lcd, state.var)
             return GuardResult.passing(new_excluded=roots)
         return GuardResult.passing()
 
@@ -228,9 +229,9 @@ class CrossMultiply:
         _, r_den = _split_num_den(state.rhs)
         new_excluded: list[Expr] = []
         if state.var in l_den.free_symbols:
-            new_excluded.extend(sp.solve(l_den, state.var))
+            new_excluded.extend(safe_solve(l_den, state.var))
         if state.var in r_den.free_symbols:
-            new_excluded.extend(sp.solve(r_den, state.var))
+            new_excluded.extend(safe_solve(r_den, state.var))
         # Check denominators non-zero literally
         if l_den == Integer(0) or r_den == Integer(0):
             return GuardResult.failing("denominator is zero")
@@ -292,7 +293,7 @@ class CombineFractionsAt:
             if d == Integer(0):
                 return GuardResult.failing("denominator is zero")
             if state.var in d.free_symbols:
-                new_excluded.extend(sp.solve(d, state.var))
+                new_excluded.extend(safe_solve(d, state.var))
         return GuardResult.passing(new_excluded=new_excluded)
 
     def apply(self, state: EqState, action: Action) -> EqState:
@@ -360,7 +361,7 @@ class SplitFractionAt:
             return GuardResult.failing("denominator is zero")
         new_excluded: list[Expr] = []
         if state.var in c.free_symbols:
-            new_excluded.extend(sp.solve(c, state.var))
+            new_excluded.extend(safe_solve(c, state.var))
         return GuardResult.passing(new_excluded=new_excluded)
 
     def apply(self, state: EqState, action: Action) -> EqState:
@@ -413,7 +414,7 @@ class CommonDenominatorAt:
             if d == Integer(0):
                 return GuardResult.failing("denominator is zero")
             if state.var in d.free_symbols:
-                new_excluded.extend(sp.solve(d, state.var))
+                new_excluded.extend(safe_solve(d, state.var))
         return GuardResult.passing(new_excluded=new_excluded)
 
     def apply(self, state: EqState, action: Action) -> EqState:
@@ -536,7 +537,7 @@ class PartialFractions:
         _, d = _split_num_den(expr)
         new_excluded: list[Expr] = []
         if state.var in d.free_symbols:
-            new_excluded.extend(sp.solve(d, state.var))
+            new_excluded.extend(safe_solve(d, state.var))
         return GuardResult.passing(new_excluded=new_excluded)
 
     def apply(self, state: EqState, action: Action) -> EqState:

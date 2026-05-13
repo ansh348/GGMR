@@ -25,11 +25,46 @@ class IllegalStepError(Exception):
         super().__init__(f"{problem_id} step {step_idx}: {reason}")
 
 
+def safe_solve(expr, var: Symbol, **kwargs) -> list:
+    """Solve `expr = 0` (or `expr` directly) for `var`. Falls back to
+    `solveset(..., domain=Reals)` on NotImplementedError. Returns a list of
+    solutions (possibly empty). Forwards kwargs (e.g., `rational=True`) to
+    `sp.solve`; kwargs are dropped for the solveset fallback path.
+    """
+    try:
+        sols = sp.solve(expr, var, **kwargs)
+        if isinstance(sols, dict):
+            sols = list(sols.values())
+        return sols
+    except NotImplementedError:
+        ss = sp.solveset(expr, var, domain=sp.S.Reals)
+        if ss == sp.S.EmptySet:
+            return []
+        if hasattr(ss, "is_FiniteSet") and ss.is_FiniteSet:
+            return list(ss)
+        raise
+
+
 def solution_set(lhs: sp.Expr, rhs: sp.Expr, var: Symbol) -> frozenset:
-    """Solve lhs = rhs for var; return the simplified solution set as a frozenset."""
-    sols = sp.solve(Eq(lhs, rhs, evaluate=False), var)
-    if isinstance(sols, dict):
-        sols = list(sols.values())
+    """Solve lhs = rhs for var; return the simplified solution set as a frozenset.
+
+    Falls back to `sp.solveset(..., domain=Reals)` when `solve()` raises
+    NotImplementedError. This covers absolute-value equations like `|x| = 5`,
+    where solve() refuses on the un-declared real-domain symbol.
+    """
+    eq = Eq(lhs, rhs, evaluate=False)
+    try:
+        sols = sp.solve(eq, var)
+        if isinstance(sols, dict):
+            sols = list(sols.values())
+    except NotImplementedError:
+        ss = sp.solveset(eq, var, domain=sp.S.Reals)
+        if ss == sp.S.EmptySet:
+            sols = []
+        elif hasattr(ss, "is_FiniteSet") and ss.is_FiniteSet:
+            sols = list(ss)
+        else:
+            raise
     return frozenset(sp.simplify(s) for s in sols)
 
 

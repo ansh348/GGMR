@@ -1,0 +1,9 @@
+id,family,source,hand_found,hand_nodes,hand_time_ms,learned_found,learned_nodes,learned_time_ms
+hard_motif_v1_ex1_000,v1_ex1,hard,True,76,30037.615500004904,True,21,22544.182799996634
+hard_motif_L1_000,L1,hard,True,16,5070.391900000686,True,2,1270.0478000042494
+hard_motif_L3_000,L3,hard,True,914,212013.15460000478,True,2,1679.6554999964428
+hard_motif_P3_000,P3,hard,True,886,399299.5685999995,True,2,2491.280399997777
+hard_motif_P4_000,P4,hard,True,257,439672.3400000046,True,25,73210.73169999727
+hard_motif_R1_000,R1,hard,True,9,2409.784800001944,True,2,1063.832599997113
+hard_motif_R2_000,R2,hard,True,9,2785.6421999968006,True,3,2423.6406999989413
+hard_motif_v1_ex1_001,v1_ex1,hard,True,163,75943.49169999623,True,18,20897.447899995313

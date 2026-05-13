@@ -13,6 +13,7 @@ import sympy as sp
 from sympy import Add, Expr, Mul, Pow
 
 from ...expr.tree import canonical_repr
+from ...soundness import safe_solve
 from ...state import EqState
 from ..base import Action, GuardResult
 from ..registry import default_registry
@@ -134,7 +135,7 @@ class MultiplyBothSidesBy:
         if _is_symbolically_zero(c):
             return GuardResult.failing("multiplier simplifies to zero")
         if state.var in c.free_symbols:
-            roots_of_c = sp.solve(c, state.var)
+            roots_of_c = safe_solve(c, state.var)
             return GuardResult.passing(new_excluded=roots_of_c)
         return GuardResult.passing()
 
@@ -182,7 +183,7 @@ class DivideBothSidesBy:
         if _is_symbolically_zero(c):
             return GuardResult.failing("divisor simplifies to zero")
         if state.var in c.free_symbols:
-            roots_of_c = sp.solve(c, state.var)
+            roots_of_c = safe_solve(c, state.var)
             return GuardResult.passing(new_excluded=roots_of_c)
         return GuardResult.passing()
 
@@ -430,6 +431,116 @@ default_registry.register(SquareBothSides())
 
 
 # ---------------------------------------------------------------------------
+# 19b. NTH_ROOT_BOTH_SIDES(n) — when one side is Pow(_, n) with integer n>=3,
+#      extract the principal nth root. Sibling of SQRT_BOTH_SIDES (which handles n=2).
+# ---------------------------------------------------------------------------
+
+
+class NthRootBothSides:
+    """Principal nth root of both sides for n >= 3.
+
+    For even n: the other side must be is_nonnegative (same guard as sqrt).
+    For odd n:  no sign restriction; sp.real_root returns the real branch
+                (sp.Pow(-27, Rational(1,3)) gives a complex principal root).
+    n=2 is intentionally skipped (SqrtBothSides covers it).
+    """
+
+    name = "NTH_ROOT_BOTH_SIDES"
+    arity = 1  # parameter = root degree n (principal root only, no sign branch)
+
+    def enumerate(self, state: EqState) -> Iterator[Action]:
+        for side in ("lhs", "rhs"):
+            powered = state.lhs if side == "lhs" else state.rhs
+            other = state.rhs if side == "lhs" else state.lhs
+            if not (isinstance(powered, Pow) and powered.args[1].is_Integer):
+                continue
+            n_sym = powered.args[1]
+            if n_sym < sp.Integer(3):
+                continue
+            n = int(n_sym)
+            if n % 2 == 0:
+                try:
+                    if not (other.is_real is True and other.is_nonnegative is True):
+                        continue
+                except Exception:
+                    continue
+            yield Action(self.name, params=(sp.Integer(n),), target_side=side)
+
+    def guard(self, state: EqState, action: Action) -> GuardResult:
+        return GuardResult.passing()
+
+    def apply(self, state: EqState, action: Action) -> EqState:
+        side = action.target_side
+        (n_sym,) = action.params
+        n = int(n_sym)
+        if side == "lhs":
+            base = state.lhs.args[0]
+            return state.with_lhs_rhs(base, self._nth_root(state.rhs, n))
+        base = state.rhs.args[0]
+        return state.with_lhs_rhs(self._nth_root(state.lhs, n), base)
+
+    @staticmethod
+    def _nth_root(expr: Expr, n: int) -> Expr:
+        if n % 2 == 1:
+            return sp.real_root(expr, n)
+        return Pow(expr, sp.Rational(1, n), evaluate=False)
+
+
+default_registry.register(NthRootBothSides())
+
+
+# ---------------------------------------------------------------------------
+# 19c. SPLIT_ABSOLUTE_VALUE(sign) — |f(x)| = c becomes f(x) = c or f(x) = -c.
+#      Multi-successor support comes from emitting TWO Actions in enumerate();
+#      A* explores each as an alternate child.
+# ---------------------------------------------------------------------------
+
+
+class SplitAbsoluteValue:
+    """Resolves |f(x)| = c into one of two branches: f(x) = c or f(x) = -c.
+
+    Fires when one entire side is `Abs(_)` and the other side is real and
+    (provably) non-negative. Each of the two enumerated Actions corresponds to
+    one branch; A* sees them as alternate children of the same parent.
+    """
+
+    name = "SPLIT_ABSOLUTE_VALUE"
+    arity = 1  # branch param: sp.Integer(1) for +c, sp.Integer(-1) for -c
+
+    def enumerate(self, state: EqState) -> Iterator[Action]:
+        for side in ("lhs", "rhs"):
+            abs_side = state.lhs if side == "lhs" else state.rhs
+            other = state.rhs if side == "lhs" else state.lhs
+            if not (hasattr(abs_side, "func") and abs_side.func == sp.Abs):
+                continue
+            try:
+                if not (other.is_real is True and other.is_nonnegative is True):
+                    continue
+            except Exception:
+                continue
+            yield Action(self.name, params=(sp.Integer(1),), target_side=side)
+            yield Action(self.name, params=(sp.Integer(-1),), target_side=side)
+
+    def guard(self, state: EqState, action: Action) -> GuardResult:
+        return GuardResult.passing()
+
+    def apply(self, state: EqState, action: Action) -> EqState:
+        side = action.target_side
+        (branch,) = action.params
+        negate = branch == sp.Integer(-1)
+        if side == "lhs":
+            inner = state.lhs.args[0]
+            new_rhs = Mul(sp.Integer(-1), state.rhs, evaluate=False) if negate else state.rhs
+            return state.with_lhs_rhs(inner, new_rhs)
+        inner = state.rhs.args[0]
+        new_lhs = Mul(sp.Integer(-1), state.lhs, evaluate=False) if negate else state.lhs
+        return state.with_lhs_rhs(new_lhs, inner)
+
+
+default_registry.register(SplitAbsoluteValue())
+
+
+# ---------------------------------------------------------------------------
 # 20. RECIPROCATE_BOTH_SIDES — lhs = rhs → 1/lhs = 1/rhs (both sides non-zero)
 # ---------------------------------------------------------------------------
 
@@ -452,9 +563,9 @@ class ReciprocateBothSides:
         # Propagate var-roots of lhs/rhs as excluded.
         new_excluded: list[Expr] = []
         if state.var in state.lhs.free_symbols:
-            new_excluded.extend(sp.solve(state.lhs, state.var))
+            new_excluded.extend(safe_solve(state.lhs, state.var))
         if state.var in state.rhs.free_symbols:
-            new_excluded.extend(sp.solve(state.rhs, state.var))
+            new_excluded.extend(safe_solve(state.rhs, state.var))
         return GuardResult.passing(new_excluded=new_excluded)
 
     def apply(self, state: EqState, action: Action) -> EqState:

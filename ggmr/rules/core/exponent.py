@@ -18,6 +18,7 @@ import sympy as sp
 from sympy import Add, Expr, Integer, Mul, Pow
 
 from ...expr.tree import canonical_repr
+from ...soundness import safe_solve
 from ...state import EqState
 from ..base import Action, GuardResult
 from ..registry import default_registry
@@ -159,7 +160,7 @@ class PowQuotientAt:
             return GuardResult.failing("base simplifies to zero")
         new_excluded: list[Expr] = []
         if state.var in base.free_symbols:
-            new_excluded.extend(sp.solve(base, state.var))
+            new_excluded.extend(safe_solve(base, state.var))
         return GuardResult.passing(new_excluded=new_excluded)
 
     def apply(self, state: EqState, action: Action) -> EqState:

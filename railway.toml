@@ -5,11 +5,11 @@ builder = "nixpacks"
 providers = ["python"]
 
 [deploy]
-startCommand = """(cd /data && python -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server.log 2>&1) & \
-  echo "HTTP file server backgrounded on port ${PORT:-8080}; download from https://ggmr-production.up.railway.app/" && \
-  pip install -e . && \
+startCommand = """pip install -e . && \
   python -c "import ggmr; print('ggmr import OK')" && \
   mkdir -p /data/exit_v2 && \
+  (cd /data && python -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server.log 2>&1 &) && \
+  echo "HTTP file server backgrounded on port ${PORT:-8080}; download from https://ggmr-production.up.railway.app/" && \
   echo "=== PHASE 3 v2: ITERS 1-2 (resume from iter 0 in /data/exit_v1) ===" && \
   python scripts/run_exit.py \
     --value-ckpt /data/exit_v1/value_iter_00.pt \
@@ -31,7 +31,7 @@ startCommand = """(cd /data && python -m http.server ${PORT:-8080} --bind 0.0.0.
     --output /data/exit_v2/EXIT_V2_RESULTS.md \
     --device cpu && \
   echo "=== DONE; files at https://ggmr-production.up.railway.app/ ===" ; \
-  wait"""
+  tail -f /dev/null"""
 
 [[deploy.volumes]]
 name = "round2-data"

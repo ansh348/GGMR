@@ -26,6 +26,7 @@ import argparse
 import json
 import logging
 import random
+import sys
 import time
 from pathlib import Path
 
@@ -242,13 +243,32 @@ def main() -> int:
                         help="seconds before MCTS on a single problem is aborted (Unix only)")
     parser.add_argument("--progress-every", type=int, default=50)
     parser.add_argument("--log-level", default="INFO")
+    parser.add_argument("--start-iteration", type=int, default=0,
+                        help="Skip iterations < this index (for resume from existing checkpoints). "
+                             "When >0, --policy-ckpt-init must point at iter N-1's policy.pt.")
+    parser.add_argument("--collection-timeout", type=int, default=3600,
+                        help="Per-iteration MCTS collection timeout in seconds; cancels pending "
+                             "futures if exceeded. Defends against silent worker hangs.")
     args = parser.parse_args()
 
     logging.basicConfig(
         level=getattr(logging, args.log_level.upper()),
         format="%(asctime)s %(levelname)s %(message)s",
+        force=True,
+        handlers=[logging.StreamHandler(stream=sys.stdout)],
     )
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(line_buffering=True)
     args.output_dir.mkdir(parents=True, exist_ok=True)
+
+    if args.start_iteration > 0 and (
+        args.policy_ckpt_init is None or not args.policy_ckpt_init.exists()
+    ):
+        logger.error(
+            f"--start-iteration={args.start_iteration} requires --policy-ckpt-init pointing "
+            f"at a valid checkpoint (cannot pre-train policy mid-resume)."
+        )
+        return 1
 
     _set_seed(args.seed)
 
@@ -306,7 +326,7 @@ def main() -> int:
     # Step 6: run iterations
     all_results: list[dict] = []
     t_start = time.perf_counter()
-    for it in range(args.iterations):
+    for it in range(args.start_iteration, args.iterations):
         logger.info(f"\n===== ExIt iteration {it + 1}/{args.iterations} =====")
         train_problems, held_out = generate_exit_problems(
             num_problems=args.num_problems,
@@ -348,6 +368,7 @@ def main() -> int:
             max_workers=args.max_workers,
             timeout_per_problem=args.timeout_per_problem,
             progress_every=args.progress_every,
+            collection_timeout_s=args.collection_timeout,
         )
         all_results.append({
             "iteration": result.iteration,

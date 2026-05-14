@@ -16,15 +16,18 @@ cross-entropy against the BFS-optimal rule_name.
 
 from __future__ import annotations
 
+import gc
 import json
 import logging
 import math
+import multiprocessing as mp
 import os
 import platform
 import random
 import time
 from collections import defaultdict, deque
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, TimeoutError as FuturesTimeout, as_completed
+from concurrent.futures.process import BrokenProcessPool
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Iterable
@@ -473,6 +476,7 @@ def _mcts_worker_fn(args: tuple) -> dict:
 
     pid = problem_dict.get("problem_id", "<unknown>")
 
+    _set_alarm(timeout_s)
     try:
         initial = _deserialize_state(problem_dict["initial"])
         target = _deserialize_state(problem_dict["target"])
@@ -481,21 +485,19 @@ def _mcts_worker_fn(args: tuple) -> dict:
         va = ValueAdvisor(value_ckpt_path, device="cpu")
         pa = PolicyAdvisor(policy_ckpt_path, device="cpu")
 
-        _set_alarm(timeout_s)
-        try:
-            result = mcts_search(
-                initial, is_target,
-                value_fn=va.value_fn, policy_fn=pa.policy_fn,
-                num_simulations=num_simulations, max_moves=max_moves, c_puct=c_puct,
-            )
-        finally:
-            _clear_alarm()
+        result = mcts_search(
+            initial, is_target,
+            value_fn=va.value_fn, policy_fn=pa.policy_fn,
+            num_simulations=num_simulations, max_moves=max_moves, c_puct=c_puct,
+        )
     except TimeoutError:
         return {"problem_id": pid, "found": False, "reason": "timeout",
                 "total_simulations": 0}
     except Exception as e:  # noqa: BLE001
         return {"problem_id": pid, "found": False,
                 "reason": f"{type(e).__name__}: {e}", "total_simulations": 0}
+    finally:
+        _clear_alarm()
 
     if not result.found:
         return {"problem_id": pid, "found": False, "reason": "not_solved",
@@ -585,6 +587,7 @@ def collect_mcts_trajectories(
     max_workers: int | None = None,
     timeout_per_problem: int = 120,
     progress_every: int = 50,
+    collection_timeout_s: int | None = 3600,
 ) -> tuple[list[ValueTuple], list[PolicyTuple], dict]:
     """Run MCTS on each problem in parallel via ProcessPoolExecutor.
 
@@ -654,19 +657,40 @@ def collect_mcts_trajectories(
             if (i + 1) % progress_every == 0:
                 _log_progress(i + 1)
     else:
-        with ProcessPoolExecutor(max_workers=max_workers) as pool:
+        # spawn context: avoid Linux fork() copy-on-write amplification of parent
+        # state (trained nets + replay buffer + PyTorch state) across 32 workers,
+        # which can cause silent OOM-kill cascades and broken-pool hangs.
+        ctx = mp.get_context("spawn")
+        with ProcessPoolExecutor(max_workers=max_workers, mp_context=ctx) as pool:
             futures = [pool.submit(_mcts_worker_fn, args) for args in job_args]
-            for i, fut in enumerate(as_completed(futures)):
-                try:
-                    result = fut.result()
-                except Exception as e:  # noqa: BLE001
-                    logger.warning(f"worker future raised: {type(e).__name__}: {e}")
-                    n_failed += 1
-                    result = None
-                if result is not None:
-                    _consume(result)
-                if (i + 1) % progress_every == 0:
-                    _log_progress(i + 1)
+            try:
+                for i, fut in enumerate(as_completed(futures, timeout=collection_timeout_s)):
+                    try:
+                        result = fut.result()
+                    except Exception as e:  # noqa: BLE001
+                        logger.warning(f"worker future raised: {type(e).__name__}: {e}")
+                        n_failed += 1
+                        result = None
+                    if result is not None:
+                        _consume(result)
+                    if (i + 1) % progress_every == 0:
+                        _log_progress(i + 1)
+            except FuturesTimeout:
+                n_pending = sum(1 for f in futures if not f.done())
+                logger.error(
+                    f"MCTS collection exceeded {collection_timeout_s}s; cancelling "
+                    f"{n_pending} pending futures. solved={n_solved} timeouts={n_timeouts} "
+                    f"unsound={n_unsound} failed={n_failed}"
+                )
+                for fut in futures:
+                    if not fut.done():
+                        fut.cancel()
+            except BrokenProcessPool as e:
+                logger.error(
+                    f"ProcessPoolExecutor broken (likely OOM-killed workers): {e}. "
+                    f"solved={n_solved} before crash."
+                )
+                raise
 
     # Final progress line so we always see a summary even if not on a 50-mark
     _log_progress(len(job_args))
@@ -839,9 +863,11 @@ def run_one_iteration(
     max_workers: int | None = None,
     timeout_per_problem: int = 120,
     progress_every: int = 50,
+    collection_timeout_s: int | None = 3600,
 ) -> IterationResult:
     """One ExIt cycle: MCTS (parallel) -> append buffer -> train both nets -> eval -> checkpoint."""
     logger.info(f"=== iteration {iteration}: MCTS on {len(problems)} problems ===")
+    gc.collect()
     value_path, policy_path = _save_inflight_checkpoints(value_net, policy_net, output_dir)
     value_tuples, policy_tuples, mcts_stats = collect_mcts_trajectories(
         problems,
@@ -853,6 +879,7 @@ def run_one_iteration(
         max_workers=max_workers,
         timeout_per_problem=timeout_per_problem,
         progress_every=progress_every,
+        collection_timeout_s=collection_timeout_s,
     )
     logger.info(f"MCTS stats: {mcts_stats}")
     for v, p in zip(value_tuples, policy_tuples):

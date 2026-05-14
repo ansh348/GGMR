@@ -35,3 +35,5 @@ startCommand = """pip install -e . && \
 [[deploy.volumes]]
 name = "round2-data"
 mountPath = "/data"
+
+# deploy-trigger: 2026-05-14

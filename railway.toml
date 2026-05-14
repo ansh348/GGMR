@@ -20,6 +20,7 @@ startCommand = """pip install -e . && \
     --iterations 3 \
     --simulations 400 \
     --num-problems 1000 \
+    --max-workers 32 \
     --device cpu && \
   echo "=== PHASE 3: EVALUATION ===" && \
   python -m ggmr.training.evaluate_exit \

@@ -45,8 +45,7 @@ tmp/
 ggmr/training/*.jsonl
 
 # Phase 3 smoke artifacts (regenerable dev outputs)
-checkpoints/exit_smoke/
-checkpoints/exit_smoke_run/
+checkpoints/exit_smoke*/
 warmstart_smoke.jsonl
 
 # Jupyter checkpoints

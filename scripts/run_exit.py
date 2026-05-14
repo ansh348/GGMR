@@ -236,6 +236,11 @@ def main() -> int:
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--held-out-eval-sims", type=int, default=200)
     parser.add_argument("--buffer-size", type=int, default=50_000)
+    parser.add_argument("--max-workers", type=int, default=None,
+                        help="MCTS worker processes (default: min(32, cpu_count))")
+    parser.add_argument("--timeout-per-problem", type=int, default=120,
+                        help="seconds before MCTS on a single problem is aborted (Unix only)")
+    parser.add_argument("--progress-every", type=int, default=50)
     parser.add_argument("--log-level", default="INFO")
     args = parser.parse_args()
 
@@ -312,10 +317,6 @@ def main() -> int:
         held_pids = {p.problem_id for p in held_out}
         logger.info(f"problems: train={len(train_problems)} held_out={len(held_out)}")
 
-        # Live advisors wrap current nets (no disk reload)
-        va = _live_value_advisor(value_net, args.device)
-        pa = _live_policy_advisor(policy_net, args.device)
-
         def eval_fn(vn, pn):
             return _quick_eval_held_out(
                 vn, pn, held_out,
@@ -332,7 +333,6 @@ def main() -> int:
             problems=train_problems,
             eval_problem_ids=eval_pids | held_pids,
             value_net=value_net, policy_net=policy_net,
-            value_advisor=va, policy_advisor=pa,
             buffer=buffer,
             num_simulations=args.simulations,
             max_moves=args.max_moves,
@@ -345,6 +345,9 @@ def main() -> int:
             output_dir=args.output_dir,
             device=args.device,
             eval_fn=eval_fn,
+            max_workers=args.max_workers,
+            timeout_per_problem=args.timeout_per_problem,
+            progress_every=args.progress_every,
         )
         all_results.append({
             "iteration": result.iteration,

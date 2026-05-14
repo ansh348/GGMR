@@ -6,15 +6,30 @@ providers = ["python"]
 
 [deploy]
 startCommand = """pip install -e . && \
-  mkdir -p /data && \
-  python scripts/generate_round2.py \
-    --output /data/training_data_round2.jsonl \
-    --report /data/round2_distribution_report.json \
-    --jobs-per-category 1000 \
-    --workers 32 \
-    --progress && \
-  echo "DONE: $(wc -l < /data/training_data_round2.jsonl) pairs in /data/training_data_round2.jsonl" && \
-  python -m http.server 8080 --directory /data"""
+  mkdir -p /data/exit_v1 && \
+  echo "=== PHASE 3: WARM-START DATA ===" && \
+  python scripts/extract_policy_warmstart_data.py \
+    --num-problems 900 \
+    --output /data/policy_warmstart.jsonl \
+    --max-workers 32 && \
+  echo "=== PHASE 3: EXIT LOOP (3 iterations) ===" && \
+  python scripts/run_exit.py \
+    --value-ckpt checkpoints/round2/best.pt \
+    --warmstart-data /data/policy_warmstart.jsonl \
+    --output-dir /data/exit_v1 \
+    --iterations 3 \
+    --simulations 400 \
+    --num-problems 1000 \
+    --device cpu && \
+  echo "=== PHASE 3: EVALUATION ===" && \
+  python -m ggmr.training.evaluate_exit \
+    --value-ckpt /data/exit_v1/value_iter_02.pt \
+    --policy-ckpt /data/exit_v1/policy_iter_02.pt \
+    --problems all \
+    --output /data/exit_v1/EXIT_RESULTS.md \
+    --device cpu && \
+  echo "=== DONE ===" && \
+  cd /data && python -m http.server 8080"""
 
 [[deploy.volumes]]
 name = "round2-data"

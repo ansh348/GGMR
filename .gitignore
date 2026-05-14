@@ -44,5 +44,10 @@ ggmr/problems/partial_500_log.txt
 tmp/
 ggmr/training/*.jsonl
 
+# Phase 3 smoke artifacts (regenerable dev outputs)
+checkpoints/exit_smoke/
+checkpoints/exit_smoke_run/
+warmstart_smoke.jsonl
+
 # Jupyter checkpoints
 .ipynb_checkpoints/

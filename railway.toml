@@ -6,6 +6,7 @@ providers = ["python"]
 
 [deploy]
 startCommand = """pip install -e . && \
+  export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 && \
   python -c "import ggmr; print('ggmr import OK')" && \
   mkdir -p /data/exit_v2 && \
   (cd /data && python -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server.log 2>&1 &) && \

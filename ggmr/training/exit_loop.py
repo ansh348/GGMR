@@ -139,6 +139,30 @@ class ReplayBuffer:
         if leak:
             raise AssertionError(f"replay buffer leaked eval pids: {sorted(leak)[:5]}")
 
+    def save(self, path: Path | str) -> None:
+        """Persist buffer to disk so a resumed run can carry over collected MCTS data
+        (the whole point of ExIt — iter N's exploration must be available to iter N+1)."""
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        torch.save({
+            "max_size": self.max_size,
+            "value_buf": list(self._value_buf),
+            "policy_buf": list(self._policy_buf),
+            "pids": list(self._pids),
+        }, path)
+
+    @classmethod
+    def load(cls, path: Path | str, held_out_pids: set[str] | None = None) -> "ReplayBuffer":
+        """Restore a buffer saved by `save()`. The new buffer's held_out_pids is set
+        fresh from the current eval set (the saved data was already filtered, but
+        sanity_check_no_leak will re-verify against today's eval pids)."""
+        payload = torch.load(path, map_location="cpu", weights_only=False)
+        buf = cls(max_size=payload["max_size"], held_out_pids=held_out_pids)
+        buf._value_buf.extend(payload["value_buf"])
+        buf._policy_buf.extend(payload["policy_buf"])
+        buf._pids.extend(payload["pids"])
+        return buf
+
 
 # ----------------------- warm-start data loading ----------------------------
 
@@ -897,6 +921,14 @@ def run_one_iteration(
     )
 
     eval_stats = eval_fn(value_net, policy_net) if eval_fn is not None else {}
+
+    # Persist buffer so a resumed run can keep iter N's MCTS exploration data.
+    # Without this the replay buffer is in-memory only and ExIt stops being cumulative
+    # across deployments — iter N+1 would train on only warmstart + its own tuples,
+    # discarding everything iter N collected.
+    buffer_path = output_dir / f"buffer_iter_{iteration:02d}.pt"
+    buffer.save(buffer_path)
+    logger.info(f"buffer persisted: {buffer_path} ({len(buffer)} tuples)")
 
     value_ckpt, policy_ckpt = save_checkpoints(
         value_net, policy_net, output_dir, iteration,

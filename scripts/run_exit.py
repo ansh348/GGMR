@@ -245,10 +245,22 @@ def main() -> int:
     parser.add_argument("--log-level", default="INFO")
     parser.add_argument("--start-iteration", type=int, default=0,
                         help="Skip iterations < this index (for resume from existing checkpoints). "
-                             "When >0, --policy-ckpt-init must point at iter N-1's policy.pt.")
+                             "When >0, --policy-ckpt-init must point at iter N-1's policy.pt, "
+                             "AND --resume-buffer must point at iter N-1's buffer.pt (else error). "
+                             "ExIt without a cumulative buffer is not ExIt — iter N-1's MCTS "
+                             "exploration data must survive into iter N.")
     parser.add_argument("--collection-timeout", type=int, default=3600,
                         help="Per-iteration MCTS collection timeout in seconds; cancels pending "
                              "futures if exceeded. Defends against silent worker hangs.")
+    parser.add_argument("--resume-buffer", type=Path, default=None,
+                        help="Path to a buffer_iter_NN.pt file from a previous run. When loaded, "
+                             "warmstart-seeding is skipped (the saved buffer already contains "
+                             "warmstart + MCTS tuples accumulated from prior iters).")
+    parser.add_argument("--allow-warmstart-only-resume", action="store_true",
+                        help="Escape hatch: with --start-iteration >0 and no buffer to resume, "
+                             "fall back to warmstart-only seeding. WARNING: this discards prior "
+                             "iters' MCTS data and breaks ExIt's cumulative property. Use only "
+                             "if you intentionally want SL-from-warmstart starting at iter N.")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -318,10 +330,55 @@ def main() -> int:
     eval_pids: set[str] = {p.id for p in hard} | {p.id for p in phase0}
     logger.info(f"eval pids (hard+phase0): {len(eval_pids)}")
 
-    # Step 5: build replay buffer; seed with warm-start tuples
-    buffer = ReplayBuffer(max_size=args.buffer_size, held_out_pids=set())
-    n_seeded = _seed_buffer_from_warmstart(args.warmstart_data, buffer)
-    logger.info(f"seeded buffer with {n_seeded} warm-start tuples")
+    # Step 5: build replay buffer. Three paths:
+    #   (a) explicit --resume-buffer: load saved buffer, skip warmstart-seed (already inside)
+    #   (b) --start-iteration > 0 without --resume-buffer:
+    #         try auto-detect at value_ckpt.parent/buffer_iter_{N-1:02d}.pt, then either
+    #         load it OR error loudly (with escape hatch --allow-warmstart-only-resume).
+    #         This is to prevent the silent ExIt-is-not-cumulative bug that bit us last run.
+    #   (c) cold start (iter 0 or explicit opt-out): seed buffer with warmstart tuples only.
+    if args.resume_buffer is not None:
+        if not args.resume_buffer.exists():
+            logger.error(f"--resume-buffer {args.resume_buffer} does not exist")
+            return 1
+        logger.info(f"loading replay buffer from {args.resume_buffer}")
+        buffer = ReplayBuffer.load(args.resume_buffer, held_out_pids=set())
+        logger.info(f"loaded buffer: {len(buffer)} tuples (skipping warmstart-seed)")
+    elif args.start_iteration > 0:
+        auto_path = args.value_ckpt.parent / f"buffer_iter_{args.start_iteration - 1:02d}.pt"
+        if auto_path.exists():
+            logger.info(f"auto-detected prior buffer at {auto_path}")
+            buffer = ReplayBuffer.load(auto_path, held_out_pids=set())
+            logger.info(f"loaded buffer: {len(buffer)} tuples (skipping warmstart-seed)")
+        elif args.allow_warmstart_only_resume:
+            logger.warning(
+                f"--start-iteration={args.start_iteration} with no buffer to resume; "
+                f"falling back to warmstart-only seeding (--allow-warmstart-only-resume set). "
+                f"WARNING: this discards prior iters' MCTS data and breaks ExIt's cumulative "
+                f"property. The run will train SL-from-warmstart starting at iter "
+                f"{args.start_iteration}, not real ExIt."
+            )
+            buffer = ReplayBuffer(max_size=args.buffer_size, held_out_pids=set())
+            n_seeded = _seed_buffer_from_warmstart(args.warmstart_data, buffer)
+            logger.info(f"seeded buffer with {n_seeded} warm-start tuples")
+        else:
+            logger.error(
+                f"--start-iteration={args.start_iteration} requires a buffer to resume from "
+                f"(ExIt without a cumulative buffer is not ExIt — iter N-1's MCTS exploration "
+                f"data must survive into iter N).\n"
+                f"  Auto-looked at: {auto_path} (not found)\n"
+                f"  Fixes (pick one):\n"
+                f"    1. Pass --resume-buffer <path/to/buffer_iter_{args.start_iteration - 1:02d}.pt>\n"
+                f"    2. Pass --allow-warmstart-only-resume to consciously fall back to warmstart "
+                f"(NOT real ExIt; useful only for SL-from-warmstart at iter "
+                f"{args.start_iteration})\n"
+                f"    3. Pass --start-iteration 0 to start fresh"
+            )
+            return 1
+    else:
+        buffer = ReplayBuffer(max_size=args.buffer_size, held_out_pids=set())
+        n_seeded = _seed_buffer_from_warmstart(args.warmstart_data, buffer)
+        logger.info(f"seeded buffer with {n_seeded} warm-start tuples")
 
     # Step 6: run iterations
     all_results: list[dict] = []

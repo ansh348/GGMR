@@ -5,37 +5,13 @@ builder = "nixpacks"
 providers = ["python"]
 
 [deploy]
-startCommand = """pip install -e . && \
-  export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 && \
-  python -c "import ggmr; print('ggmr import OK')" && \
-  mkdir -p /data/exit_v2 && \
-  (cd /data && python -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server.log 2>&1 &) && \
-  echo "HTTP file server backgrounded on port ${PORT:-8080}; download from https://ggmr-production.up.railway.app/" && \
-  echo "=== PHASE 3 v2: ITERS 1-2 (resume from iter 0 in /data/exit_v1) ===" && \
-  python scripts/run_exit.py \
-    --value-ckpt /data/exit_v1/value_iter_00.pt \
-    --policy-ckpt-init /data/exit_v1/policy_iter_00.pt \
-    --warmstart-data /data/policy_warmstart.jsonl \
-    --output-dir /data/exit_v2 \
-    --iterations 3 \
-    --start-iteration 1 \
-    --simulations 400 \
-    --num-problems 1000 \
-    --max-workers 32 \
-    --device cpu \
-    --collection-timeout 3600 && \
-  echo "=== PHASE 3 v2: EVALUATION ===" && \
-  python -m ggmr.training.evaluate_exit \
-    --value-ckpt /data/exit_v2/value_iter_02.pt \
-    --policy-ckpt /data/exit_v2/policy_iter_02.pt \
-    --problems all \
-    --output /data/exit_v2/EXIT_V2_RESULTS.md \
-    --device cpu && \
-  echo "=== DONE; files at https://ggmr-production.up.railway.app/ ===" ; \
-  tail -f /dev/null"""
+# Training phase 3 v2 is complete; iter_v1 (9.37x hard, the headline result) and
+# iter_v2 results are on /data. This deploy just serves /data over HTTP so the
+# files stay downloadable at https://ggmr-production.up.railway.app/. A real
+# cumulative-ExIt rerun (with the new buffer-persistence code) is a deliberate
+# decision and would replace this startCommand with a training pipeline again.
+startCommand = "python -m http.server ${PORT:-8080} --bind 0.0.0.0 --directory /data"
 
 [[deploy.volumes]]
 name = "round2-data"
 mountPath = "/data"
-
-# deploy-trigger: 2026-05-14

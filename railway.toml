@@ -6,8 +6,11 @@ providers = ["python"]
 
 [deploy]
 # ============================================================================
-# Trig trace generation (Phase 1.3 prep — Marcus).
-# Outputs go to /data/trig_training.jsonl; HTTP server keeps them accessible.
+# Trig trace generation v2 (Phase 1.3 prep — Marcus).
+# v2 generator: 24 inverse rules + parameterized angles + 42 seed templates +
+# applicable-action sampling. Expects ~30-50% dedup rate (vs v1's 95.6%).
+# Higher BFS budgets needed because v2 produces more complex disguised states.
+# Outputs to /data/trig_training_v2.jsonl; HTTP server keeps it accessible.
 # BLAS thread caps preserved (lesson from commit 5491b2a).
 # ============================================================================
 startCommand = """pip install -e . && \
@@ -16,19 +19,19 @@ startCommand = """pip install -e . && \
   mkdir -p /data && \
   (cd /data && python -u -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server_trig.log 2>&1 &) && \
   echo "HTTP file server backgrounded on port ${PORT:-8080}" && \
-  echo "=== TRIG TRACE GENERATION (Phase 1.3 prep) ===" && \
+  echo "=== TRIG TRACE GENERATION v2 (Phase 1.3 prep) ===" && \
   python -u scripts/generate_training_data.py \
     --domain trig \
-    --num-problems 20000 \
+    --num-problems 30000 \
     --workers 32 \
-    --easy-bfs-budget 5000 \
-    --hard-bfs-budget 10000 \
+    --easy-bfs-budget 10000 \
+    --hard-bfs-budget 20000 \
     --easy-timeout-s 180 \
     --hard-timeout-s 180 \
-    --output /data/trig_training.jsonl \
-    --run-id trig_v0 \
+    --output /data/trig_training_v2.jsonl \
+    --run-id trig_v2 \
     --progress && \
-  echo "=== DONE; trig_training.jsonl at https://ggmr-production.up.railway.app/ ===" ; \
+  echo "=== DONE; trig_training_v2.jsonl at https://ggmr-production.up.railway.app/ ===" ; \
   tail -f /dev/null"""
 
 [[deploy.volumes]]

@@ -26,9 +26,15 @@ def _count_ops(state: EqState) -> int:
 
 
 def test_registry_total_count():
-    """1 explicit (InvPythagoreanIntroOne) + 11 wrapped forward expanders = 12."""
+    """v2: 13 explicit inverse rules + 11 wrapped forward expanders = 24.
+
+    Explicit rules: InvPythagoreanIntroOne, InvOneToSecTan, InvOneToCscCot,
+    InvTanToSinCos, InvCotToCosSin, InvSecToInvCos, InvCscToInvSin,
+    InvSin2ToOneMinusCos2, InvCos2ToOneMinusSin2, InvSinToParity,
+    InvCosToParity, InvSinToCofunction, InvCosToCofunction.
+    """
     n = len(trig_inverse_registry.all_rules())
-    assert n == 12, f"expected 12 inverse rules, got {n}"
+    assert n == 24, f"expected 24 inverse rules, got {n}"
 
 
 def test_registry_names_unique():
@@ -69,6 +75,7 @@ def test_each_wrapped_inverse_grows_state_on_a_compatible_seed():
     We pick a state tailored to each rule's enumerate predicate.
     """
     seeds_for = {
+        # 11 wrapped forward expanders
         "INV_SIN_SUM":                ("sin(x + y)", "0"),
         "INV_COS_SUM":                ("cos(x + y)", "0"),
         "INV_TAN_SUM":                ("tan(x + y)", "0"),
@@ -80,13 +87,27 @@ def test_each_wrapped_inverse_grows_state_on_a_compatible_seed():
         "INV_COS_SQUARED_HALF_ANGLE": ("cos(x)**2", "0"),
         "INV_PROD_SIN_COS":           ("sin(x)*cos(y)", "0"),
         "INV_SUM_SIN_TO_PROD":        ("sin(x) + sin(y)", "0"),
+        # 12 explicit v2 inverse rules
+        "INV_ONE_TO_SEC_TAN":         ("1 + sin(x)", "0"),
+        "INV_ONE_TO_CSC_COT":         ("1 + sin(x)", "0"),
+        "INV_TAN_TO_SIN_COS":         ("tan(x)", "0"),
+        "INV_COT_TO_COS_SIN":         ("cot(x)", "0"),
+        "INV_SEC_TO_INV_COS":         ("sec(x)", "0"),
+        "INV_CSC_TO_INV_SIN":         ("csc(x)", "0"),
+        "INV_SIN2_TO_ONE_MINUS_COS2": ("sin(x)**2", "0"),
+        "INV_COS2_TO_ONE_MINUS_SIN2": ("cos(x)**2", "0"),
+        "INV_SIN_TO_PARITY":          ("sin(x)", "0"),
+        "INV_COS_TO_PARITY":          ("cos(x)", "0"),
+        "INV_SIN_TO_COFUNCTION":      ("sin(x)", "0"),
+        "INV_COS_TO_COFUNCTION":      ("cos(x)", "0"),
     }
     rng = random.Random(42)
+    missing_seeds = []
     for rule in trig_inverse_registry.all_rules():
         if rule.name == "INV_PYTHAGOREAN_INTRO_ONE":
             continue  # tested separately above
         if rule.name not in seeds_for:
-            pytest.skip(f"no seed configured for {rule.name}")
+            missing_seeds.append(rule.name)
             continue
         lhs, rhs = seeds_for[rule.name]
         state = EqState.from_strings(lhs, rhs)
@@ -100,6 +121,10 @@ def test_each_wrapped_inverse_grows_state_on_a_compatible_seed():
             f"{rule.name}: tree size did not grow "
             f"({before} -> {after}); state: {state} -> {new_state}"
         )
+    assert not missing_seeds, (
+        f"new inverse rules lack test seeds: {missing_seeds}. "
+        f"Add to `seeds_for` to exercise them."
+    )
 
 
 def test_inverse_rules_inert_on_pure_algebra_state():

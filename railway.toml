@@ -22,11 +22,11 @@ startCommand = """pip install -e . && \
   echo "=== TRIG TRACE GENERATION v2 (Phase 1.3 prep) ===" && \
   python -u scripts/generate_training_data.py \
     --domain trig \
-    --num-problems 30000 \
+    --num-problems 15000 \
     --workers 32 \
-    --easy-bfs-budget 20000 \
-    --hard-bfs-budget 50000 \
-    --easy-timeout-s 360 \
+    --easy-bfs-budget 10000 \
+    --hard-bfs-budget 20000 \
+    --easy-timeout-s 120 \
     --hard-timeout-s 360 \
     --output /data/trig_training_v2.jsonl \
     --run-id trig_v2 \

@@ -67,10 +67,18 @@ class GuardResult:
 
 @runtime_checkable
 class Rule(Protocol):
-    """Guarded rewrite rule. Implementations register via `default_registry.register`."""
+    """Guarded rewrite rule. Implementations register via `default_registry.register`.
+
+    `training_safe` defaults to True (primitive rewrite). Oracle shortcuts
+    (e.g. wrappers around `sympy.trigsimp` / `sympy.solveset`) set this to
+    False so that BFS/SL/ExIt enumerate them only when `training_only=False`
+    is passed to `Registry.enumerate_actions`. Inference paths leave the
+    default, so oracles remain available for fast-mode evaluation.
+    """
 
     name: str
     arity: int
+    training_safe: bool
 
     def enumerate(self, state: EqState) -> Iterator[Action]: ...
 

@@ -1,12 +1,19 @@
 """SymPy expression tree -> PyG Data conversion.
 
 Each (lhs, rhs) pair becomes a single graph with a virtual `Eq` super-root
-connecting LHS and RHS subtrees. Node features are a fixed 24-dim vector;
+connecting LHS and RHS subtrees. Node features are a fixed 30-dim vector;
 edges are bidirectional (parent<->child) plus self-loops.
 
 The same conversion is used by the JSONL dataset (for training) and by
 LearnedHeuristic.evaluate (at A* runtime), so the feature definition must
 be deterministic and import-stable.
+
+Feature width was extended from 24 to 30 to support trig and calculus
+domains (Phase 0.2). The new columns [24:30] mark domain-specific node
+content: has_trig, has_exp, has_log, is_derivative, is_integral, is_limit.
+Algebra-only states have zeros in those columns, so a 24-dim checkpoint
+zero-padded to 30-dim is mathematically equivalent on algebra inputs
+(see `scripts/migrate_24_to_30.py`).
 """
 
 from __future__ import annotations
@@ -17,6 +24,7 @@ import numpy as np
 import sympy as sp
 import torch
 from sympy import Add, Expr, Integer, Mul, Pow, Rational, Symbol
+from sympy.functions.elementary.trigonometric import TrigonometricFunction
 from torch_geometric.data import Data
 
 from ggmr.expr.tree import leaf_count, op_count, tree_depth
@@ -29,13 +37,17 @@ NODE_TYPE_VOCAB: tuple[str, ...] = (
 NODE_TYPE_TO_IDX: dict[str, int] = {t: i for i, t in enumerate(NODE_TYPE_VOCAB)}
 NUM_TYPES: int = len(NODE_TYPE_VOCAB)
 
-# Feature layout (24 dims total):
+# Feature layout (30 dims total):
 #   [0:7]   op-type one-hot
 #   [7:10]  symbol role: is_target_var, is_other_symbol, is_atom
 #   [10:16] numeric: sign_pos, sign_neg, sign_zero, log1p(|v|)/10, is_integer, is_minus_one
 #   [16:20] structural role: is_lhs_root, is_rhs_root, is_pow_base, is_pow_exponent
 #   [20:24] subtree shape: depth/10, log1p(op_count), log1p(leaf_count), contains_target_var
-FEATURE_DIM: int = 24
+#   [24:30] domain flags: has_trig, has_exp, has_log, is_derivative, is_integral, is_limit
+FEATURE_DIM: int = 30
+# Width of the legacy (pre-trig) feature vector — used by the migration script
+# and by inference paths that need to detect old checkpoints.
+LEGACY_FEATURE_DIM: int = 24
 
 
 def _classify(expr: Optional[Expr]) -> str:
@@ -101,6 +113,24 @@ def _shape_features(expr: Optional[Expr], var: Symbol) -> tuple[float, float, fl
         float(np.log1p(leaf_count(expr))),
         1.0 if expr.has(var) else 0.0,
     )
+
+
+def _domain_flags(expr: Optional[Expr]) -> tuple[float, float, float, float, float, float]:
+    """Subtree presence flags: (has_trig, has_exp, has_log, is_derivative, is_integral, is_limit).
+
+    has_* checks whether the subtree contains the relevant function class anywhere;
+    is_derivative/is_integral/is_limit checks whether THIS node is the operator
+    (the unevaluated SymPy wrapper). For algebra-only states all six are zero.
+    """
+    if expr is None:
+        return (0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    has_trig = 1.0 if expr.has(TrigonometricFunction) else 0.0
+    has_exp = 1.0 if expr.has(sp.exp) else 0.0
+    has_log = 1.0 if expr.has(sp.log) else 0.0
+    is_deriv = 1.0 if isinstance(expr, sp.Derivative) else 0.0
+    is_intg = 1.0 if isinstance(expr, sp.Integral) else 0.0
+    is_lim = 1.0 if isinstance(expr, sp.Limit) else 0.0
+    return (has_trig, has_exp, has_log, is_deriv, is_intg, is_lim)
 
 
 def _build_nodes(
@@ -178,6 +208,7 @@ def sympy_to_pyg(lhs: Expr, rhs: Expr, var: Symbol) -> Data:
         x[i, 18] = 1.0 if info["is_pow_base"] else 0.0
         x[i, 19] = 1.0 if info["is_pow_exponent"] else 0.0
         x[i, 20:24] = _shape_features(info["expr"], var)
+        x[i, 24:30] = _domain_flags(info["expr"])
 
     src: list[int] = []
     dst: list[int] = []

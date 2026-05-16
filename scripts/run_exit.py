@@ -53,7 +53,11 @@ from ggmr.training.graph import sympy_to_pyg
 from ggmr.training.exit_loop import ValueTuple, PolicyTuple
 from ggmr.search.mcts import mcts_search
 from ggmr.training.extract_pairs import _build_is_target
-from ggmr.problems.loader import load_hard_evaluation_set, load_phase0_problems
+from ggmr.problems.loader import (
+    load_hard_evaluation_set,
+    load_phase0_problems,
+    load_trig_evaluation_set,
+)
 from ggmr.state import EqState
 
 logger = logging.getLogger(__name__)
@@ -128,7 +132,7 @@ def _seed_buffer_from_warmstart(
         state = EqState(lhs=lhs, rhs=rhs, var=var)
         legal_mask = np.zeros(n_rules, dtype=np.float32)
         any_legal = False
-        for rule, action in default_registry.enumerate_actions(state):
+        for rule, action in default_registry.enumerate_actions(state, training_only=True):
             if rule.guard(state, action).ok:
                 legal_mask[rn_to_idx[rule.name]] = 1.0
                 any_legal = True
@@ -261,6 +265,10 @@ def main() -> int:
                              "fall back to warmstart-only seeding. WARNING: this discards prior "
                              "iters' MCTS data and breaks ExIt's cumulative property. Use only "
                              "if you intentionally want SL-from-warmstart starting at iter N.")
+    parser.add_argument("--domain", choices=["algebra", "trig"], default="algebra",
+                        help="domain selector for eval problem loading. algebra (default) "
+                             "loads hard_evaluation_set_v2 + phase0; trig loads "
+                             "trig_evaluation_set_v1. Both share the 90-rule default_registry.")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -325,10 +333,15 @@ def main() -> int:
     policy_net = _load_policy_net(args.policy_ckpt_init, args.device)
 
     # Step 4: collect eval problem IDs for no-leak check
-    hard = load_hard_evaluation_set()
-    phase0 = load_phase0_problems()
-    eval_pids: set[str] = {p.id for p in hard} | {p.id for p in phase0}
-    logger.info(f"eval pids (hard+phase0): {len(eval_pids)}")
+    if args.domain == "trig":
+        trig_eval = load_trig_evaluation_set()
+        eval_pids: set[str] = {p.id for p in trig_eval}
+        logger.info(f"eval pids (trig_v1): {len(eval_pids)}")
+    else:
+        hard = load_hard_evaluation_set()
+        phase0 = load_phase0_problems()
+        eval_pids = {p.id for p in hard} | {p.id for p in phase0}
+        logger.info(f"eval pids (hard+phase0): {len(eval_pids)}")
 
     # Step 5: build replay buffer. Three paths:
     #   (a) explicit --resume-buffer: load saved buffer, skip warmstart-seed (already inside)

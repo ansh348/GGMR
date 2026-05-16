@@ -1,0 +1,1232 @@
+# Trigonometry evaluation set v1 (Phase 1.2, Marcus)
+#
+# 30 hand-curated problems: 10 easy + 10 medium + 10 hard.
+# The remaining 70 problems (10 easy, 20 medium, 40 hard) are TBD —
+# programmatic generation via TrigReverseGenerator (Phase 1.2 extension)
+# will populate them.
+#
+# IDs follow the Marcus naming convention: trig_e01..e20, trig_m01..m30,
+# trig_h01..h50. Difficulty mapping:
+#   easy:  1-2 steps via primitive rules
+#   medium: 3-5 steps mixing rule groups
+#   hard:   ≥6 steps; adversarial motifs that punish target-blind heuristics
+#
+# Each problem carries:
+#   id, category, difficulty, variable, source, initial, canonical_target
+# `category` matches Marcus's trig rule group (pyth, recip, quot, cof,
+# parity, sum, double, prod, etc.) — useful for per-category metrics.
+
+- id: trig_e01
+  category: pyth
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e01"
+  initial:
+    lhs: "sin(x)**2 + cos(x)**2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e02
+  category: quot
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e02"
+  initial:
+    lhs: "tan(x) * cos(x)"
+    rhs: "sin(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e03
+  category: pyth
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e03"
+  initial:
+    lhs: "sec(x)**2 - 1"
+    rhs: "tan(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e04
+  category: recip
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e04"
+  initial:
+    lhs: "1/sin(x)"
+    rhs: "csc(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e05
+  category: parity
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e05"
+  initial:
+    lhs: "sin(-x)"
+    rhs: "-sin(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e06
+  category: cof
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e06 — note: SymPy auto-canonicalizes sin(pi/2-x) to cos(x)"
+  initial:
+    lhs: "sin(pi/2 - x)"
+    rhs: "cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e07
+  category: quot
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e07"
+  initial:
+    lhs: "sin(x)/cos(x)"
+    rhs: "tan(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e08
+  category: pyth
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e08"
+  initial:
+    lhs: "1 + cot(x)**2"
+    rhs: "csc(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e09
+  category: parity
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e09"
+  initial:
+    lhs: "cos(-x)"
+    rhs: "cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e10
+  category: recip
+  difficulty: easy
+  variable: x
+  source: "Marcus trig_e10"
+  initial:
+    lhs: "1/cos(x)"
+    rhs: "sec(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+# ---- medium (10) ---------------------------------------------------------
+
+- id: trig_m01
+  category: double
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m01"
+  initial:
+    lhs: "(1 - cos(2*x)) / 2"
+    rhs: "sin(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m02
+  category: sum
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m02"
+  initial:
+    lhs: "sin(x+y) - sin(x-y)"
+    rhs: "2*cos(x)*sin(y)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m03
+  category: pyth_double
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m03"
+  initial:
+    lhs: "cos(x)**4 - sin(x)**4"
+    rhs: "cos(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m04
+  category: sum
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m04 — sin(3x) expansion"
+  initial:
+    lhs: "sin(3*x)"
+    rhs: "3*sin(x) - 4*sin(x)**3"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m05
+  category: recip_quot
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m05"
+  initial:
+    lhs: "(sec(x) - cos(x)) / tan(x)"
+    rhs: "sin(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m06
+  category: double
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m06"
+  initial:
+    lhs: "2*sin(x)*cos(x)"
+    rhs: "sin(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m07
+  category: double
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m07"
+  initial:
+    lhs: "cos(x)**2 - sin(x)**2"
+    rhs: "cos(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m08
+  category: quot_double
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m08"
+  initial:
+    lhs: "tan(x) + cot(x)"
+    rhs: "2*csc(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m09
+  category: sum
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m09 — sin(x+pi/4) expansion"
+  initial:
+    lhs: "sin(x + pi/4)"
+    rhs: "(sin(x) + cos(x)) / sqrt(2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m10
+  category: double_quot
+  difficulty: medium
+  variable: x
+  source: "Marcus trig_m10"
+  initial:
+    lhs: "(1 + cos(2*x)) / sin(2*x)"
+    rhs: "cot(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+# ---- hard (10) -----------------------------------------------------------
+# These are the 10 motifs proposed during planning. The "trace" required to
+# solve them spans rule groups (Pyth+algebra, Quot+combine, Sum reverse, etc.).
+# They function as a torture test for the GIN's strategic ordering.
+
+- id: trig_h01
+  category: pyth_disguise
+  difficulty: hard
+  variable: x
+  source: "proposed h01 — Pythagorean nested in algebra"
+  initial:
+    lhs: "sin(x)**2 + cos(x)**2 + sin(x)**2 - 1"
+    rhs: "sin(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h02
+  category: quot_normal
+  difficulty: hard
+  variable: x
+  source: "proposed h02 — Quotient + combine_like_terms"
+  initial:
+    lhs: "sin(x)/cos(x) + tan(x)"
+    rhs: "2*tan(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h03
+  category: sum_collapse
+  difficulty: hard
+  variable: x
+  source: "proposed h03 — SIN_SUM forward+back cancellation"
+  initial:
+    lhs: "sin(x+y) - sin(x)*cos(y)"
+    rhs: "cos(x)*sin(y)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h04
+  category: double_split
+  difficulty: hard
+  variable: x
+  source: "proposed h04 — SIN_DOUBLE then cancel"
+  initial:
+    lhs: "sin(2*x) / sin(x)"
+    rhs: "2*cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h05
+  category: recip_chain
+  difficulty: hard
+  variable: x
+  source: "proposed h05 — Reciprocal + cancellation, multi-rule chain"
+  initial:
+    lhs: "csc(x)*sin(x) + sec(x)*cos(x)"
+    rhs: "2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h06
+  category: compl_match
+  difficulty: hard
+  variable: x
+  source: "proposed h06 — Co-function unification"
+  initial:
+    lhs: "sin(pi/2 - x) + cos(x)"
+    rhs: "2*cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h07
+  category: prod_to_sum
+  difficulty: hard
+  variable: x
+  source: "proposed h07 — PROD_SIN_COS multi-factor"
+  initial:
+    lhs: "2*sin(3*x)*cos(x)"
+    rhs: "sin(4*x) + sin(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h08
+  category: pyth_solve
+  difficulty: hard
+  variable: x
+  source: "proposed h08 — Pyth substitution + quadratic-in-sin"
+  initial:
+    lhs: "2*sin(x)**2 - 1"
+    rhs: "0"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h09
+  category: neg_chain
+  difficulty: hard
+  variable: x
+  source: "proposed h09 — Parity composition"
+  initial:
+    lhs: "sin(-x)*cos(-x) + sin(x)*cos(x)"
+    rhs: "0"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h10
+  category: tan_sum_disguise
+  difficulty: hard
+  variable: x
+  source: "proposed h10 — TAN_SUM reverse + cancellation"
+  initial:
+    lhs: "(tan(x) + tan(y)) / (1 - tan(x)*tan(y)) - tan(x+y)"
+    rhs: "0"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+# AUTO-GENERATED extension entries
+# Append to trig_evaluation_set_v1.yaml
+
+# ---- easy programmatic (trig_e11 - e20) -------------------------------
+- id: trig_e11
+  category: double_cos
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=2"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-sin(x)**2/2 + cos(x)**2/2 + cos(2*x)/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e12
+  category: sum_sin
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=1"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(-sin(x - y) + sin(x + y))/2 + sin(x)*cos(y)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e13
+  category: pyth
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=1"
+  initial:
+    lhs: "(1 - cos(2*x))/2 + cos(x)**2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e14
+  category: double_sin
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=1"
+  initial:
+    lhs: "sin(2*x)"
+    rhs: "2*((sin(-x + x) + sin(x + x))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e15
+  category: double_cos
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=2"
+  initial:
+    lhs: "-sin(x)**2 + cos(x)**2"
+    rhs: "-(1 - cos(2*x))/2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e16
+  category: double_cos
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=2"
+  initial:
+    lhs: "-(1 - cos(2*x))/2 + cos(x)**2"
+    rhs: "-sin(x)**2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e17
+  category: pyth
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=1"
+  initial:
+    lhs: "(cos(2*x) + 1)/2 + sin(x)**2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e18
+  category: sum_sin
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=1"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(sin(x - y) + sin(x + y))/2 + sin(y)*cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e19
+  category: double_cos
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=2"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-(1 - cos(2*x))/2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_e20
+  category: double_cos
+  difficulty: easy
+  variable: x
+  source: "TrigReverseGenerator depth=2"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-(1 - (-sin(x)**2 + cos(x)**2))/2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+# ---- medium programmatic (trig_m11 - m30) -----------------------------
+- id: trig_m11
+  category: double_cos
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=3"
+  initial:
+    lhs: "-sin(x)**2 + cos(x)**2"
+    rhs: "((-sin(x)**2 + cos(x)**2) + 1)/2 - sin(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m12
+  category: sum_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "sin(x)*cos(y) + sin(y)*cos(x)"
+    rhs: "(((sin(x - y) + sin(x + y))/2 + (-sin(y))*cos(x)) + sin(x + y))/2 + sin(y)*cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m13
+  category: pyth
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "(cos(2*x) + 1)/2 + sin(x)**2"
+    rhs: "3*sin(x)**2/2 + cos(x)**2/2 + cos(2*x)/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m14
+  category: double_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=3"
+  initial:
+    lhs: "2*sin(x)*cos(x)"
+    rhs: "2*((((-sin(x))*cos(x) + sin(x)*cos(x)) + sin(x + x))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m15
+  category: double_cos
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "((-sin(x)**2 + cos(x)**2) + 1)/2 - sin(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m16
+  category: sum_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=5"
+  initial:
+    lhs: "sin(x)*cos(y) + sin(y)*cos(x)"
+    rhs: "(-sin(x - y) + sin(x + y))/2 + sin(x)*cos(y)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m17
+  category: pyth
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=5"
+  initial:
+    lhs: "(-sin(x)**2 + cos(x)**2)/2 + 3*sin(x)**2/2 + cos(x)**2/2"
+    rhs: "(1 - cos(2*x))/2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m18
+  category: double_cos
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=5"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "(cos(2*x) + 1)/2 - sin(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m19
+  category: sum_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=3"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(-((sin(x - y) + sin(x + y))/2 + (-sin(y))*cos(x)) + sin(x + y))/2 + sin(x)*cos(y)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m20
+  category: sum_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(-sin(x - y) + sin(x + y))/2 + (sin(x - y) + sin(x + y))/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m21
+  category: pyth
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "(1 - cos(2*x))/2 + (cos(2*x) + 1)/2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m22
+  category: double_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=3"
+  initial:
+    lhs: "2*sin(x)*cos(x)"
+    rhs: "2*((sin(-x + x) + sin(x + x))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m23
+  category: double_cos
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "-(1 - cos(2*x))/2 + ((-sin(x)**2 + cos(x)**2) + 1)/2"
+    rhs: "-sin(x)**2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m24
+  category: sum_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=5"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "((sin(x)*cos(y) + (-sin(y))*cos(x)) + sin(x + y))/2 + (-sin(x - y) + sin(x + y))/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m25
+  category: pyth
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=5"
+  initial:
+    lhs: "((1 - (-sin(x)**2 + cos(x)**2))/2)/2 - (-sin(x)**2 + cos(x)**2)/2 + 3*cos(x)**2/2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m26
+  category: double_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "2*sin(x)*cos(x)"
+    rhs: "2*((((-sin(x))*cos(x) + sin(x)*cos(x)) + (sin(x)*cos(x) + sin(x)*cos(x)))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m27
+  category: pyth
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=3"
+  initial:
+    lhs: "(((cos(2*x) + 1)/2 - sin(x)**2) + 1)/2 + sin(x)**2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m28
+  category: double_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=5"
+  initial:
+    lhs: "2*((2*sin(((-x + x) + (x + x))/2)*cos((-(-x + x) + (x + x))/2))/2)"
+    rhs: "2*((((-sin(x))*cos(x) + sin(x)*cos(x)) + sin(x + x))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m29
+  category: double_cos
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=3"
+  initial:
+    lhs: "-sin(x)**2 + cos(x)**2"
+    rhs: "-(1 - cos(2*x))/2 + (cos(2*x) + 1)/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_m30
+  category: sum_sin
+  difficulty: medium
+  variable: x
+  source: "TrigReverseGenerator depth=4"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(-(sin(x)*cos(y) + (-sin(y))*cos(x)) + sin(x + y))/2 + (sin(x - y) + sin(x + y))/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+# ---- hard programmatic (trig_h11 - h40) -------------------------------
+- id: trig_h11
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "sin(2*x)"
+    rhs: "2*((((((-sin(x))*cos(x) + sin(x)*cos(x)) + sin(x + x))/2 + (-sin(x))*cos(x)) + sin(x + x))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h12
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-sin(x)**2/4 + cos(x)**2/4 + 3*cos(2*x)/4"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h13
+  category: pyth
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=6"
+  initial:
+    lhs: "((1 - cos(2*x))/2)/2 - (-sin(x)**2 + cos(x)**2)/2 + 3*cos(x)**2/2"
+    rhs: "(1 - cos(2*x))/2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h14
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-(1 - cos(2*x))/2 + ((-(1 - cos(2*x))/2 + cos(x)**2) + 1)/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h15
+  category: sum_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=10"
+  initial:
+    lhs: "(-(sin(x)*cos(y) + (-sin(y))*cos(x)) + sin(x + y))/2 + sin(x)*cos(y)"
+    rhs: "(-sin(x - y) + sin(x + y))/2 + sin(x)*cos(y)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h16
+  category: pyth
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=6"
+  initial:
+    lhs: "(1 - cos(2*x))/2 + ((-sin(x)**2 + cos(x)**2) + 1)/2"
+    rhs: "(1 - (-sin(x)**2 + cos(x)**2))/2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h17
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "sin(2*x)"
+    rhs: "2*((2*sin(((-x + x) + (x + x))/2)*cos((-(-x + x) + (x + x))/2))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h18
+  category: pyth
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=6"
+  initial:
+    lhs: "sin(x)**2 + cos(x)**2"
+    rhs: "((-sin(x)**2 + cos(x)**2) + 1)/2 + sin(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h19
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "2*((((-sin(x))*cos(x) + sin(x)*cos(x)) + sin(x + x))/2)"
+    rhs: "2*sin(x)*cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h20
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-(1 - ((cos(2*x) + 1)/2 - sin(x)**2))/2 + ((-(1 - cos(2*x))/2 + cos(x)**2) + 1)/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h21
+  category: sum_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=10"
+  initial:
+    lhs: "sin(x)*cos(y) + sin(y)*cos(x)"
+    rhs: "(2*sin(((x - y) + (x + y))/2)*cos((-(x - y) + (x + y))/2))/2 + sin(y)*cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h22
+  category: pyth
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=6"
+  initial:
+    lhs: "-(-sin(x)**2 + cos(x)**2)/2 + sin(x)**2/2 + 3*cos(x)**2/2"
+    rhs: "sin(x)**2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h23
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "2*sin(x)*cos(x)"
+    rhs: "2*((2*((-sin((-(-x + x) + (x + x))/2 - 1*((-x + x) + (x + x))/2) + sin((-(-x + x) + (x + x))/2 + ((-x + x) + (x + x))/2))/2))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h24
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-sin(x)**2/8 + cos(x)**2/8 + 7*cos(2*x)/8"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h25
+  category: sum_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=10"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(-(sin(x)*cos(y) + (-sin(y))*cos(x)) + sin(x + y))/2 + sin(x)*cos(y)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h26
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "2*((((-sin(x))*cos(x) + sin(x)*cos(x)) + (sin(x)*cos(x) + sin(x)*cos(x)))/2)"
+    rhs: "2*((2*sin(((-x + x) + (x + x))/2)*cos((-(-x + x) + (x + x))/2))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h27
+  category: sum_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=10"
+  initial:
+    lhs: "(sin(x - y) + sin(x + y))/2 + sin(y)*cos(x)"
+    rhs: "(-(sin(x)*cos(y) + (-sin(y))*cos(x)) + sin(x + y))/2 + ((sin(x)*cos(y) + sin(y)*cos(x)) + sin(x - y))/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h28
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "2*((sin(-x + x) + sin(x + x))/2)"
+    rhs: "2*((((((-sin(x))*cos(x) + sin(x)*cos(x)) + (sin(x)*cos(x) + sin(x)*cos(x)))/2 + (-sin(x))*cos(x)) + (sin(x)*cos(x) + sin(x)*cos(x)))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h29
+  category: sum_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=10"
+  initial:
+    lhs: "sin(x)*cos(y) + sin(y)*cos(x)"
+    rhs: "(-(sin(x)*cos(y) + (-sin(y))*cos(x)) + sin(x + y))/2 + ((sin(x)*cos(y) + (-sin(y))*cos(x)) + (sin(x)*cos(y) + sin(y)*cos(x)))/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h30
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "sin(2*x)"
+    rhs: "2*((((-sin(x))*cos(x) + sin(x)*cos(x)) + sin(x + x))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h31
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "cos(2*x)"
+    rhs: "-(1 - cos(2*x))/2 + (cos(2*x) + 1)/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h32
+  category: pyth
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=6"
+  initial:
+    lhs: "(cos(2*x) + 1)/2 + sin(x)**2"
+    rhs: "sin(x)**2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h33
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "2*((((-sin(x))*cos(x) + sin(x)*cos(x)) + sin(x + x))/2)"
+    rhs: "2*((2*sin(((-x + x) + (x + x))/2)*cos((-(-x + x) + (x + x))/2))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h34
+  category: sum_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=10"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(((sin(x - y) + sin(x + y))/2 + (-sin(y))*cos(x)) + sin(x + y))/2 + (-sin(x - y) + sin(x + y))/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h35
+  category: double_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=8"
+  initial:
+    lhs: "2*sin(x)*cos(x)"
+    rhs: "2*((2*((-(sin((-(-x + x) + (x + x))/2)*cos(((-x + x) + (x + x))/2) + (-sin(((-x + x) + (x + x))/2))*cos((-(-x + x) + (x + x))/2)) + (sin((-(-x + x) + (x + x))/2)*cos(((-x + x) + (x + x))/2) + sin(((-x + x) + (x + x))/2)*cos((-(-x + x) + (x + x))/2)))/2))/2)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h36
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "(cos(2*x) + 1)/2 - sin(x)**2"
+    rhs: "-(1 - (-sin(x)**2 + cos(x)**2))/2 + ((-(1 - cos(2*x))/2 + cos(x)**2) + 1)/2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h37
+  category: pyth
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=6"
+  initial:
+    lhs: "(1 - (-(1 - cos(2*x))/2 + (cos(2*x) + 1)/2))/2 + (cos(2*x) + 1)/2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h38
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "(cos(2*x) + 1)/2 - sin(x)**2"
+    rhs: "-sin(x)**2 + cos(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h39
+  category: sum_sin
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=10"
+  initial:
+    lhs: "sin(x + y)"
+    rhs: "(2*sin(((x - y) + (x + y))/2)*cos((-(x - y) + (x + y))/2))/2 + sin(y)*cos(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h40
+  category: double_cos
+  difficulty: hard
+  variable: x
+  source: "TrigReverseGenerator depth=9"
+  initial:
+    lhs: "-(1 - cos(2*x))/2 + cos(x)**2"
+    rhs: "((-(1 - cos(2*x))/2 + ((((-sin(x)**2 + cos(x)**2) + 1)/2 - sin(x)**2) + 1)/2) + 1)/2 - sin(x)**2"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+
+# ---- hand-curated adversarial hard motifs (trig_h41 - h50) -----------------
+
+- id: trig_h41
+  category: diff_of_squares_pyth
+  difficulty: hard
+  variable: x
+  source: "hand-curated h41: diff-of-squares + Pythagorean"
+  initial:
+    lhs: "(sin(x)**4 - cos(x)**4) / (sin(x)**2 - cos(x)**2)"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h42
+  category: common_denominator
+  difficulty: hard
+  variable: x
+  source: "hand-curated h42: common denominator + Pythagorean"
+  initial:
+    lhs: "cos(x)/(1 + sin(x)) + (1 + sin(x))/cos(x)"
+    rhs: "2*sec(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h43
+  category: sum_to_product_chain
+  difficulty: hard
+  variable: x
+  source: "hand-curated h43: sum-to-product double chain"
+  initial:
+    lhs: "(sin(3*x) + sin(x)) / (cos(3*x) + cos(x))"
+    rhs: "tan(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h44
+  category: sin_sum_reverse
+  difficulty: hard
+  variable: x
+  source: "hand-curated h44: direct SIN_SUM reverse"
+  initial:
+    lhs: "sin(x)*cos(3*x) + cos(x)*sin(3*x)"
+    rhs: "sin(4*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h45
+  category: double_angle_pyth
+  difficulty: hard
+  variable: x
+  source: "hand-curated h45: double-angle + Pythagorean"
+  initial:
+    lhs: "cos(2*x) + 2*sin(x)**2"
+    rhs: "1"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h46
+  category: pyth_double_ratio
+  difficulty: hard
+  variable: x
+  source: "hand-curated h46: Pyth + double-angle ratio"
+  initial:
+    lhs: "(1 - tan(x)**2) / (1 + tan(x)**2)"
+    rhs: "cos(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h47
+  category: symmetric_sum
+  difficulty: hard
+  variable: x
+  source: "hand-curated h47: symmetric pi/3 sum"
+  initial:
+    lhs: "sin(x + pi/3) + sin(x - pi/3)"
+    rhs: "sin(x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h48
+  category: cos_sum_reverse
+  difficulty: hard
+  variable: x
+  source: "hand-curated h48: direct COS_SUM reverse"
+  initial:
+    lhs: "cos(x)*cos(2*x) - sin(x)*sin(2*x)"
+    rhs: "cos(3*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h49
+  category: product_to_sum
+  difficulty: hard
+  variable: x
+  source: "hand-curated h49: product-to-sum cos chain"
+  initial:
+    lhs: "2*sin(x)*sin(2*x)"
+    rhs: "cos(x) - cos(3*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"
+
+- id: trig_h50
+  category: quot_double
+  difficulty: hard
+  variable: x
+  source: "hand-curated h50: quotient + double-angle"
+  initial:
+    lhs: "tan(x) + cot(x)"
+    rhs: "2/sin(2*x)"
+  canonical_target:
+    lhs: "0"
+    rhs: "0"

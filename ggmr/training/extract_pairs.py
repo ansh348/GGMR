@@ -70,9 +70,20 @@ def extract_training_pairs(
     *,
     max_nodes: int = 5000,
     max_depth: int = 40,
+    training_only: bool = False,
+    is_target: Optional[callable] = None,
 ) -> Optional[list[dict]]:
-    """BFS-solve initial → target with check_soundness=False, then walk path."""
-    is_target = _build_is_target(target)
+    """BFS-solve initial → target with check_soundness=False, then walk path.
+
+    `training_only=True` excludes oracle rules (training_safe=False) from
+    enumeration — required for trig trace generation (Marcus Constraint 1).
+
+    `is_target` overrides the default target predicate. The default builds
+    a per-target canonical-repr matcher; trig trace generation passes a
+    domain-specific predicate (canonical_repr(lhs) == canonical_repr(rhs)).
+    """
+    if is_target is None:
+        is_target = _build_is_target(target)
     result = bfs(
         initial,
         is_target,
@@ -80,6 +91,7 @@ def extract_training_pairs(
         max_depth=max_depth,
         check_soundness=False,
         problem_id="<training>",
+        training_only=training_only,
     )
     if not result.found:
         return None

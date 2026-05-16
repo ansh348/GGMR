@@ -31,21 +31,50 @@ import ggmr.rules.core  # noqa: F401  (register rules)
 from ggmr.heuristics.composite import WeightedSumCompositeHeuristic
 from ggmr.heuristics.learned import LearnedHeuristic
 from ggmr.problems.loader import Problem, load_hard_evaluation_set, load_phase0_problems
+from ggmr.rules.registry import Registry, default_registry
 from ggmr.search.astar import astar
 from ggmr.search.mcts import mcts_search
+from ggmr.state import EqState
 from ggmr.training.metrics import geomean_ratio
 from ggmr.training.policy_heuristic import PolicyAdvisor, ValueAdvisor
 
 logger = logging.getLogger(__name__)
 
 
-def _run_astar(problem: Problem, heuristic, *, max_nodes: int, max_depth: int) -> dict:
+class PolicyOrderedRegistry:
+    """Wrapper around `Registry` that reorders `enumerate_actions` by descending
+    policy logit. A* doesn't care about enumeration order for correctness — only
+    for tie-breaking via the monotonic counter — but a well-ordered enumeration
+    causes A* to expand the "right" child first when f-scores are close, which
+    cuts node-expansion counts on problems where the value heuristic alone
+    spreads probability across many similar-cost actions.
+
+    Used in eval mode "learned+policy-ordering" to isolate the policy's
+    contribution from the value heuristic's.
+    """
+
+    def __init__(self, base: Registry, advisor: PolicyAdvisor):
+        self._base = base
+        self._advisor = advisor
+
+    def enumerate_actions(self, state: EqState, *, training_only: bool = False):
+        pairs = list(self._base.enumerate_actions(state, training_only=training_only))
+        # Higher logit first; ties preserve canonical order (stable sort).
+        pairs.sort(key=lambda ra: -self._advisor.action_ordering_key(state, ra[1]))
+        return iter(pairs)
+
+
+def _run_astar(
+    problem: Problem, heuristic, *, max_nodes: int, max_depth: int,
+    rules: Registry | PolicyOrderedRegistry | None = None,
+) -> dict:
     t0 = time.perf_counter()
     try:
         result = astar(
             problem.initial, problem.is_target,
             heuristic=heuristic, max_nodes=max_nodes, max_depth=max_depth,
             check_soundness=True, problem_id=problem.id,
+            rules=rules if rules is not None else default_registry,
         )
         return {
             "found": result.found,
@@ -98,15 +127,26 @@ def evaluate_dual(
     mcts_max_moves: int,
     c_puct: float,
     run_mcts: bool,
+    run_policy_ordering: bool = True,
 ) -> list[dict]:
     hand = WeightedSumCompositeHeuristic()
     learned = LearnedHeuristic(value_ckpt, device=device)
     va = ValueAdvisor(value_ckpt, device=device)
     pa = PolicyAdvisor(policy_ckpt, device=device) if policy_ckpt else PolicyAdvisor(None, device=device)
+    policy_registry = (
+        PolicyOrderedRegistry(default_registry, pa)
+        if run_policy_ordering and policy_ckpt is not None
+        else None
+    )
     rows: list[dict] = []
     for i, prob in enumerate(problems):
         hand_res = _run_astar(prob, hand, max_nodes=astar_max_nodes, max_depth=astar_max_depth)
         learned_res = _run_astar(prob, learned, max_nodes=astar_max_nodes, max_depth=astar_max_depth)
+        pol_res = (
+            _run_astar(prob, learned, max_nodes=astar_max_nodes,
+                       max_depth=astar_max_depth, rules=policy_registry)
+            if policy_registry is not None else None
+        )
         mcts_res = (
             _run_mcts(prob, va, pa,
                       num_simulations=mcts_simulations, max_moves=mcts_max_moves, c_puct=c_puct)
@@ -117,6 +157,9 @@ def evaluate_dual(
             "hand_found": hand_res["found"], "hand_nodes": hand_res["nodes_expanded"],
             "learned_found": learned_res["found"], "learned_nodes": learned_res["nodes_expanded"],
         }
+        if pol_res is not None:
+            row["pol_found"] = pol_res["found"]
+            row["pol_nodes"] = pol_res["nodes_expanded"]
         if mcts_res is not None:
             row.update({
                 "mcts_found": mcts_res["found"],
@@ -127,13 +170,16 @@ def evaluate_dual(
         rows.append(row)
         cmp_astar = (f"{hand_res['nodes_expanded'] / max(learned_res['nodes_expanded'], 1):.2f}x"
                      if hand_res["found"] and learned_res["found"] else "-")
+        cmp_pol = (f"pol={pol_res['nodes_expanded']}({hand_res['nodes_expanded']/max(pol_res['nodes_expanded'],1):.2f}x)"
+                   if pol_res and pol_res["found"] and hand_res["found"] else
+                   ("pol-fail" if pol_res else ""))
         cmp_mcts = (f"sims={mcts_res['total_simulations']}" if mcts_res and mcts_res["found"]
                     else ("MCTS-fail" if mcts_res else ""))
         logger.info(
             f"[{i+1}/{len(problems)}] {prob.id}: "
             f"hand={'Y' if hand_res['found'] else 'N'}/{hand_res['nodes_expanded']} "
             f"learned={'Y' if learned_res['found'] else 'N'}/{learned_res['nodes_expanded']}  "
-            f"astar_cmp={cmp_astar}  {cmp_mcts}"
+            f"astar_cmp={cmp_astar}  {cmp_pol}  {cmp_mcts}"
         )
     return rows
 
@@ -169,6 +215,49 @@ def aggregate(rows: list[dict]) -> dict:
         "hand_only_ids": [r["id"] for r in hand_only],
         "learned_only_ids": [r["id"] for r in learned_only],
     }
+
+    # Per-source breakdown (hard_v2 vs phase0) for clean comparison vs Round 2 numbers.
+    by_source: dict[str, dict] = {}
+    for src in {r.get("source", "?") for r in rows}:
+        src_rows = [r for r in rows if r.get("source") == src]
+        src_joint = [r for r in src_rows if r["hand_found"] and r["learned_found"]]
+        if src_joint:
+            by_source[src] = {
+                "total": len(src_rows),
+                "joint_solved": len(src_joint),
+                "astar_geomean": geomean_ratio(
+                    [r["hand_nodes"] for r in src_joint],
+                    [r["learned_nodes"] for r in src_joint],
+                ),
+                "learned_found": sum(1 for r in src_rows if r["learned_found"]),
+                "hand_found": sum(1 for r in src_rows if r["hand_found"]),
+            }
+        else:
+            by_source[src] = {"total": len(src_rows), "joint_solved": 0}
+    out["by_source"] = by_source
+
+    if any("pol_found" in r for r in rows):
+        pol_joint = [r for r in rows
+                     if r["hand_found"] and r.get("pol_found")]
+        pol_geomean = geomean_ratio(
+            [r["hand_nodes"] for r in pol_joint],
+            [r["pol_nodes"] for r in pol_joint],
+        )
+        pol_ratios = [r["hand_nodes"] / max(r["pol_nodes"], 1) for r in pol_joint]
+        out["pol_joint_solved"] = len(pol_joint)
+        out["pol_geomean"] = pol_geomean
+        out["pol_median"] = float(np.median(pol_ratios)) if pol_ratios else 0.0
+        # per-source breakdown
+        for src in {r.get("source", "?") for r in rows}:
+            src_pol_joint = [r for r in rows
+                             if r.get("source") == src
+                             and r["hand_found"] and r.get("pol_found")]
+            if src_pol_joint:
+                by_source[src]["pol_geomean"] = geomean_ratio(
+                    [r["hand_nodes"] for r in src_pol_joint],
+                    [r["pol_nodes"] for r in src_pol_joint],
+                )
+                by_source[src]["pol_joint_solved"] = len(src_pol_joint)
 
     if any("mcts_found" in r for r in rows):
         mcts_solved = [r for r in rows if r.get("mcts_found")]
@@ -206,6 +295,25 @@ def write_markdown(rows: list[dict], agg: dict, out: Path, value_ckpt: str, poli
     lines.append(f"- A* median compression: {agg['astar_median']:.3f}x")
     if agg["hand_only_ids"]:
         lines.append(f"- Regression IDs: {', '.join(agg['hand_only_ids'])}")
+    lines.append("")
+
+    if "pol_geomean" in agg:
+        lines.append("## A*-with-policy-ordering metric (hand vs learned+policy)\n")
+        lines.append(f"- Joint solved: {agg['pol_joint_solved']}")
+        lines.append(f"- **A*+policy geomean compression**: {agg['pol_geomean']:.3f}x")
+        lines.append(f"- A*+policy median compression: {agg['pol_median']:.3f}x")
+        lines.append("")
+
+    lines.append("## Per-source breakdown\n")
+    lines.append("| source | total | hand_found | learned_found | joint | A* geomean | A*+pol geomean |")
+    lines.append("|---|---|---|---|---|---|---|")
+    for src, s in sorted(agg.get("by_source", {}).items()):
+        lines.append(
+            f"| {src} | {s.get('total', '-')} | {s.get('hand_found', '-')} | "
+            f"{s.get('learned_found', '-')} | {s.get('joint_solved', '-')} | "
+            f"{s.get('astar_geomean', 0):.3f}x | "
+            f"{s.get('pol_geomean', 0):.3f}x |"
+        )
     lines.append("")
 
     if "mcts_solved" in agg:
@@ -259,6 +367,8 @@ def main() -> int:
     p.add_argument("--mcts-max-moves", type=int, default=20)
     p.add_argument("--c-puct", type=float, default=1.5)
     p.add_argument("--no-mcts", action="store_true", help="skip MCTS eval (A* only)")
+    p.add_argument("--no-policy-ordering", action="store_true",
+                   help="skip A*-with-policy-ordering eval")
     p.add_argument("--limit", type=int, default=None)
     args = p.parse_args()
 
@@ -282,6 +392,7 @@ def main() -> int:
         astar_max_nodes=args.astar_max_nodes, astar_max_depth=args.astar_max_depth,
         mcts_simulations=args.mcts_simulations, mcts_max_moves=args.mcts_max_moves,
         c_puct=args.c_puct, run_mcts=not args.no_mcts,
+        run_policy_ordering=not args.no_policy_ordering,
     )
     agg = aggregate(rows)
     write_markdown(rows, agg, args.output, str(args.value_ckpt), str(args.policy_ckpt) if args.policy_ckpt else None)
@@ -303,9 +414,17 @@ def main() -> int:
     print(f"  A* geomean: {agg['astar_geomean']:.3f}x")
     print(f"  A* hand-only (regressions): {agg['astar_hand_only']}")
     print(f"  A* learned-only (new wins): {agg['astar_learned_only']}")
+    if "pol_geomean" in agg:
+        print(f"  A*+policy geomean: {agg['pol_geomean']:.3f}x")
     if "mcts_median_sims" in agg:
         print(f"  MCTS solved: {agg['mcts_solved']}/{agg['total']}")
         print(f"  MCTS median sims: {agg['mcts_median_sims']:.0f}")
+    for src, s in sorted(agg.get("by_source", {}).items()):
+        msg = (f"  [{src}] A*={s.get('astar_geomean', 0):.3f}x "
+               f"joint={s.get('joint_solved', '-')}/{s.get('total', '-')}")
+        if "pol_geomean" in s:
+            msg += f"  A*+pol={s['pol_geomean']:.3f}x"
+        print(msg)
     print(f"  markdown: {args.output}")
     print(f"  csv: {csv_path}")
     print(f"  json: {json_path}")

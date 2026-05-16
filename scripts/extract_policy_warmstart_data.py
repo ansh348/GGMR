@@ -80,6 +80,7 @@ def _bfs_path(problem: dict, max_nodes: int) -> list[tuple[EqState, str]] | None
         max_depth=30,
         check_soundness=False,
         problem_id=f"warmstart_{problem['category']}_{problem['idx']:05d}",
+        training_only=True,
     )
     if not result.found:
         return None
@@ -210,7 +211,20 @@ def main() -> int:
     parser.add_argument("--held-out-frac", type=float, default=_HELD_OUT_FRAC)
     parser.add_argument("--max-workers", type=int, default=8)
     parser.add_argument("--log-level", default="INFO")
+    parser.add_argument("--domain", choices=["algebra", "trig"], default="algebra",
+                        help="Domain selector. v1 algebra-only; trig warmstart is "
+                             "generated via scripts/generate_training_data.py --domain trig.")
     args = parser.parse_args()
+
+    if args.domain == "trig":
+        print(
+            "ERROR: trig warmstart generation goes via "
+            "scripts/generate_training_data.py --domain trig "
+            "(not this script). The algebra warmstart pipeline uses "
+            "category-stratified easy problems; trig uses TrigReverseGenerator.",
+            flush=True,
+        )
+        return 2
 
     logging.basicConfig(
         level=getattr(logging, args.log_level.upper()),

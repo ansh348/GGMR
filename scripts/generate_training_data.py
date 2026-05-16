@@ -23,7 +23,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from ggmr.training.job_planner import plan_easy_jobs, plan_hard_jobs  # noqa: E402
+from ggmr.training.job_planner import (  # noqa: E402
+    plan_easy_jobs,
+    plan_hard_jobs,
+    plan_trig_jobs,
+)
 
 _SUBPROC_SCRIPT = str(Path(__file__).resolve().parent / "_generate_one_training.py")
 
@@ -69,7 +73,13 @@ def _run_subproc(job: dict, timeout_s: float) -> dict:
 
 
 def _dispatch(job: dict, easy_timeout_s: float, hard_timeout_s: float) -> dict:
-    timeout_s = easy_timeout_s if job["source"] == "easy" else hard_timeout_s
+    # For trig jobs, "easy" depths (1-3) use easy_timeout; "hard" depths (4-8)
+    # use hard_timeout. Detected via the template prefix set by plan_trig_jobs.
+    if job.get("domain") == "trig":
+        tpl = job.get("template", "")
+        timeout_s = easy_timeout_s if "easy" in tpl else hard_timeout_s
+    else:
+        timeout_s = easy_timeout_s if job["source"] == "easy" else hard_timeout_s
     return _run_subproc(job, timeout_s)
 
 
@@ -103,6 +113,13 @@ def _format_eta(seconds: float) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=str, required=True)
+    parser.add_argument("--domain", choices=["algebra", "trig"], default="algebra",
+                        help="domain selector. algebra (default) plans easy+hard; "
+                             "trig plans verify_identity jobs via TrigReverseGenerator "
+                             "with training_only=True (Marcus Constraint 1).")
+    parser.add_argument("--num-problems", type=int, default=None,
+                        help="trig domain only: total problems (70%% easy, 30%% hard). "
+                             "Algebra uses --easy-count and --hard-count instead.")
     parser.add_argument("--easy-count", type=int, default=7000)
     parser.add_argument("--hard-count", type=int, default=3000)
     parser.add_argument("--easy-max-depth", type=int, default=10)
@@ -118,27 +135,42 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--progress", action="store_true")
+    parser.add_argument("--run-id", type=str, default="",
+                        help="stamped on every record under run_id; useful for "
+                             "downstream filtering of training data by run.")
     args = parser.parse_args()
 
     output_path = Path(args.output).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    easy_jobs = plan_easy_jobs(args.easy_count, args.easy_max_depth, args.seed)
-    for j in easy_jobs:
-        j["bfs_budget"] = args.easy_bfs_budget
-    hard_jobs = plan_hard_jobs(args.hard_count, args.seed)
-    for j in hard_jobs:
-        j["bfs_budget"] = args.hard_bfs_budget
+    if args.domain == "trig":
+        num_problems = args.num_problems if args.num_problems is not None else 1000
+        trig_jobs = plan_trig_jobs(num_problems, seed=args.seed, run_id=args.run_id)
+        for j in trig_jobs:
+            tpl = j.get("template", "")
+            j["bfs_budget"] = (
+                args.hard_bfs_budget if "hard" in tpl else args.easy_bfs_budget
+            )
+        jobs = trig_jobs
+        easy_jobs = []
+        hard_jobs = []
+    else:
+        easy_jobs = plan_easy_jobs(args.easy_count, args.easy_max_depth, args.seed)
+        for j in easy_jobs:
+            j["bfs_budget"] = args.easy_bfs_budget
+        hard_jobs = plan_hard_jobs(args.hard_count, args.seed)
+        for j in hard_jobs:
+            j["bfs_budget"] = args.hard_bfs_budget
 
-    # Interleave easy and hard so families/templates aren't starved when workers
-    # finish a chunk.
-    jobs: list[dict] = []
-    i_e = i_h = 0
-    while i_e < len(easy_jobs) or i_h < len(hard_jobs):
-        if i_e < len(easy_jobs):
-            jobs.append(easy_jobs[i_e]); i_e += 1
-        if i_h < len(hard_jobs):
-            jobs.append(hard_jobs[i_h]); i_h += 1
+        # Interleave easy and hard so families/templates aren't starved when workers
+        # finish a chunk.
+        jobs: list[dict] = []
+        i_e = i_h = 0
+        while i_e < len(easy_jobs) or i_h < len(hard_jobs):
+            if i_e < len(easy_jobs):
+                jobs.append(easy_jobs[i_e]); i_e += 1
+            if i_h < len(hard_jobs):
+                jobs.append(hard_jobs[i_h]); i_h += 1
 
     resume_ids: set[str] = set()
     if args.resume:
@@ -151,14 +183,25 @@ def main() -> int:
         print("No jobs to run.", flush=True)
         return 0
 
-    print(
-        f"Plan: easy={args.easy_count} hard={args.hard_count} "
-        f"(after resume: {sum(1 for j in jobs if j['source'] == 'easy')} easy + "
-        f"{sum(1 for j in jobs if j['source'] == 'hard')} hard) "
-        f"workers={args.workers} easy_timeout={args.easy_timeout_s}s "
-        f"hard_timeout={args.hard_timeout_s}s output={output_path}",
-        flush=True,
-    )
+    if args.domain == "trig":
+        n_easy_in_plan = sum(1 for j in jobs if "easy" in j.get("template", ""))
+        n_hard_in_plan = len(jobs) - n_easy_in_plan
+        print(
+            f"Plan: domain=trig total={len(jobs)} "
+            f"({n_easy_in_plan} easy + {n_hard_in_plan} hard) "
+            f"workers={args.workers} easy_timeout={args.easy_timeout_s}s "
+            f"hard_timeout={args.hard_timeout_s}s output={output_path}",
+            flush=True,
+        )
+    else:
+        print(
+            f"Plan: easy={args.easy_count} hard={args.hard_count} "
+            f"(after resume: {sum(1 for j in jobs if j['source'] == 'easy')} easy + "
+            f"{sum(1 for j in jobs if j['source'] == 'hard')} hard) "
+            f"workers={args.workers} easy_timeout={args.easy_timeout_s}s "
+            f"hard_timeout={args.hard_timeout_s}s output={output_path}",
+            flush=True,
+        )
 
     counts = {"easy_done": 0, "hard_done": 0, "easy_skipped": 0, "hard_skipped": 0,
               "pairs": 0}
@@ -179,7 +222,11 @@ def main() -> int:
             for fut in as_completed(futures):
                 done_idx += 1
                 result = fut.result()
-                source_key = "hard" if result["problem_id"].startswith("hard_") else "easy"
+                pid = result["problem_id"]
+                if pid.startswith("hard_") or pid.startswith("trig_hard_"):
+                    source_key = "hard"
+                else:
+                    source_key = "easy"
                 if result.get("skipped"):
                     counts[f"{source_key}_skipped"] += 1
                     reason = result.get("reason", "unknown")

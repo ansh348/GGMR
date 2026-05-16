@@ -5,6 +5,10 @@ from .parameter_sampling import FAMILIES
 
 EASY_TEMPLATES = ("linear", "quadratic", "rational", "polynomial", "mixed")
 
+# Trig (Phase 1.2): single mixed template with depth-banded easy/hard split.
+TRIG_EASY_DEPTHS = (1, 2, 3)
+TRIG_HARD_DEPTHS = (4, 5, 6, 7, 8)
+
 
 def plan_easy_jobs(count: int, max_depth: int, seed: int) -> list[dict]:
     """Cycle through (template, depth) pairs, distributing `count` jobs evenly."""
@@ -56,6 +60,46 @@ def plan_hard_jobs(count: int, seed: int) -> list[dict]:
 # Depth cycle used by round2 medium/hard categories: maps idx → advisory depth
 # value carried in the JSONL `depth` field. Trivial/easy ignore this.
 _ROUND2_DEPTH_CYCLE = (3, 5, 8, 10, 12, 15)
+
+
+def plan_trig_jobs(num_problems: int, *, seed: int = 42, easy_frac: float = 0.7,
+                   run_id: str = "") -> list[dict]:
+    """Plan `num_problems` trig identity-verification jobs.
+
+    `easy_frac` fraction get depths from TRIG_EASY_DEPTHS; remainder from
+    TRIG_HARD_DEPTHS. Each job carries `domain="trig"` so worker.py dispatches
+    to TrigReverseGenerator with training_only=True.
+    """
+    if num_problems <= 0:
+        return []
+    n_easy = int(num_problems * easy_frac)
+    n_hard = num_problems - n_easy
+    jobs: list[dict] = []
+    for idx in range(n_easy):
+        depth = TRIG_EASY_DEPTHS[idx % len(TRIG_EASY_DEPTHS)]
+        job_seed = seed * 1_000_003 + hash(("trig_easy", depth, idx)) % 1_000_003
+        jobs.append({
+            "source": "trig",
+            "domain": "trig",
+            "template": "trig_easy",
+            "depth": depth,
+            "seed": job_seed,
+            "problem_id": f"trig_easy_{idx:05d}",
+            "run_id": run_id,
+        })
+    for idx in range(n_hard):
+        depth = TRIG_HARD_DEPTHS[idx % len(TRIG_HARD_DEPTHS)]
+        job_seed = seed * 1_000_003 + hash(("trig_hard", depth, idx)) % 1_000_003
+        jobs.append({
+            "source": "trig",
+            "domain": "trig",
+            "template": "trig_hard",
+            "depth": depth,
+            "seed": job_seed,
+            "problem_id": f"trig_hard_{idx:05d}",
+            "run_id": run_id,
+        })
+    return jobs
 
 
 def plan_round2_jobs(*, jobs_per_category: int = 1000, seed: int = 42) -> list[dict]:

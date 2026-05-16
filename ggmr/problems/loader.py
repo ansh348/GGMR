@@ -26,6 +26,7 @@ from ggmr.training.srepr_parse import parse_srepr
 
 HARD_EVAL_V2_PATH = Path(__file__).parent / "hard_evaluation_set_v2.yaml"
 PHASE0_PROBLEMS_PATH = Path(__file__).resolve().parents[2] / "phase0" / "problems" / "problems.yaml"
+TRIG_EVAL_V1_PATH = Path(__file__).parent / "trig_evaluation_set_v1.yaml"
 
 
 @dataclass
@@ -95,3 +96,15 @@ def load_phase0_problems(path: Path | str | None = None) -> list[Problem]:
     with open(p, "r", encoding="utf-8") as f:
         entries = yaml.safe_load(f) or []
     return [pr for pr in (_build_problem(e, source="phase0") for e in entries) if pr is not None]
+
+
+def load_trig_evaluation_set(path: Path | str | None = None) -> list[Problem]:
+    """Load trig identity-verification problems from `trig_evaluation_set_v1.yaml`.
+
+    Mirrors `load_hard_evaluation_set`. Family is taken from the YAML `category`
+    field; `source` is stamped as "trig".
+    """
+    p = Path(path) if path else TRIG_EVAL_V1_PATH
+    with open(p, "r", encoding="utf-8") as f:
+        entries = yaml.safe_load(f) or []
+    return [pr for pr in (_build_problem(e, source="trig") for e in entries) if pr is not None]

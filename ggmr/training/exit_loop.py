@@ -73,10 +73,27 @@ class ExitProblem:
 
 @dataclass
 class ValueTuple:
-    """(state_graph, log1p_target) for value training."""
+    """(state_graph, log1p_target) for value training.
+
+    Phase 0.4: extended with Marcus replay-buffer metadata (`domain`, `mode`,
+    `run_id`, `iteration`, `rule_set_hash`, `model_checkpoint`) and srepr
+    fields for JSONL round-trip. Old pickled tuples (no metadata) still load
+    via dataclass defaults; the empty strings flag "legacy / unspecified".
+    """
     graph: Data
     log1p_steps: float
     problem_id: str
+    # --- replay-buffer metadata (Marcus Constraint 2) ---
+    domain: str = ""
+    mode: str = "training"
+    run_id: str = ""
+    iteration: int = 0
+    rule_set_hash: str = ""
+    model_checkpoint: str = ""
+    # --- srepr fields, required for JSONL round-trip ---
+    state_lhs_srepr: str = ""
+    state_rhs_srepr: str = ""
+    var_name: str = "x"
 
 
 @dataclass
@@ -85,10 +102,21 @@ class PolicyTuple:
 
     `legal_mask` is a [num_rules] vector with 1.0 on legal entries and 0.0
     elsewhere — used by the masked-softmax loss.
+
+    Phase 0.4: same metadata fields as ValueTuple (see Marcus Constraint 2).
     """
     graph: Data
     target_distribution: np.ndarray  # [num_rules], sums to 1.0 over legal rules
     legal_mask: np.ndarray  # [num_rules], 0/1
+    domain: str = ""
+    mode: str = "training"
+    run_id: str = ""
+    iteration: int = 0
+    rule_set_hash: str = ""
+    model_checkpoint: str = ""
+    state_lhs_srepr: str = ""
+    state_rhs_srepr: str = ""
+    var_name: str = "x"
 
 
 # ----------------------------- replay buffer --------------------------------
@@ -141,27 +169,196 @@ class ReplayBuffer:
 
     def save(self, path: Path | str) -> None:
         """Persist buffer to disk so a resumed run can carry over collected MCTS data
-        (the whole point of ExIt — iter N's exploration must be available to iter N+1)."""
+        (the whole point of ExIt — iter N's exploration must be available to iter N+1).
+
+        Two formats:
+
+        * **`.jsonl`** (Marcus Constraint 2, preferred for new runs) — one JSON
+          object per buffer entry, atomic rename for crash safety, embeds
+          per-entry metadata (domain/mode/run_id/iteration/rule_set_hash) so
+          a mismatch is detectable on load. Graphs are rebuilt from srepr on
+          load — the JSON file itself contains only text.
+        * **`.pt`** (legacy / back-compat) — torch.save of the in-memory
+          structure. Faster I/O, less portable.
+
+        Default path extension drives the format; callers control via the
+        save path they pass.
+        """
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
-        torch.save({
-            "max_size": self.max_size,
-            "value_buf": list(self._value_buf),
-            "policy_buf": list(self._policy_buf),
-            "pids": list(self._pids),
-        }, path)
+        if path.suffix == ".jsonl":
+            self._save_jsonl(path)
+        else:
+            torch.save({
+                "max_size": self.max_size,
+                "value_buf": list(self._value_buf),
+                "policy_buf": list(self._policy_buf),
+                "pids": list(self._pids),
+            }, path)
+
+    def _save_jsonl(self, path: Path) -> None:
+        """Write each (value, policy_maybe_none) pair as one JSON line. Atomic via
+        tmp + os.replace so a crash mid-write doesn't corrupt the buffer file."""
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        n_value = len(self._value_buf)
+        n_policy = sum(1 for p in self._policy_buf if p is not None)
+        with tmp.open("w", encoding="utf-8") as f:
+            # Header line: schema version + counts (helps reader sanity-check)
+            f.write(json.dumps({
+                "schema_version": 1,
+                "kind": "buffer_header",
+                "max_size": self.max_size,
+                "n_entries": n_value,
+                "n_policy_entries": n_policy,
+            }) + "\n")
+            for v, p in zip(self._value_buf, self._policy_buf):
+                rec: dict = {
+                    "schema_version": 1,
+                    "kind": "buffer_entry",
+                    "problem_id": v.problem_id,
+                    "log1p_steps": float(v.log1p_steps),
+                    "state_lhs_srepr": v.state_lhs_srepr,
+                    "state_rhs_srepr": v.state_rhs_srepr,
+                    "var_name": v.var_name,
+                    "domain": v.domain,
+                    "mode": v.mode,
+                    "run_id": v.run_id,
+                    "iteration": int(v.iteration),
+                    "rule_set_hash": v.rule_set_hash,
+                    "model_checkpoint": v.model_checkpoint,
+                }
+                if p is not None:
+                    rec["target_distribution"] = p.target_distribution.astype(float).tolist()
+                    rec["legal_mask"] = p.legal_mask.astype(float).tolist()
+                else:
+                    rec["target_distribution"] = None
+                    rec["legal_mask"] = None
+                f.write(json.dumps(rec) + "\n")
+        os.replace(tmp, path)
 
     @classmethod
-    def load(cls, path: Path | str, held_out_pids: set[str] | None = None) -> "ReplayBuffer":
-        """Restore a buffer saved by `save()`. The new buffer's held_out_pids is set
-        fresh from the current eval set (the saved data was already filtered, but
-        sanity_check_no_leak will re-verify against today's eval pids)."""
+    def load(
+        cls,
+        path: Path | str,
+        held_out_pids: set[str] | None = None,
+        *,
+        expected_rule_set_hash: str | None = None,
+    ) -> "ReplayBuffer":
+        """Restore a buffer saved by `save()`. Auto-detects `.jsonl` vs `.pt`.
+
+        Args:
+            path: file written by `.save()`.
+            held_out_pids: eval problem_ids to forbid on the resumed buffer.
+                The saved data was already filtered, but `sanity_check_no_leak`
+                re-verifies against today's eval pids.
+            expected_rule_set_hash: if provided, every JSONL entry's
+                `rule_set_hash` must match. Mismatch indicates the buffer
+                was recorded against a different rule set (e.g., 49-rule
+                algebra-only) and is unsafe to mix into the current
+                (e.g., 92-rule algebra+trig) training data. Legacy `.pt`
+                buffers without per-entry hashes are accepted (treated as
+                unspecified).
+        """
+        path = Path(path)
+        if path.suffix == ".jsonl":
+            return cls._load_jsonl(path, held_out_pids, expected_rule_set_hash)
+        # Legacy torch.save path
         payload = torch.load(path, map_location="cpu", weights_only=False)
         buf = cls(max_size=payload["max_size"], held_out_pids=held_out_pids)
         buf._value_buf.extend(payload["value_buf"])
         buf._policy_buf.extend(payload["policy_buf"])
         buf._pids.extend(payload["pids"])
         return buf
+
+    @classmethod
+    def _load_jsonl(
+        cls,
+        path: Path,
+        held_out_pids: set[str] | None,
+        expected_rule_set_hash: str | None,
+    ) -> "ReplayBuffer":
+        with path.open("r", encoding="utf-8") as f:
+            lines = f.readlines()
+        if not lines:
+            raise ValueError(f"{path}: empty JSONL")
+        header = json.loads(lines[0])
+        if header.get("kind") != "buffer_header":
+            raise ValueError(f"{path}: first line is not a buffer_header (got kind={header.get('kind')!r})")
+        max_size = header.get("max_size", 50_000)
+        buf = cls(max_size=max_size, held_out_pids=held_out_pids)
+        for i, line in enumerate(lines[1:], start=1):
+            rec = json.loads(line)
+            if rec.get("kind") != "buffer_entry":
+                continue
+            if expected_rule_set_hash is not None:
+                got = rec.get("rule_set_hash", "")
+                if got and got != expected_rule_set_hash:
+                    raise ValueError(
+                        f"{path}#L{i}: rule_set_hash mismatch (got {got!r}, "
+                        f"expected {expected_rule_set_hash!r}). Refusing to mix "
+                        f"buffers across rule sets — see Marcus Constraint 2."
+                    )
+            v_tuple, p_tuple = cls._rebuild_pair_from_record(rec)
+            if v_tuple is None:
+                continue
+            buf._value_buf.append(v_tuple)
+            buf._policy_buf.append(p_tuple)
+            buf._pids.append(v_tuple.problem_id)
+        # Trim if loaded payload exceeds max_size
+        while len(buf._value_buf) > buf.max_size:
+            buf._value_buf.popleft()
+            buf._policy_buf.popleft()
+            buf._pids.popleft()
+        return buf
+
+    @staticmethod
+    def _rebuild_pair_from_record(rec: dict) -> tuple["ValueTuple | None", "PolicyTuple | None"]:
+        """Rebuild (ValueTuple, PolicyTuple_or_None) from a JSONL record by parsing
+        srepr back into a Data graph. Returns (None, None) on any parse failure."""
+        try:
+            lhs = parse_srepr(rec["state_lhs_srepr"])
+            rhs = parse_srepr(rec["state_rhs_srepr"])
+            var = sp.Symbol(rec.get("var_name", "x"))
+            graph = sympy_to_pyg(lhs, rhs, var)
+        except Exception as e:  # noqa: BLE001
+            logger.debug(f"buffer JSONL parse failed at {rec.get('problem_id', '<?>')}: {e}")
+            return None, None
+        v_data = Data(x=graph.x, edge_index=graph.edge_index)
+        v_data.y = torch.tensor([float(rec["log1p_steps"])], dtype=torch.float32)
+        v_tuple = ValueTuple(
+            graph=v_data,
+            log1p_steps=float(rec["log1p_steps"]),
+            problem_id=rec["problem_id"],
+            domain=rec.get("domain", ""),
+            mode=rec.get("mode", "training"),
+            run_id=rec.get("run_id", ""),
+            iteration=int(rec.get("iteration", 0)),
+            rule_set_hash=rec.get("rule_set_hash", ""),
+            model_checkpoint=rec.get("model_checkpoint", ""),
+            state_lhs_srepr=rec["state_lhs_srepr"],
+            state_rhs_srepr=rec["state_rhs_srepr"],
+            var_name=rec.get("var_name", "x"),
+        )
+        p_tuple: PolicyTuple | None = None
+        td = rec.get("target_distribution")
+        lm = rec.get("legal_mask")
+        if td is not None and lm is not None:
+            p_graph = Data(x=graph.x, edge_index=graph.edge_index)
+            p_tuple = PolicyTuple(
+                graph=p_graph,
+                target_distribution=np.asarray(td, dtype=np.float32),
+                legal_mask=np.asarray(lm, dtype=np.float32),
+                domain=rec.get("domain", ""),
+                mode=rec.get("mode", "training"),
+                run_id=rec.get("run_id", ""),
+                iteration=int(rec.get("iteration", 0)),
+                rule_set_hash=rec.get("rule_set_hash", ""),
+                model_checkpoint=rec.get("model_checkpoint", ""),
+                state_lhs_srepr=rec["state_lhs_srepr"],
+                state_rhs_srepr=rec["state_rhs_srepr"],
+                var_name=rec.get("var_name", "x"),
+            )
+        return v_tuple, p_tuple
 
 
 # ----------------------- warm-start data loading ----------------------------
@@ -283,7 +480,7 @@ def _build_policy_dataset_from_warmstart(records: list[dict]) -> tuple[list[Data
             continue
         mask = np.zeros(n_rules, dtype=np.float32)
         any_legal = False
-        for rule, action in default_registry.enumerate_actions(state):
+        for rule, action in default_registry.enumerate_actions(state, training_only=True):
             if rule.guard(state, action).ok:
                 mask[rn_to_idx[rule.name]] = 1.0
                 any_legal = True
@@ -513,6 +710,7 @@ def _mcts_worker_fn(args: tuple) -> dict:
             initial, is_target,
             value_fn=va.value_fn, policy_fn=pa.policy_fn,
             num_simulations=num_simulations, max_moves=max_moves, c_puct=c_puct,
+            training_only=True,
         )
     except TimeoutError:
         return {"problem_id": pid, "found": False, "reason": "timeout",
@@ -555,10 +753,21 @@ def _build_tuples_from_worker_result(
     result: dict,
     rn_to_idx: dict[str, int],
     n_rules: int,
+    *,
+    domain: str = "",
+    run_id: str = "",
+    iteration: int = 0,
+    rule_set_hash_val: str = "",
+    model_checkpoint: str = "",
 ) -> tuple[list[ValueTuple], list[PolicyTuple]]:
     """In the main process, turn a worker result's serialized trajectory into
     (ValueTuple, PolicyTuple) lists. We rebuild PyG graphs here because Data
-    objects don't pickle reliably across processes."""
+    objects don't pickle reliably across processes.
+
+    The keyword args stamp Marcus replay-buffer metadata onto each emitted
+    tuple. Defaults are empty strings (legacy / unspecified) so existing
+    callers that don't pass them keep their previous semantics.
+    """
     pid = result["problem_id"]
     path_records = result["path_records"]
     n_steps = len(path_records)
@@ -572,17 +781,31 @@ def _build_tuples_from_worker_result(
             logger.debug(f"failed to rebuild graph for {pid}/{i}: {e}")
             continue
         remaining = n_steps - i
+        lhs_srepr = sp.srepr(state.lhs)
+        rhs_srepr = sp.srepr(state.rhs)
+        var_name = state.var.name
         v_data = Data(x=graph.x, edge_index=graph.edge_index)
         v_data.y = torch.tensor([math.log1p(remaining)], dtype=torch.float32)
         value_tuples.append(ValueTuple(
-            graph=v_data, log1p_steps=math.log1p(remaining), problem_id=pid,
+            graph=v_data,
+            log1p_steps=math.log1p(remaining),
+            problem_id=pid,
+            domain=domain,
+            mode="training",
+            run_id=run_id,
+            iteration=iteration,
+            rule_set_hash=rule_set_hash_val,
+            model_checkpoint=model_checkpoint,
+            state_lhs_srepr=lhs_srepr,
+            state_rhs_srepr=rhs_srepr,
+            var_name=var_name,
         ))
 
         # Legal mask + visit-derived policy target (recomputed; cheap & avoids
         # trusting the worker to enumerate legals).
         mask = np.zeros(n_rules, dtype=np.float32)
         target = np.zeros(n_rules, dtype=np.float32)
-        for rule, action in default_registry.enumerate_actions(state):
+        for rule, action in default_registry.enumerate_actions(state, training_only=True):
             if rule.guard(state, action).ok:
                 mask[rn_to_idx[rule.name]] = 1.0
         for rn, p in rec.get("visit_distribution", {}).items():
@@ -595,7 +818,18 @@ def _build_tuples_from_worker_result(
             target = mask / mask.sum()
         p_graph = Data(x=graph.x, edge_index=graph.edge_index)
         policy_tuples.append(PolicyTuple(
-            graph=p_graph, target_distribution=target, legal_mask=mask,
+            graph=p_graph,
+            target_distribution=target,
+            legal_mask=mask,
+            domain=domain,
+            mode="training",
+            run_id=run_id,
+            iteration=iteration,
+            rule_set_hash=rule_set_hash_val,
+            model_checkpoint=model_checkpoint,
+            state_lhs_srepr=lhs_srepr,
+            state_rhs_srepr=rhs_srepr,
+            var_name=var_name,
         ))
     return value_tuples, policy_tuples
 
@@ -993,9 +1227,23 @@ def save_checkpoints(
     iteration: int,
     extra: dict | None = None,
 ) -> tuple[Path, Path]:
+    """Persist value, policy, and the shared GIN backbone for this iteration.
+
+    Writes three files per iter (Phase 0.3, Marcus Constraint 3):
+        value_iter_NN.pt     — full value net (backbone + value head)
+        policy_iter_NN.pt    — full policy net (backbone + policy head)
+        backbone_iter_NN.pt  — value-net's GIN backbone weights only
+
+    The backbone-only file is what the cross-domain transfer experiment
+    loads to seed a trig net from algebra weights. We pick the value net's
+    backbone (rather than the policy net's) by convention; both networks
+    are trained on the same trajectories so their backbones converge to
+    similar representations.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
     value_path = out_dir / f"value_iter_{iteration:02d}.pt"
     policy_path = out_dir / f"policy_iter_{iteration:02d}.pt"
+    backbone_path = out_dir / f"backbone_iter_{iteration:02d}.pt"
     torch.save({
         "model_state": value_net.state_dict(),
         "config": {
@@ -1021,4 +1269,16 @@ def save_checkpoints(
         "rule_names": list(default_registry.names()),
         **(extra or {}),
     }, policy_path)
+    torch.save({
+        "model_state": value_net.backbone_state_dict(),
+        "config": {
+            "in_dim": value_net.in_dim,
+            "hidden_dim": value_net.hidden_dim,
+            "num_layers": value_net.num_layers,
+            "dropout": value_net.dropout,
+        },
+        "iteration": iteration,
+        "source": "value_net.backbone_state_dict",
+        **(extra or {}),
+    }, backbone_path)
     return value_path, policy_path

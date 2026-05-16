@@ -115,6 +115,8 @@ class MCTSResult:
 def _enumerate_legal_with_apply(
     state: EqState,
     rules: Registry,
+    *,
+    training_only: bool = False,
 ) -> list[tuple[str, Action, EqState]]:
     """Run guard+apply+merge+normalize over every (rule, action) in canonical order.
 
@@ -122,7 +124,7 @@ def _enumerate_legal_with_apply(
     that fail guard or raise during apply are silently skipped.
     """
     out: list[tuple[str, Action, EqState]] = []
-    for rule, action in rules.enumerate_actions(state):
+    for rule, action in rules.enumerate_actions(state, training_only=training_only):
         guard = rule.guard(state, action)
         if not guard.ok:
             continue
@@ -166,13 +168,15 @@ def _expand(
     policy_fn: PolicyFn,
     is_target: Callable[[EqState], bool],
     stats: MCTSStats,
+    *,
+    training_only: bool = False,
 ) -> None:
     """Mark `node` as expanded; populate children with priors from `policy_fn`."""
     if node.expanded:
         return
     node.expanded = True
 
-    legal = _enumerate_legal_with_apply(node.state, rules)
+    legal = _enumerate_legal_with_apply(node.state, rules, training_only=training_only)
     stats.nodes_generated += len(legal)
     if not legal:
         node.terminal_value = DEAD_END_VALUE
@@ -217,6 +221,8 @@ def _simulate(
     is_target: Callable[[EqState], bool],
     c_puct: float,
     stats: MCTSStats,
+    *,
+    training_only: bool = False,
 ) -> None:
     leaf = _select(root, c_puct)
 
@@ -225,7 +231,7 @@ def _simulate(
         return
 
     if not leaf.expanded:
-        _expand(leaf, rules, policy_fn, is_target, stats)
+        _expand(leaf, rules, policy_fn, is_target, stats, training_only=training_only)
         stats.nodes_expanded += 1
         if leaf.is_terminal:
             _backprop(leaf, leaf.terminal_value)  # type: ignore[arg-type]
@@ -271,6 +277,7 @@ def mcts_search(
     max_moves: int = 20,
     rules: Optional[Registry] = None,
     c_puct: float = C_PUCT_DEFAULT,
+    training_only: bool = False,
 ) -> MCTSResult:
     """MCTS planning search.
 
@@ -295,7 +302,7 @@ def mcts_search(
     for _ in range(max_moves):
         root = MCTSNode(state=current)
         for _ in range(num_simulations):
-            _simulate(root, rules, value_fn, policy_fn, is_target, c_puct, stats)
+            _simulate(root, rules, value_fn, policy_fn, is_target, c_puct, stats, training_only=training_only)
             stats.total_simulations += 1
 
         visit_dists.append(_visit_distribution_by_rule(root))

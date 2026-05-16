@@ -48,6 +48,7 @@ def bfs(
     rules: Optional[Registry] = None,
     check_soundness: bool = True,
     problem_id: str = "<bfs>",
+    training_only: bool = False,
 ) -> SearchResult:
     """Breadth-first search from `initial` until `is_target(state)` is True.
 
@@ -59,6 +60,7 @@ def bfs(
         rules: rule registry; defaults to `default_registry`.
         check_soundness: run `verify_transition` on every (parent, child).
         problem_id: tag for IllegalStepError diagnostics.
+        training_only: forward to `enumerate_actions` to exclude oracle shortcuts.
     """
     if rules is None:
         rules = default_registry
@@ -80,7 +82,7 @@ def bfs(
         stats.nodes_expanded += 1
         if depth >= max_depth:
             continue
-        for rule, action in rules.enumerate_actions(state):
+        for rule, action in rules.enumerate_actions(state, training_only=training_only):
             stats.nodes_generated += 1
             guard = rule.guard(state, action)
             if not guard.ok:

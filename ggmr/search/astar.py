@@ -46,6 +46,7 @@ def astar(
     check_soundness: bool = True,
     weight: float = 1.0,
     problem_id: str = "<astar>",
+    training_only: bool = False,
 ) -> SearchResult:
     """A* search from `initial` until `is_target(state)` is True.
 
@@ -93,7 +94,7 @@ def astar(
         if depth >= max_depth:
             continue
 
-        for rule, action in rules.enumerate_actions(state):
+        for rule, action in rules.enumerate_actions(state, training_only=training_only):
             stats.nodes_generated += 1
             guard = rule.guard(state, action)
             if not guard.ok:

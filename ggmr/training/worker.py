@@ -15,13 +15,19 @@ from .parameter_sampling import sample_motif_instance
 
 
 def _annotate(records: list[dict], *, source: str, template: str, family: str,
-              depth: int, problem_id: str) -> list[dict]:
+              depth: int, problem_id: str, domain: str = "algebra",
+              rule_set_hash: str = "", run_id: str = "",
+              mode: str = "training") -> list[dict]:
     for r in records:
         r["source"] = source
         r["template"] = template
         r["family"] = family
         r["depth"] = depth
         r["problem_id"] = problem_id
+        r["domain"] = domain
+        r["rule_set_hash"] = rule_set_hash
+        r["run_id"] = run_id
+        r["mode"] = mode
     return records
 
 
@@ -149,7 +155,85 @@ def _generate_round2(job: dict) -> dict[str, Any]:
     }
 
 
+def _generate_trig(job: dict) -> dict[str, Any]:
+    """Generate one trig identity-verification problem and its BFS trace.
+
+    Uses TrigReverseGenerator with training_only=True (Marcus Constraint 1:
+    no oracle shortcuts in trace data).
+    """
+    from ggmr.expr.tree import canonical_repr
+    from ggmr.problems.trig_generator import TrigReverseGenerator
+    from ggmr.rules.hash import rule_set_hash
+
+    template = job.get("template", "mixed")
+    depth = int(job["depth"])
+    seed = int(job["seed"])
+    problem_id = job["problem_id"]
+    bfs_budget = int(job.get("bfs_budget", 5000))
+    run_id = job.get("run_id", "")
+
+    # Strip trig_-prefix from template to get the TRIG_TEMPLATES key
+    if template.startswith("trig_easy") or template.startswith("trig_hard"):
+        seed_template = "mixed"
+    else:
+        seed_template = template
+
+    gen = TrigReverseGenerator(
+        seed=seed, depth=depth, template=seed_template, max_nodes=bfs_budget,
+    )
+    problem = gen.generate_one()
+    if problem is None:
+        return {
+            "problem_id": problem_id,
+            "records": [],
+            "skipped": True,
+            "reason": "generation_failed",
+        }
+    # Re-extract pairs with training_only=True via a deterministic predicate
+    # (canonical_repr lhs == rhs).
+    def is_identity(s):
+        return canonical_repr(s.lhs) == canonical_repr(s.rhs)
+
+    records = extract_training_pairs(
+        problem.initial,
+        problem.target,
+        max_nodes=bfs_budget,
+        training_only=True,
+        is_target=is_identity,
+    )
+    if records is None:
+        return {
+            "problem_id": problem_id,
+            "records": [],
+            "skipped": True,
+            "reason": "bfs_budget_exhausted",
+        }
+    _annotate(
+        records,
+        source=job.get("source", "trig"),
+        template=template,
+        family=problem.template,
+        depth=depth,
+        problem_id=problem_id,
+        domain="trig",
+        rule_set_hash=rule_set_hash(),
+        run_id=run_id,
+        mode="training",
+    )
+    return {
+        "problem_id": problem_id,
+        "records": records,
+        "skipped": False,
+        "reason": "",
+    }
+
+
 def generate_one(job: dict) -> dict[str, Any]:
+    # New: route by `domain` first (preferred for trig). Back-compat: fall
+    # through to legacy `source` dispatch for algebra jobs.
+    domain = job.get("domain", "algebra")
+    if domain == "trig":
+        return _generate_trig(job)
     if job["source"] == "easy":
         return _generate_easy(job)
     if job["source"] == "hard":

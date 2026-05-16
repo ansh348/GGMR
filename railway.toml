@@ -5,38 +5,63 @@ builder = "nixpacks"
 providers = ["python"]
 
 [deploy]
-# Phase 3 v3: TRUE cumulative ExIt. Starts fresh from Round 2 baseline; the
-# buffer auto-persists after every iter (buffer_iter_NN.pt) so iter N+1 inherits
-# iter N's MCTS exploration data (which iter_v2 did NOT — that's why iter_v2 was
-# bogus). Outputs to /data/exit_v3 so iter_v1 (9.37x headline) and iter_v2 stay
-# preserved. `python -u` is unbuffered so Deploy Logs show live progress.
+# ============================================================================
+# Trig trace generation (Phase 1.3 prep — Marcus).
+# Outputs go to /data/trig_training.jsonl; HTTP server keeps them accessible.
+# BLAS thread caps preserved (lesson from commit 5491b2a).
+# ============================================================================
 startCommand = """pip install -e . && \
   export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 && \
   python -c "import ggmr; print('ggmr import OK')" && \
-  mkdir -p /data/exit_v3 && \
-  (cd /data && python -u -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server_v3.log 2>&1 &) && \
-  echo "HTTP file server backgrounded on port ${PORT:-8080}; live at https://ggmr-production.up.railway.app/" && \
-  echo "=== PHASE 3 v3: TRUE CUMULATIVE ExIt (3 iters, buffer persists) ===" && \
-  python -u scripts/run_exit.py \
-    --value-ckpt checkpoints/round2/best.pt \
-    --warmstart-data /data/policy_warmstart.jsonl \
-    --output-dir /data/exit_v3 \
-    --iterations 3 \
-    --simulations 400 \
-    --num-problems 1000 \
-    --max-workers 32 \
-    --device cpu \
-    --collection-timeout 3600 && \
-  echo "=== PHASE 3 v3: EVALUATION ===" && \
-  python -u -m ggmr.training.evaluate_exit \
-    --value-ckpt /data/exit_v3/value_iter_02.pt \
-    --policy-ckpt /data/exit_v3/policy_iter_02.pt \
-    --problems all \
-    --output /data/exit_v3/EXIT_V3_RESULTS.md \
-    --device cpu && \
-  echo "=== DONE; files at https://ggmr-production.up.railway.app/exit_v3/ ===" ; \
+  mkdir -p /data && \
+  (cd /data && python -u -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server_trig.log 2>&1 &) && \
+  echo "HTTP file server backgrounded on port ${PORT:-8080}" && \
+  echo "=== TRIG TRACE GENERATION (Phase 1.3 prep) ===" && \
+  python -u scripts/generate_training_data.py \
+    --domain trig \
+    --num-problems 20000 \
+    --workers 32 \
+    --easy-bfs-budget 5000 \
+    --hard-bfs-budget 10000 \
+    --easy-timeout-s 180 \
+    --hard-timeout-s 180 \
+    --output /data/trig_training.jsonl \
+    --run-id trig_v0 \
+    --progress && \
+  echo "=== DONE; trig_training.jsonl at https://ggmr-production.up.railway.app/ ===" ; \
   tail -f /dev/null"""
 
 [[deploy.volumes]]
 name = "round2-data"
 mountPath = "/data"
+
+# ============================================================================
+# Algebra ExIt variant (Phase 3 v3 — completed, preserved for reference).
+# To re-run algebra ExIt: replace the startCommand above with this block.
+# ============================================================================
+# startCommand = """pip install -e . && \
+#   export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 && \
+#   python -c "import ggmr; print('ggmr import OK')" && \
+#   mkdir -p /data/exit_v3 && \
+#   (cd /data && python -u -m http.server ${PORT:-8080} --bind 0.0.0.0 > /data/http_server_v3.log 2>&1 &) && \
+#   echo "HTTP file server backgrounded on port ${PORT:-8080}; live at https://ggmr-production.up.railway.app/" && \
+#   echo "=== PHASE 3 v3: TRUE CUMULATIVE ExIt (3 iters, buffer persists) ===" && \
+#   python -u scripts/run_exit.py \
+#     --value-ckpt checkpoints/round2/best.pt \
+#     --warmstart-data /data/policy_warmstart.jsonl \
+#     --output-dir /data/exit_v3 \
+#     --iterations 3 \
+#     --simulations 400 \
+#     --num-problems 1000 \
+#     --max-workers 32 \
+#     --device cpu \
+#     --collection-timeout 3600 && \
+#   echo "=== PHASE 3 v3: EVALUATION ===" && \
+#   python -u -m ggmr.training.evaluate_exit \
+#     --value-ckpt /data/exit_v3/value_iter_02.pt \
+#     --policy-ckpt /data/exit_v3/policy_iter_02.pt \
+#     --problems all \
+#     --output /data/exit_v3/EXIT_V3_RESULTS.md \
+#     --device cpu && \
+#   echo "=== DONE; files at https://ggmr-production.up.railway.app/exit_v3/ ===" ; \
+#   tail -f /dev/null"""

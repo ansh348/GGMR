@@ -1,11 +1,15 @@
-"""GIN policy network: predicts a probability distribution over the 49 rule
+"""GIN policy network: predicts a probability distribution over the rule
 names given an equation graph.
 
 Same GIN backbone shape as `GINValueNet` (5 layers, 128 hidden, mean+max
 readout). Separate weights — keeps gradient interference between value and
 policy losses at bay during ExIt training. Output is raw logits over
-`default_registry.names()` (the canonical 49-rule ordering); callers apply
+`default_registry.names()` (canonical rule ordering); callers apply
 legality masking + softmax via `PolicyAdvisor` (`ggmr/training/policy_heuristic.py`).
+
+Shares the backbone/head split convention with `GINValueNet`: state-dict
+keys ``convs.*`` are the transferable backbone, ``head.*`` are the
+domain-specific policy head. See `backbone_state_dict` / `load_backbone`.
 """
 
 from __future__ import annotations
@@ -21,9 +25,14 @@ from ggmr.rules.registry import default_registry
 
 from .graph import FEATURE_DIM
 
+# Same prefix convention as GINValueNet. Keep in sync with the attribute
+# names below.
+_BACKBONE_PREFIXES: tuple[str, ...] = ("convs.",)
+_POLICY_HEAD_PREFIXES: tuple[str, ...] = ("head.",)
+
 
 def num_rules() -> int:
-    """Number of rules in the canonical registry (currently 49 for Phase 1b+)."""
+    """Number of rules in the canonical registry."""
     return len(default_registry.names())
 
 
@@ -77,6 +86,36 @@ class GINPolicyNet(nn.Module):
             dim=-1,
         )
         return self.head(pooled)
+
+    # --- transfer helpers ----------------------------------------------------
+
+    def backbone_state_dict(self) -> dict[str, Tensor]:
+        """Subset of state_dict containing only the GIN backbone weights.
+
+        Identical convention to `GINValueNet.backbone_state_dict`. The
+        backbone module shape (5 GINConv layers + readout) matches across
+        value and policy nets, so a single saved `backbone.pt` can seed
+        either head.
+        """
+        full = self.state_dict()
+        return {k: v for k, v in full.items()
+                if any(k.startswith(p) for p in _BACKBONE_PREFIXES)}
+
+    def head_state_dict(self) -> dict[str, Tensor]:
+        full = self.state_dict()
+        return {k: v for k, v in full.items()
+                if any(k.startswith(p) for p in _POLICY_HEAD_PREFIXES)}
+
+    def load_backbone(self, state: dict[str, Tensor]) -> tuple[list[str], list[str]]:
+        """Load backbone weights only (non-strict); policy head stays at init."""
+        leaked = [k for k in state.keys()
+                  if any(k.startswith(p) for p in _POLICY_HEAD_PREFIXES)]
+        if leaked:
+            raise ValueError(
+                f"load_backbone refusing to load: state contains head keys {leaked[:3]}; "
+                "use `load_state_dict` for the full checkpoint instead"
+            )
+        return self.load_state_dict(state, strict=False)
 
 
 def masked_log_softmax(logits: Tensor, legal_mask: Tensor) -> Tensor:

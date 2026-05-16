@@ -43,10 +43,23 @@ class Registry:
     def rules(self) -> list[Rule]:
         return [self._rules[n] for n in self._order]
 
-    def enumerate_actions(self, state: EqState) -> Iterator[tuple[Rule, Action]]:
-        """Yield all (rule, action) pairs in canonical order."""
+    def enumerate_actions(
+        self,
+        state: EqState,
+        *,
+        training_only: bool = False,
+    ) -> Iterator[tuple[Rule, Action]]:
+        """Yield all (rule, action) pairs in canonical order.
+
+        When `training_only=True`, rules with `training_safe=False` (oracle
+        shortcuts) are skipped. BFS/SL/ExIt data-collection paths set this to
+        True so the model can never learn "call the oracle"; inference paths
+        keep the default False so oracles remain available for fast mode.
+        """
         for name in self._order:
             rule = self._rules[name]
+            if training_only and not getattr(rule, "training_safe", True):
+                continue
             actions = list(rule.enumerate(state))
             actions.sort(key=lambda a: a.canonical_key())
             for a in actions:

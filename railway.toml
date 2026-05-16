@@ -24,10 +24,10 @@ startCommand = """pip install -e . && \
     --domain trig \
     --num-problems 30000 \
     --workers 32 \
-    --easy-bfs-budget 10000 \
-    --hard-bfs-budget 20000 \
-    --easy-timeout-s 180 \
-    --hard-timeout-s 180 \
+    --easy-bfs-budget 20000 \
+    --hard-bfs-budget 50000 \
+    --easy-timeout-s 360 \
+    --hard-timeout-s 360 \
     --output /data/trig_training_v2.jsonl \
     --run-id trig_v2 \
     --progress && \
